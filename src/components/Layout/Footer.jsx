@@ -26,15 +26,21 @@ const Footer = () => {
 
             <div className="footer-details">
               <p className="mb-1">
-                (주) COMPANY &nbsp; 대표. NAME &nbsp; 사업자등록번호. 000-00-00000 &nbsp; 주소. ADDRESS HERE
+                BOAS-SE &nbsp; 대표이사. 이병주 &nbsp;
+              </p>
+              <p className="mb-1">
+                사무실. 충청북도 청주시 흥덕구 오송읍 오송생명로 194 7층 702호 BOAS-SE
+              </p>
+              <p className="mb-1">
+                공장. 충북 청주시 흥덕구 월명로 55번길 31
               </p>
               <p className="mb-3">
-                T. 000-000-0000 &nbsp; E-mail. email@example.com
+                TEL. 070-7709-2631 &nbsp; FAX. 043-266-2632
               </p>
             </div>
 
             <div className="footer-copyright">
-              Copyright © {new Date().getFullYear()} COMPANY NAME All Rights Reserved.
+              Copyright © {new Date().getFullYear()} BOAS-SE All Rights Reserved.
             </div>
           </Col>
         </Row>

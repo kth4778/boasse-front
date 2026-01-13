@@ -10,7 +10,10 @@ const Header = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 30) {
+      // HeroSlider 영역(100vh)을 완전히 벗어날 때까지 투명 유지
+      const threshold = window.innerHeight;
+      
+      if (window.scrollY > threshold) {
         setScrolled(true);
       } else {
         setScrolled(false);
