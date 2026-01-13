@@ -1,0 +1,49 @@
+.header-wrapper {
+  background-color: #fff;
+  border-bottom: 1px solid #eee;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  transition: all 0.3s ease;
+}
+
+.navbar-brand img {
+  max-height: 50px;
+}
+
+.nav-link {
+  font-weight: 500;
+  font-size: 1.1rem;
+  color: #333 !important;
+  margin: 0 10px;
+  transition: color 0.3s;
+}
+
+.nav-link:hover {
+  color: var(--primary-color) !important;
+}
+
+.dropdown-menu {
+  border: none;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.dropdown-item:hover {
+  background-color: var(--primary-color);
+  color: #fff;
+}
+
+.util-menu {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.util-link {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.util-link:hover {
+  color: var(--primary-color);
+}
