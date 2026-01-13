@@ -1,12 +1,10 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
+import { Routes, Route } from 'react-router-dom';
 import Header from './components/Layout/Header';
-import HeroSlider from './components/Home/HeroSlider';
-import InfoSection from './components/Home/InfoSection';
-import ProductCards from './components/Home/ProductCards';
-import CasesCarousel from './components/Home/CasesCarousel';
-import BoardInquiry from './components/Home/BoardInquiry';
 import Footer from './components/Layout/Footer';
+import Home from './components/Home/Home';
+import About from './components/about/About';
 
 function App() {
   return (
@@ -15,11 +13,10 @@ function App() {
       
       {/* Main Content Area */}
       <main style={{ minHeight: '80vh' }}>
-        <HeroSlider />
-        <InfoSection />
-        <ProductCards />
-        <CasesCarousel />
-        <BoardInquiry />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+        </Routes>
       </main>
 
       <Footer />
