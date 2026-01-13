@@ -1,38 +1,52 @@
 import React, { useState, useEffect } from 'react';
 import { Navbar, Nav, Container } from 'react-bootstrap';
 import { FaSearch } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
-import logoWhiteImg from '../../assets/logo_white.png'; // 투명 헤더용 (흰색 글씨)
-import logoColorImg from '../../assets/logo_color.png'; // TODO: 검은색 글씨 로고 파일명 확인 및 추가 필요
+import { Link, useLocation } from 'react-router-dom';
+import logoWhiteImg from '../../assets/logo_white.png';
+import logoColorImg from '../../assets/logo_color.png';
 import './Header.css';
 
 const Header = () => {
   const [scrolled, setScrolled] = useState(false);
+  const location = useLocation();
+  const isHomePage = location.pathname === '/';
 
   useEffect(() => {
     const handleScroll = () => {
-      // HeroSlider 영역(100vh)을 완전히 벗어날 때까지 투명 유지
-      const threshold = window.innerHeight;
-      
-      if (window.scrollY > threshold) {
-        setScrolled(true);
-      } else {
-        setScrolled(false);
+      // On the home page, change header style after scrolling past the hero section
+      if (isHomePage) {
+        const threshold = window.innerHeight;
+        setScrolled(window.scrollY > threshold);
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+    // Only add scroll listener on the home page
+    if (isHomePage) {
+      window.addEventListener('scroll', handleScroll);
+      // Initial check
+      handleScroll();
+    } else {
+      // On sub-pages, the header is always in the "scrolled" state
+      setScrolled(true);
+    }
+
+    return () => {
+      if (isHomePage) {
+        window.removeEventListener('scroll', handleScroll);
+      }
+    };
+  }, [isHomePage]);
+
+  // Determine which logo to use
+  const logoSrc = !isHomePage || scrolled ? logoColorImg : logoWhiteImg;
 
   return (
-    <header className={`header-wrapper ${scrolled ? 'scrolled' : ''}`}>
+    <header className={`header-wrapper ${!isHomePage || scrolled ? 'scrolled' : ''}`}>
       <Navbar expand="lg" className="py-0">
         <Container>
           <Navbar.Brand as={Link} to="/">
-            {/* 스크롤 상태에 따라 이미지 교체: 초록색은 유지하고 글씨색만 변경됨 */}
             <img 
-              src={scrolled ? logoColorImg : logoWhiteImg} 
+              src={logoSrc} 
               alt="Company Logo" 
               className="header-logo" 
             />
