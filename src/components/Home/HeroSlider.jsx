@@ -68,8 +68,6 @@ const HeroSlider = () => {
                     {slide.title}
                   </h2>
                   <span className="hero-highlight animate-highlight">{slide.highlight}</span>
-                  
-                  <div className="hero-bar animate-bar"></div>
 
                   <div className="animate-btn">
                     <a href={slide.link} className="hero-btn">

@@ -66,23 +66,18 @@ const BoardInquiry = () => {
             <Col lg={6} className="ps-lg-5">
               <div className="info-group mb-5">
                 <span className="info-label">Customer Center</span>
-                {/* TODO: [INFO] 실제 대표 전화번호 입력 */}
-                <div className="info-phone">000-000-0000</div>
+                <div className="info-phone">070-7709-2631</div>
               </div>
 
               <div className="info-group">
                 <span className="info-label">Address</span>
-                <p className="info-text">OO시 OO구 OO로 123 (OO동)</p>
-              </div>
-
-              <div className="info-group">
-                <span className="info-label">Email</span>
-                <p className="info-text">email@example.com</p>
+                <p className="info-text mb-1">사무실 : 충청북도 청주시 흥덕구 오송읍 오송생명로 194 7층 702호</p>
+                <p className="info-text">공장 : 충북 청주시 흥덕구 월명로 55번길 31</p>
               </div>
 
               <div className="info-group">
                 <span className="info-label">Fax</span>
-                <p className="info-text">000-000-0000</p>
+                <p className="info-text">043-266-2632</p>
               </div>
             </Col>
           </Row>
