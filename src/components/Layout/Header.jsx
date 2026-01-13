@@ -37,11 +37,13 @@ const Header = () => {
 
   return (
     <header className={`header-wrapper ${scrolled || !isHome ? 'scrolled' : ''}`}>
+
       <Navbar expand="lg" className="py-0">
         <Container>
           <Navbar.Brand as={Link} to="/">
             <img 
               src={scrolled || !isHome ? logoColorImg : logoWhiteImg} 
+
               alt="Company Logo" 
               className="header-logo" 
             />
