@@ -1,58 +1,63 @@
 .footer-wrapper {
   background-color: #333;
-  color: #aaa;
-  padding: 60px 0 30px;
+  color: #bbb;
+  padding: 60px 0;
   font-size: 0.9rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-.footer-title {
-  color: #fff;
-  font-size: 1.1rem;
-  font-weight: 700;
-  margin-bottom: 20px;
-  position: relative;
-  padding-bottom: 10px;
-}
-
-.footer-title::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 30px;
-  height: 2px;
-  background-color: var(--primary-color);
-}
-
-.footer-list li {
+/* 푸터 로고 크기 확대 */
+.footer-logo-img {
+  max-height: 75px; /* 기존 50px에서 확대 */
+  width: auto;
   margin-bottom: 10px;
 }
 
-.footer-link {
-  color: #aaa;
+.footer-info-col {
+  padding-left: 50px;
+}
+
+.footer-links a {
+  color: #fff;
+  font-weight: 700;
   text-decoration: none;
   transition: color 0.3s;
 }
 
-.footer-link:hover {
+.footer-links a:hover {
   color: var(--primary-color);
 }
 
-.footer-info p {
-  margin-bottom: 8px;
-  line-height: 1.6;
+.divider {
+  margin: 0 15px;
+  color: rgba(255, 255, 255, 0.2);
+  font-size: 0.8rem;
 }
 
-.footer-bottom {
-  margin-top: 50px;
-  padding-top: 20px;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  text-align: center;
+.footer-details p {
+  margin: 0;
+  line-height: 1.8;
+  color: #999;
+}
+
+.footer-copyright {
+  color: #777;
   font-size: 0.85rem;
+  margin-top: 10px;
 }
 
-.footer-logo {
-  max-width: 150px;
-  margin-bottom: 15px;
-  filter: grayscale(100%) brightness(200%); /* 로고를 흰색 톤으로 변경 */
+@media (max-width: 992px) {
+  .footer-info-col {
+    padding-left: 12px;
+    text-align: center;
+  }
+  .footer-links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+  }
+  .divider {
+    display: none;
+  }
 }

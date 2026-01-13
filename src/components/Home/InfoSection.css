@@ -1,33 +1,41 @@
 .info-section {
-  padding: 60px 0;
+  padding: 80px 0;
   background-color: #fff;
 }
 
 .info-card {
   display: flex;
   align-items: center;
-  padding: 20px;
+  padding: 30px 25px;
   background-color: #fff;
-  border-radius: 10px;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-radius: 12px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.06);
+  transition: all 0.3s ease;
   height: 100%;
+  border: 1px solid #f0f0f0;
 }
 
 .info-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+  transform: translateY(-7px);
+  box-shadow: 0 15px 30px rgba(0,0,0,0.12);
+  border-color: transparent;
 }
 
 .info-icon-wrapper {
   flex-shrink: 0;
-  margin-right: 20px;
+  margin-right: 25px;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f8f9fa;
+  border-radius: 50%;
+  transition: background-color 0.3s;
 }
 
-.info-icon {
-  width: 70px;
-  height: 70px;
-  object-fit: contain;
+.info-card:hover .info-icon-wrapper {
+  background-color: #e6fffa;
 }
 
 .info-text-wrapper {
@@ -35,31 +43,24 @@
 }
 
 .info-title {
-  font-size: 1.25rem;
+  font-size: 1.35rem;
   font-weight: 700;
-  margin-bottom: 10px;
-  color: #333;
+  margin-bottom: 8px;
+  color: #222;
+  letter-spacing: -0.5px;
 }
 
 .info-btn {
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   font-weight: 500;
-  color: #666;
+  color: #888;
   text-decoration: none;
   display: inline-flex;
   align-items: center;
-  gap: 5px;
+  gap: 6px;
   transition: color 0.3s;
 }
 
 .info-btn:hover {
   color: var(--primary-color);
-}
-
-.info-btn svg {
-  transition: transform 0.3s;
-}
-
-.info-btn:hover svg {
-  transform: translateX(5px);
 }

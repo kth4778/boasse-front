@@ -2,64 +2,62 @@ import React from 'react';
 import { Container } from 'react-bootstrap';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Autoplay } from 'swiper/modules';
+import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import './CasesCarousel.css';
 
-// Swiper Style (이미 HeroSlider에서 import 했지만, 명시적으로 포함)
 import 'swiper/css';
-import 'swiper/css/navigation';
 
 const CasesCarousel = () => {
+  // TODO: [DATA] 설치 사례 데이터 수정 (이미지, 제목)
   const cases = [
     {
       id: 1,
-      title: '후드 & 닥트 설치 사진',
-      image: 'https://via.placeholder.com/600x400/333333/ffffff?text=Hood+Duct',
-      link: '/cases/1'
+      title: '설치 사례 제목 1',
+      image: 'https://images.unsplash.com/photo-1581092334651-ddf26d9a09d0?auto=format&fit=crop&w=600&q=80', // TODO: 현장 사진으로 교체
+      link: '/case-1'
     },
     {
       id: 2,
-      title: '여과집진기(백필터) 설치 사진',
-      image: 'https://via.placeholder.com/600x400/555555/ffffff?text=Filter',
-      link: '/cases/2'
+      title: '설치 사례 제목 2',
+      image: 'https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?auto=format&fit=crop&w=600&q=80',
+      link: '/case-2'
     },
     {
       id: 3,
-      title: '흡착탑(활성탄집진기) 설치 사진',
-      image: 'https://via.placeholder.com/600x400/777777/ffffff?text=Activated+Carbon',
-      link: '/cases/3'
+      title: '설치 사례 제목 3',
+      image: 'https://images.unsplash.com/photo-1532601224476-15c79f2f7a51?auto=format&fit=crop&w=600&q=80',
+      link: '/case-3'
     },
     {
       id: 4,
-      title: '스크라바 집진기 설치 사진',
-      image: 'https://via.placeholder.com/600x400/999999/ffffff?text=Scrubber',
-      link: '/cases/4'
-    },
-    {
-      id: 5,
-      title: '집진기 제작 현장',
-      image: 'https://via.placeholder.com/600x400/222222/ffffff?text=Factory',
-      link: '/cases/5'
+      title: '설치 사례 제목 4',
+      image: 'https://images.unsplash.com/photo-1580894732444-8ecded7900cd?auto=format&fit=crop&w=600&q=80',
+      link: '/case-4'
     }
   ];
 
   return (
     <section className="cases-section">
-      <Container>
-        <div className="section-header text-center text-lg-start">
-          <h6 className="sub-title">SAFETY HUMANITY</h6>
-          <h2 className="main-title">설치사례</h2>
+      <Container className="position-relative">
+        <div className="section-header">
+          {/* TODO: [TEXT] 섹션 소제목 수정 */}
+          <span className="sub-title">SUB TITLE</span>
+          {/* TODO: [TEXT] 섹션 메인 제목 수정 */}
+          <h2 className="main-title">MAIN TITLE</h2>
         </div>
 
         <Swiper
           modules={[Navigation, Autoplay]}
           spaceBetween={30}
           slidesPerView={1}
-          navigation
-          autoplay={{ delay: 3000, disableOnInteraction: false }}
+          navigation={{
+            prevEl: '.nav-btn-prev',
+            nextEl: '.nav-btn-next',
+          }}
+          autoplay={{ delay: 4000, disableOnInteraction: false }}
           breakpoints={{
             576: { slidesPerView: 2 },
             992: { slidesPerView: 3 },
-            1200: { slidesPerView: 4 },
           }}
           className="cases-swiper"
         >
@@ -69,12 +67,19 @@ const CasesCarousel = () => {
                 <div className="case-img-wrapper">
                   <img src={item.image} alt={item.title} className="case-img" />
                 </div>
-                <div className="case-info">
-                  <h3 className="case-title">{item.title}</h3>
-                </div>
+                <h3 className="case-title">{item.title}</h3>
               </a>
             </SwiperSlide>
           ))}
+
+          <div className="custom-nav-wrapper">
+            <button className="nav-btn nav-btn-prev">
+              <FaChevronLeft />
+            </button>
+            <button className="nav-btn nav-btn-next">
+              <FaChevronRight />
+            </button>
+          </div>
         </Swiper>
       </Container>
     </section>
