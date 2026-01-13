@@ -1,34 +1,34 @@
 import React from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
-import { FaChevronRight } from 'react-icons/fa';
+import { FaChevronRight, FaChalkboardTeacher, FaTools, FaImages, FaQuestionCircle } from 'react-icons/fa';
 import './InfoSection.css';
 
 const InfoSection = () => {
+  // TODO: [DATA] 안내 섹션 데이터 수정 (아이콘, 제목, 링크)
   const infoData = [
     {
       id: 1,
-      title: '방문컨설팅',
-      // 임시 아이콘 이미지 (추후 assets/images에 실제 파일 넣고 경로 변경 필요)
-      icon: 'https://via.placeholder.com/80/09827b/ffffff?text=Consult',
-      link: '/consulting'
+      title: '서비스 이름 1',
+      icon: <FaChalkboardTeacher size={50} color="#09827b" />, // TODO: 아이콘 교체 가능
+      link: '/service-1'
     },
     {
       id: 2,
-      title: '전문가 현장분석',
-      icon: 'https://via.placeholder.com/80/308772/ffffff?text=Analysis',
-      link: '/analysis'
+      title: '서비스 이름 2',
+      icon: <FaTools size={45} color="#308772" />,
+      link: '/service-2'
     },
     {
       id: 3,
-      title: '시공사례',
-      icon: 'https://via.placeholder.com/80/53B572/ffffff?text=Cases',
-      link: '/cases'
+      title: '서비스 이름 3',
+      icon: <FaImages size={45} color="#53B572" />,
+      link: '/service-3'
     },
     {
       id: 4,
-      title: '시공문의',
-      icon: 'https://via.placeholder.com/80/71e7c5/ffffff?text=Inquiry',
-      link: '/contact'
+      title: '서비스 이름 4',
+      icon: <FaQuestionCircle size={45} color="#71e7c5" />,
+      link: '/service-4'
     }
   ];
 
@@ -40,12 +40,12 @@ const InfoSection = () => {
             <Col key={item.id} lg={3} md={6} sm={12}>
               <div className="info-card">
                 <div className="info-icon-wrapper">
-                  <img src={item.icon} alt={item.title} className="info-icon" />
+                  {item.icon}
                 </div>
                 <div className="info-text-wrapper">
                   <h3 className="info-title">{item.title}</h3>
                   <a href={item.link} className="info-btn">
-                    자세히 보기 <FaChevronRight />
+                    자세히 보기 <FaChevronRight size={12} />
                   </a>
                 </div>
               </div>

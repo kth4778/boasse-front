@@ -5,6 +5,7 @@ import HeroSlider from './components/Home/HeroSlider';
 import InfoSection from './components/Home/InfoSection';
 import ProductCards from './components/Home/ProductCards';
 import CasesCarousel from './components/Home/CasesCarousel';
+import BoardInquiry from './components/Home/BoardInquiry';
 import Footer from './components/Layout/Footer';
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
         <InfoSection />
         <ProductCards />
         <CasesCarousel />
+        <BoardInquiry />
       </main>
 
       <Footer />
