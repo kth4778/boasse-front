@@ -1,0 +1,115 @@
+.notice-page {
+  background-color: #fff;
+}
+
+.sub-header {
+  background-color: #f8f9fa;
+  padding: 120px 0 60px;
+  text-align: center;
+  border-bottom: 1px solid #eee;
+}
+
+.sub-title-main {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #222;
+  margin-bottom: 10px;
+  letter-spacing: -1px;
+}
+
+.sub-title-sub {
+  font-size: 1.1rem;
+  color: #777;
+  margin: 0;
+}
+
+.notice-content {
+  min-height: 500px;
+}
+
+.notice-table {
+  border-top: 2px solid #333;
+}
+
+.notice-table thead th {
+  background-color: #fafafa;
+  font-weight: 700;
+  color: #333;
+  padding: 15px 10px;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+}
+
+.notice-table tbody td {
+  padding: 18px 10px;
+  text-align: center;
+  vertical-align: middle;
+  color: #555;
+  border-bottom: 1px solid #eee;
+  font-size: 0.95rem;
+}
+
+.notice-table tbody tr:hover td {
+  color: var(--primary-color);
+  background-color: #fcfcfc;
+}
+
+.attachment-icon {
+  font-size: 0.8rem;
+  color: #aaa;
+}
+
+.btn-primary-custom {
+  background-color: var(--primary-color) !important;
+  border-color: var(--primary-color) !important;
+  padding: 8px 25px;
+  font-weight: 600;
+  border-radius: 4px;
+}
+
+.btn-primary-custom:hover {
+  background-color: var(--secondary-color) !important;
+  border-color: var(--secondary-color) !important;
+}
+
+/* Pagination Custom */
+.custom-pagination .page-item.active .page-link {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+.custom-pagination .page-link {
+  color: #555;
+}
+
+.notice-detail-card {
+  border-top: 3px solid var(--primary-color) !important;
+}
+
+.detail-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #222;
+}
+
+.detail-info {
+  font-size: 0.9rem;
+}
+
+.detail-body {
+  min-height: 300px;
+  line-height: 1.8;
+  color: #444;
+}
+
+.content-area p {
+  margin-bottom: 1.5rem;
+}
+
+.border-bottom-2 {
+  border-bottom: 2px solid #eee !important;
+}
+
+.admin-btns .btn {
+  font-weight: 600;
+}

@@ -1,10 +1,15 @@
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import Header from './components/Layout/Header';
 import Footer from './components/Layout/Footer';
-import Home from './components/Home/Home';
-import About from './components/about/About';
+import MainPage from './components/Home/MainPage';
+import NoticeList from './components/Notice/NoticeList';
+import NoticeDetail from './components/Notice/NoticeDetail';
+import NoticeWrite from './components/Notice/NoticeWrite';
+
 
 function App() {
   const location = useLocation();
@@ -16,19 +21,25 @@ function App() {
   };
 
   return (
-    <div className="App">
-      <Header />
-      
-      {/* Main Content Area */}
-      <main style={mainStyle}>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
-        </Routes>
-      </main>
+    <Router>
+      <div className="App">
+        <Header />
+        
+        {/* Main Content Area with Routing */}
+        <main style={{ minHeight: '80vh' }}>
+          <Routes>
+            <Route path="/" element={<MainPage />} />
+            <Route path="/notice" element={<NoticeList />} />
+            <Route path="/notice/:id" element={<NoticeDetail />} />
+            <Route path="/notice/write" element={<NoticeWrite />} />
+            <Route path="/notice/edit/:id" element={<NoticeWrite />} />
+          </Routes>
+        </main>
 
-      <Footer />
-    </div>
+
+        <Footer />
+      </div>
+    </Router>
   );
 }
 

@@ -1,52 +1,49 @@
 import React, { useState, useEffect } from 'react';
 import { Navbar, Nav, Container } from 'react-bootstrap';
 import { FaSearch } from 'react-icons/fa';
-import { Link, useLocation } from 'react-router-dom';
-import logoWhiteImg from '../../assets/logo_white.png';
-import logoColorImg from '../../assets/logo_color.png';
+import { useLocation, Link } from 'react-router-dom';
+import logoWhiteImg from '../../assets/logo_white.png'; // 투명 헤더용 (흰색 글씨)
+import logoColorImg from '../../assets/logo_color.png'; 
 import './Header.css';
 
 const Header = () => {
-  const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
-  const isHomePage = location.pathname === '/';
+  const isHome = location.pathname === '/';
+  const [scrolled, setScrolled] = useState(!isHome);
 
   useEffect(() => {
     const handleScroll = () => {
-      // On the home page, change header style after scrolling past the hero section
-      if (isHomePage) {
-        const threshold = window.innerHeight;
-        setScrolled(window.scrollY > threshold);
+      if (!isHome) {
+        setScrolled(true);
+        return;
+      }
+
+      // HeroSlider 영역(100vh)을 완전히 벗어날 때까지 투명 유지
+      const threshold = window.innerHeight;
+      
+      if (window.scrollY > threshold) {
+        setScrolled(true);
+      } else {
+        setScrolled(false);
       }
     };
 
-    // Only add scroll listener on the home page
-    if (isHomePage) {
-      window.addEventListener('scroll', handleScroll);
-      // Initial check
-      handleScroll();
-    } else {
-      // On sub-pages, the header is always in the "scrolled" state
-      setScrolled(true);
-    }
+    // 초기 상태 동기화 및 이벤트 등록
+    handleScroll();
 
-    return () => {
-      if (isHomePage) {
-        window.removeEventListener('scroll', handleScroll);
-      }
-    };
-  }, [isHomePage]);
-
-  // Determine which logo to use
-  const logoSrc = !isHomePage || scrolled ? logoColorImg : logoWhiteImg;
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [isHome]);
 
   return (
-    <header className={`header-wrapper ${!isHomePage || scrolled ? 'scrolled' : ''}`}>
+    <header className={`header-wrapper ${scrolled || !isHome ? 'scrolled' : ''}`}>
+
       <Navbar expand="lg" className="py-0">
         <Container>
           <Navbar.Brand as={Link} to="/">
             <img 
-              src={logoSrc} 
+              src={scrolled || !isHome ? logoColorImg : logoWhiteImg} 
+
               alt="Company Logo" 
               className="header-logo" 
             />
