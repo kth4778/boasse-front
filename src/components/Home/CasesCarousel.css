@@ -1,0 +1,82 @@
+.cases-section {
+  padding: 80px 0;
+  background-color: #fff;
+}
+
+.section-header {
+  margin-bottom: 40px;
+}
+
+.sub-title {
+  font-size: 0.9rem;
+  color: var(--primary-color);
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.main-title {
+  font-size: 2.5rem;
+  font-weight: 900;
+  color: #333;
+}
+
+.case-card {
+  display: block;
+  text-decoration: none;
+  background: #fff;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.case-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+}
+
+.case-img-wrapper {
+  position: relative;
+  width: 100%;
+  padding-top: 75%; /* 4:3 Aspect Ratio */
+  overflow: hidden;
+}
+
+.case-img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.case-card:hover .case-img {
+  transform: scale(1.05);
+}
+
+.case-info {
+  padding: 20px;
+}
+
+.case-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #333;
+  margin: 0;
+  line-height: 1.4;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+/* Swiper 네비게이션 버튼 커스텀 (필요시) */
+.cases-section .swiper-button-next,
+.cases-section .swiper-button-prev {
+  color: var(--primary-color);
+}
