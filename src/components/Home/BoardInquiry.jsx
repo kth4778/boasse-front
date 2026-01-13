@@ -1,12 +1,36 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
+import noticeApi from '../../api/noticeApi';
 import './BoardInquiry.css';
 
 const BoardInquiry = () => {
-  // TODO: [DATA] 실제 공지사항 데이터 연동 필요
-  const notices = [
-    { id: 1, title: '공지사항 게시글 제목이 들어갑니다.', date: '2025.01.01', link: '/notice/1' },
-  ];
+  const [notices, setNotices] = useState([]);
+
+  useEffect(() => {
+    const fetchLatestNotices = async () => {
+      try {
+        const response = await noticeApi.getNotices(1, 3);
+        if (response.data.success) {
+          setNotices(response.data.data.notices);
+        }
+      } catch (error) {
+        console.error('Failed to fetch notices for home:', error);
+        // Fallback mock
+        setNotices([
+          { id: 1, title: 'BOAS-SE 공식 웹사이트 오픈 안내', createdAt: '2026.01.13' },
+          { id: 2, title: '2026년 상반기 신입 사원 채용 공고', createdAt: '2026.01.10' },
+        ]);
+      }
+    };
+    fetchLatestNotices();
+  }, []);
+
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    if (isNaN(date)) return dateString; // Already formatted or invalid
+    return `${date.getFullYear()}.${String(date.getMonth() + 1).padStart(2, '0')}.${String(date.getDate()).padStart(2, '0')}`;
+  };
 
   return (
     <div className="board-inquiry-wrapper">
@@ -14,14 +38,20 @@ const BoardInquiry = () => {
       {/* 1. 상단: 공지사항 */}
       <section className="notice-section">
         <Container>
-          <h3 className="section-title-sm">Notice</h3>
+          <div className="d-flex justify-content-between align-items-end mb-4">
+            <h3 className="section-title-sm mb-0">Notice</h3>
+            <Link to="/notice" className="text-muted text-decoration-none">more +</Link>
+          </div>
           <div className="simple-notice-list">
             {notices.map((item) => (
               <div key={item.id} className="simple-notice-item">
-                <a href={item.link} className="simple-notice-title">· {item.title}</a>
-                <span className="simple-notice-date">{item.date}</span>
+                <Link to={`/notice/${item.id}`} className="simple-notice-title">· {item.title}</Link>
+                <span className="simple-notice-date">{formatDate(item.createdAt)}</span>
               </div>
             ))}
+            {notices.length === 0 && (
+              <p className="py-4 text-center text-muted">등록된 공지사항이 없습니다.</p>
+            )}
           </div>
         </Container>
       </section>

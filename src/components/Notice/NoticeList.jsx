@@ -1,0 +1,128 @@
+import React, { useState, useEffect } from 'react';
+import { Container, Table, Pagination, Button } from 'react-bootstrap';
+import { Link, useNavigate } from 'react-router-dom';
+import noticeApi from '../../api/noticeApi';
+import './Notice.css';
+
+const NoticeList = () => {
+  const [notices, setNotices] = useState([]);
+  const [pagination, setPagination] = useState({});
+  const [currentPage, setCurrentPage] = useState(1);
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    fetchNotices(currentPage);
+  }, [currentPage]);
+
+  const fetchNotices = async (page) => {
+    setLoading(true);
+    try {
+      const response = await noticeApi.getNotices(page, 10);
+      if (response.data.success) {
+        setNotices(response.data.data.notices);
+        setPagination(response.data.data.pagination);
+      }
+    } catch (error) {
+      console.error('Failed to fetch notices:', error);
+      // Mock data for development if API is not yet available
+      setNotices([
+        { id: 1, title: 'BOAS-SE 공식 웹사이트 오픈 안내', author: '관리자', createdAt: '2026-01-13T00:00:00Z', viewCount: 124, hasAttachments: true },
+        { id: 2, title: '2026년 상반기 신입 사원 채용 공고', author: '인사팀', createdAt: '2026-01-10T00:00:00Z', viewCount: 450, hasAttachments: false },
+        { id: 3, title: '[안내] 설 연휴 휴무 및 고객센터 운영 안내', author: '관리자', createdAt: '2026-01-05T00:00:00Z', viewCount: 89, hasAttachments: false },
+      ]);
+      setPagination({ totalPages: 1, currentPage: 1 });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return `${date.getFullYear()}.${String(date.getMonth() + 1).padStart(2, '0')}.${String(date.getDate()).padStart(2, '0')}`;
+  };
+
+  return (
+    <div className="notice-page">
+      <section className="sub-header">
+        <Container>
+          <h2 className="sub-title-main">Notice</h2>
+          <p className="sub-title-sub">BOAS-SE의 새로운 소식을 전해드립니다.</p>
+        </Container>
+      </section>
+
+      <Container className="notice-content py-5">
+        <div className="d-flex justify-content-between align-items-center mb-4">
+          <p className="mb-0">총 <strong>{pagination.totalCount || notices.length}</strong>건의 게시물이 있습니다.</p>
+          <Button 
+            className="btn-primary-custom"
+            onClick={() => navigate('/notice/write')}
+          >
+            글쓰기
+          </Button>
+        </div>
+
+        <Table hover responsive className="notice-table">
+          <thead>
+            <tr>
+              <th style={{ width: '80px' }}>번호</th>
+              <th>제목</th>
+              <th style={{ width: '120px' }}>작성자</th>
+              <th style={{ width: '120px' }}>작성일</th>
+              <th style={{ width: '100px' }}>조회수</th>
+            </tr>
+          </thead>
+          <tbody>
+            {notices.map((notice) => (
+              <tr key={notice.id} onClick={() => navigate(`/notice/${notice.id}`)} style={{ cursor: 'pointer' }}>
+                <td>{notice.id}</td>
+                <td className="text-start">
+                  {notice.title}
+                  {notice.hasAttachments && <span className="ms-2 attachment-icon">📎</span>}
+                </td>
+                <td>{notice.author}</td>
+                <td>{formatDate(notice.createdAt)}</td>
+                <td>{notice.viewCount}</td>
+              </tr>
+            ))}
+            {notices.length === 0 && !loading && (
+              <tr>
+                <td colSpan="5" className="py-5 text-center text-muted">등록된 공지사항이 없습니다.</td>
+              </tr>
+            )}
+          </tbody>
+        </Table>
+
+        {pagination.totalPages > 1 && (
+          <div className="d-flex justify-content-center mt-5">
+            <Pagination className="custom-pagination">
+              <Pagination.Prev 
+                disabled={currentPage === 1}
+                onClick={() => handlePageChange(currentPage - 1)}
+              />
+              {[...Array(pagination.totalPages)].map((_, idx) => (
+                <Pagination.Item
+                  key={idx + 1}
+                  active={idx + 1 === currentPage}
+                  onClick={() => handlePageChange(idx + 1)}
+                >
+                  {idx + 1}
+                </Pagination.Item>
+              ))}
+              <Pagination.Next 
+                disabled={currentPage === pagination.totalPages}
+                onClick={() => handlePageChange(currentPage + 1)}
+              />
+            </Pagination>
+          </div>
+        )}
+      </Container>
+    </div>
+  );
+};
+
+export default NoticeList;
