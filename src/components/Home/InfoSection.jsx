@@ -9,25 +9,25 @@ const InfoSection = () => {
     {
       id: 1,
       title: '서비스 이름 1',
-      icon: <FaChalkboardTeacher size={50} color="#09827b" />, // TODO: 아이콘 교체 가능
+      icon: <FaChalkboardTeacher size={50} color="#8CC63F" />, // TODO: 아이콘 교체 가능
       link: '/service-1'
     },
     {
       id: 2,
       title: '서비스 이름 2',
-      icon: <FaTools size={45} color="#308772" />,
+      icon: <FaTools size={45} color="#6AA42E" />,
       link: '/service-2'
     },
     {
       id: 3,
       title: '서비스 이름 3',
-      icon: <FaImages size={45} color="#53B572" />,
+      icon: <FaImages size={45} color="#8CC63F" />,
       link: '/service-3'
     },
     {
       id: 4,
       title: '서비스 이름 4',
-      icon: <FaQuestionCircle size={45} color="#71e7c5" />,
+      icon: <FaQuestionCircle size={45} color="#6AA42E" />,
       link: '/service-4'
     }
   ];

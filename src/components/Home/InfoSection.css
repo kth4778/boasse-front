@@ -35,7 +35,7 @@
 }
 
 .info-card:hover .info-icon-wrapper {
-  background-color: #e6fffa;
+  background-color: #f0f9e8; /* 연두색 계열의 아주 옅은 배경 */
 }
 
 .info-text-wrapper {

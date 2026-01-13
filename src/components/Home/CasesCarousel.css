@@ -9,7 +9,7 @@
 
 .sub-title {
   font-size: 0.85rem;
-  color: #B59E7B; /* 이미지에 보이는 금색/갈색 톤 */
+  color: var(--primary-color); /* 브랜드 컬러(녹색) 적용 */
   font-weight: 700;
   letter-spacing: 1px;
   text-transform: uppercase;
