@@ -1,6 +1,28 @@
 .cases-section {
-  padding: 100px 0;
-  background-color: #fff;
+  padding: 150px 0;
+  background-color: #1e2f23; 
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 추가: 애니메이션 초기 상태 (박스 형태) */
+.cases-expand-wrapper {
+  width: 85%;
+  max-width: 1400px;
+  margin: 0;
+  border-radius: 150px;
+  background-color: #ffffff;
+  padding: 120px 0;
+  box-shadow: 0 40px 100px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  position: relative;
+  z-index: 5;
+  transform: translateZ(0);
+  transform-origin: center center;
 }
 
 .section-header {

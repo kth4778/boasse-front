@@ -100,73 +100,112 @@ const InfoSection = () => {
     }
   }, [activeTab]);
 
+  // GSAP: 확장 애니메이션 (박스 -> 전면 -> 박스)
+  useGSAP(() => {
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: containerRef.current,
+        start: 'top 95%',
+        end: 'bottom 5%',
+        scrub: 1.3,         // 관성 감소 (스크롤에 더 빠르게 반응)
+        invalidateOnRefresh: true,
+      }
+    });
+
+    tl.fromTo('.info-expand-wrapper', 
+      {
+        width: '85%',
+        maxWidth: '1400px',
+        borderRadius: '150px',
+      },
+      {
+        width: '100%',
+        maxWidth: '100%',
+        borderRadius: '0px',
+        duration: 0.23,     // 확장 속도 1.5배 상향 (0.35 -> 0.23)
+        ease: 'power1.inOut',
+      }
+    )
+    .to('.info-expand-wrapper', {
+      duration: 0.54,        // 중간 유지 구간 비중 확대
+    })
+    .to('.info-expand-wrapper', {
+      width: '85%',
+      maxWidth: '1400px',
+      borderRadius: '150px',
+      duration: 0.23,     // 축소 속도 1.5배 상향 (0.35 -> 0.23)
+      ease: 'power1.inOut',
+    });
+  }, { scope: containerRef });
+
   return (
     <section className="info-section" ref={containerRef}>
-      <Container>
-        {/* Header */}
-        <div className="text-center mb-5">
-          <h4 className="info-sub-header">ABOUT OUR TECHNOLOGIES</h4>
-          <h2 className="info-main-header">BOAS-SE 핵심 솔루션</h2>
-        </div>
+      <div className="info-expand-wrapper">
+        <Container>
+          {/* Header */}
+          <div className="text-center mb-5">
+            <h4 className="info-sub-header">ABOUT OUR TECHNOLOGIES</h4>
+            <h2 className="info-main-header">BOAS-SE 핵심 솔루션</h2>
+          </div>
 
-        {/* Tab Navigation */}
-        <div className="info-tabs-wrapper mb-5">
-          <Row className="g-3 justify-content-center">
-            {tabData.map((tab) => (
-              <Col key={tab.id} lg={3} md={6} sm={6}>
-                <div 
-                  className={`info-tab-item ${activeTab === tab.id ? 'active' : ''}`}
-                  onClick={() => setActiveTab(tab.id)}
-                >
-                  <div className="tab-icon">{tab.icon}</div>
-                  <span className="tab-title">{tab.tabTitle}</span>
-                  {/* 말풍선 꼬리 (Active 시 표시) */}
-                  {activeTab === tab.id && <div className="tab-arrow"></div>}
+          {/* Tab Navigation */}
+          <div className="info-tabs-wrapper mb-5">
+            <Row className="g-3 justify-content-center">
+              {tabData.map((tab) => (
+                <Col key={tab.id} lg={3} md={6} sm={6}>
+                  <div 
+                    className={`info-tab-item ${activeTab === tab.id ? 'active' : ''}`}
+                    onClick={() => setActiveTab(tab.id)}
+                  >
+                    <div className="tab-icon">{tab.icon}</div>
+                    <span className="tab-title">{tab.tabTitle}</span>
+                    {/* 말풍선 꼬리 (Active 시 표시) */}
+                    {activeTab === tab.id && <div className="tab-arrow"></div>}
+                  </div>
+                </Col>
+              ))}
+            </Row>
+          </div>
+
+          {/* Content Area */}
+          <div className="info-content-area" ref={contentRef}>
+            <Row className="align-items-center">
+              {/* Left: Image Gallery */}
+              <Col lg={6} className="mb-4 mb-lg-0">
+                <div className="info-gallery">
+                  <div className="main-img-wrapper mb-3">
+                    {/* 선택된 인덱스의 이미지를 메인으로 표시 */}
+                    <img src={currentData.thumbnails[selectedImgIndex]} alt={currentData.title} className="main-img" />
+                  </div>
+                  <Row className="g-2">
+                    {currentData.thumbnails.map((thumb, index) => (
+                      <Col key={index} xs={4}>
+                        <div 
+                          className={`thumb-img-wrapper ${selectedImgIndex === index ? 'active' : ''}`}
+                          onClick={() => setSelectedImgIndex(index)}
+                        >
+                          <img src={thumb} alt={`Thumbnail ${index + 1}`} className="thumb-img" />
+                        </div>
+                      </Col>
+                    ))}
+                  </Row>
                 </div>
               </Col>
-            ))}
-          </Row>
-        </div>
 
-        {/* Content Area */}
-        <div className="info-content-area" ref={contentRef}>
-          <Row className="align-items-center">
-            {/* Left: Image Gallery */}
-            <Col lg={6} className="mb-4 mb-lg-0">
-              <div className="info-gallery">
-                <div className="main-img-wrapper mb-3">
-                  {/* 선택된 인덱스의 이미지를 메인으로 표시 */}
-                  <img src={currentData.thumbnails[selectedImgIndex]} alt={currentData.title} className="main-img" />
-                </div>
-                <Row className="g-2">
-                  {currentData.thumbnails.map((thumb, index) => (
-                    <Col key={index} xs={4}>
-                      <div 
-                        className={`thumb-img-wrapper ${selectedImgIndex === index ? 'active' : ''}`}
-                        onClick={() => setSelectedImgIndex(index)}
-                      >
-                        <img src={thumb} alt={`Thumbnail ${index + 1}`} className="thumb-img" />
+              {/* Right: Text Info */}
+              <Col lg={6} className="ps-lg-5">
+                <div className="info-details">
+                  <h3 className="detail-title mb-4">{currentData.title}</h3>
+                  <p className="detail-desc mb-4">{currentData.desc}</p>
+                  
+                  <div className="detail-features mb-5">
+                    {currentData.features.map((feature, idx) => (
+                      <div key={idx} className="feature-item mb-2">
+                        <FaCheckCircle className="feature-icon me-2" />
+                        <span>{feature}</span>
                       </div>
-                    </Col>
-                  ))}
-                </Row>
-              </div>
-            </Col>
-
-            {/* Right: Text Info */}
-            <Col lg={6} className="ps-lg-5">
-              <div className="info-details">
-                <h3 className="detail-title mb-4">{currentData.title}</h3>
-                <p className="detail-desc mb-4">{currentData.desc}</p>
-                
-                <div className="detail-features mb-5">
-                  {currentData.features.map((feature, idx) => (
-                    <div key={idx} className="feature-item mb-2">
-                      <FaCheckCircle className="feature-icon me-2" />
-                      <span>{feature}</span>
-                    </div>
-                  ))}
-                </div>
+                    ))}
+                  </div>
 
                 <a href={currentData.link} className="detail-btn">
                   솔루션 자세히 보기 <FaArrowRight className="ms-2" />
@@ -176,6 +215,7 @@ const InfoSection = () => {
           </Row>
         </div>
       </Container>
+      </div>
     </section>
   );
 };

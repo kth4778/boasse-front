@@ -51,7 +51,7 @@ const BoardInquiry = () => {
           <Row className="gy-5 contact-content-animate">
             {/* 좌측: 문의 폼 */}
             <Col lg={6}>
-              <h3 className="dark-section-title">Inquiry</h3>
+              <h3 className="dark-section-title">문의</h3>
               <form>
                 <div className="custom-input-group">
                   <label className="input-label">Name *</label>
