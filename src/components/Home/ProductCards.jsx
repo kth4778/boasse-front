@@ -73,8 +73,8 @@ const ProductCards = () => {
       scrollTrigger: {
         trigger: containerRef.current,
         start: 'top 95%',
-        end: 'bottom 5%',   // 섹션 끝부분까지 애니메이션 범위 확장
-        scrub: 1.5,
+        end: 'bottom 5%',
+        scrub: 2,           // 관성 증가 (더 부드럽고 느리게 반응)
         invalidateOnRefresh: true,
       }
     });
@@ -89,19 +89,19 @@ const ProductCards = () => {
         width: '100%',
         maxWidth: '100%',
         borderRadius: '0px',
-        duration: 0.2,      // 전체 스크롤의 앞부분 20%에서 확장
-        ease: 'none',
+        duration: 0.35,     // 확장 구간 비중 확대 (0.2 -> 0.35)
+        ease: 'power1.inOut',
       }
     )
     .to('.product-expand-wrapper', {
-      duration: 0.6,        // 중간 60% 구간은 100% 상태로 유지
+      duration: 0.3,        // 유지 구간 비중 조정
     })
     .to('.product-expand-wrapper', {
       width: '85%',
       maxWidth: '1400px',
       borderRadius: '150px',
-      duration: 0.2,        // 마지막 20% 구간에서 다시 축소
-      ease: 'none',
+      duration: 0.35,     // 축소 구간 비중 확대 (0.2 -> 0.35)
+      ease: 'power1.inOut',
     });
 
     const stickyWrapper = containerRef.current.querySelector('.sticky-wrapper');

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
-import logoImg from '../../assets/logo_white.png'; // TODO: 경로 확인
+import logoImg from '../../assets/Logo_image.png';
+import logoText from '../../assets/Logo_text_white.png';
 import './Footer.css';
 
 const Footer = () => {
@@ -8,14 +9,15 @@ const Footer = () => {
     <footer className="footer-wrapper">
       <Container>
         <Row className="align-items-center">
-          <Col lg={3} className="text-center text-lg-start mb-4 mb-lg-0">
-            {/* 푸터 로고 이미지 적용 */}
-            <div className="footer-logo-box">
-              <img src={logoImg} alt="Footer Logo" className="footer-logo-img" />
+          <Col lg={4} className="text-center text-lg-start mb-4 mb-lg-0">
+            {/* 푸터 로고 심볼 및 텍스트 적용 */}
+            <div className="footer-logo-box d-flex align-items-center">
+              <img src={logoImg} alt="Footer Logo Symbol" className="footer-logo-img" />
+              <img src={logoText} alt="Footer Logo Text" className="footer-logo-text ms-2" />
             </div>
           </Col>
 
-          <Col lg={9} className="footer-info-col">
+          <Col lg={8} className="footer-info-col">
             <div className="footer-links mb-3">
               <a href="/#">개인정보 처리방침</a>
               <span className="divider">|</span>
