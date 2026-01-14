@@ -1,0 +1,286 @@
+/* src/components/about/About.css */
+
+/* --- Global & Container System --- */
+.about-page {
+  font-family: 'Pretendard', sans-serif;
+  color: #333;
+}
+
+.about-section {
+  padding: 2rem 0; /* Vertical padding */
+}
+
+/* 
+  [솔루션 적용]
+  - max-width를 1200px로 설정하여 헤더-본문 정렬 일관성 확보.
+  - (참고: 헤더 규격이 더 넓을 경우, 1280px 등으로 조정 가능)
+*/
+.section-content {
+  max-width: 1280px; 
+  width: 100%;
+  margin: 0 auto; /* 중앙 정렬 */
+  padding: 0 1rem; /* 모바일 대응 여백 */
+}
+
+.about-section h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 3rem;
+  color: #2c3e50;
+}
+
+.about-section p {
+  font-weight: 400;
+  line-height: 1.6;
+}
+
+/* --- Background Color Scheme --- */
+.intro-section, .values-section { background-color: #ffffff; }
+.mission-section, .history-section { background-color: #f9f9f9; }
+.portfolio-section, .location-section { background-color: #ffffff; }
+
+
+/* --- 1. Intro Section (Left Align) --- */
+.intro-section .section-content {
+  text-align: left;
+}
+/* [유지] Intro 타이틀 스타일 */
+.intro-section h1 {
+  font-size: 5rem;
+  font-weight: 800;
+  color: #2ecc71; /* Point color */
+  margin-bottom: 3rem;
+}
+/* [유지] Intro 본문 스타일 */
+.intro-section p {
+  font-size: 1.1rem;
+  color: #555;
+  max-width: 1000px; /* Limit line length for readability */
+  line-height: 2;
+}
+
+/* --- 2. Values Section (Center Align) --- */
+.values-section .section-content {
+text-align: center;
+}
+.values-container {
+display: flex;
+justify-content: center;
+align-items: center;
+margin-bottom: 10rem;
+}
+.value-item {
+position: relative;
+}
+.value-item:nth-of-type(1) {
+margin-right: -30px;
+z-index: 0;
+}
+.value-item:nth-of-type(5) {
+margin-left: -30px;
+z-index: 1;
+}
+
+.value-item .circle {
+width: 360px;
+height: 360px;
+border-radius: 50%;
+background-color: transparent;
+border: 3px solid #333;
+color: #2ecc71;
+font-size: 2.6rem;
+font-weight: 800;
+display: flex;
+justify-content: center;
+align-items: center;
+box-shadow: none;
+}
+
+
+/* --- 3. Mission Section (Center Align) --- */
+.mission-section .section-content {
+  text-align: center;
+}
+.mission-title {
+  margin-top: 10rem;
+  margin-bottom: 2rem;
+}
+.brand-green {
+  color: #2ecc71;
+  font-size: 5rem;
+  font-weight: 800;
+}
+.mission-desc p {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #111;
+  margin: 0.5rem 0;
+  line-height: 2;
+}
+.mission-graphic {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 5rem;
+}
+.mission-graphic .line {
+  width: 2px;
+  height: 80px;
+  background-color: #000;
+}
+.mission-graphic .dot {
+  width: 12px;
+  height: 12px;
+  background-color: #000;
+  border-radius: 50%;
+  margin-top: -2px;
+  margin-bottom: 20rem;
+}
+
+/* --- 4. Portfolio Section --- */
+.portfolio-container {
+  display: flex;
+  gap: 4rem;
+  align-items: flex-start;
+}
+.portfolio-title {
+  flex: 0 0 30%;
+  font-size: 3.5rem;
+  font-weight: 800;
+  line-height: 1.3;
+  position: sticky;
+  top: 140px; /* Adjust based on header height */
+}
+.portfolio-list {
+  flex: 1;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.portfolio-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 2rem;
+  padding-bottom: 3rem;
+  margin-bottom: 3rem;
+  border-bottom: 1px solid #e9ecef;
+}
+.portfolio-list li:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+}
+.portfolio-icon-placeholder {
+  width: 56px;
+  height: 56px;
+  background-color: #2ecc71;
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-top: 5px;
+}
+.portfolio-item-content h3 {
+  margin: 0 0 0.75rem 0;
+  font-size: 1.6rem;
+  font-weight: 700;
+}
+.portfolio-item-content p {
+  margin: 0;
+  color: #555;
+  font-size: 1rem;
+  line-height: 1.6;
+  word-break: keep-all; /* Ensure Korean words are not broken mid-syllable */
+}
+
+
+/* --- 5. History Section (Title Left, Timeline Center) --- */
+.history-section .section-content {
+  text-align: left;
+  margin-top: 5rem;
+  margin-bottom: 5rem;
+}
+
+.history-flex-container {
+  display: flex;
+  gap: 4rem;
+  align-items: flex-start;
+}
+
+.history-title-column {
+  flex: 0 0 30%;
+  align-self: stretch; /* Ensures the column takes full height of the flex container */
+}
+
+.history-title-column h2 {
+  font-size: 2rem; /* Corrected to 3.5rem for consistency with portfolio */
+  font-weight: 700; /* Corrected to 800 for consistency */
+  line-height: 1.3;
+  position: sticky;
+  top: 140px; /* Consistent with portfolio title */
+}
+
+.history-timeline-column {
+  flex: 1;
+}
+
+.history-timeline {
+  position: relative;
+  max-width: 830px;
+  margin: 3rem auto 0;
+  padding: 2rem 0;
+}
+.history-timeline::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 3px;
+  background-color: #2ecc71;
+  transform: translateX(-50%);
+}
+.timeline-item {
+  position: relative;
+  margin-bottom: 3rem;
+  width: 50%;
+}
+.timeline-item:nth-child(odd) { left: 0; padding-right: 3rem; text-align: right; }
+.timeline-item:nth-child(even) { left: 50%; padding-left: 3rem; text-align: left; }
+.timeline-year {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #2ecc71;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: #f9f9f9;
+  padding: 0.5rem;
+  z-index: 10;
+}
+.timeline-item:nth-child(odd) .timeline-year { right: -3rem; }
+.timeline-item:nth-child(even) .timeline-year { left: -3rem; }
+.timeline-content {
+  background-color: #ffffff;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 30px rgba(0,0,0,0.07);
+  word-break: keep-all; /* Ensure Korean words are not broken mid-syllable */
+}
+.timeline-content p { font-size: 1.1rem; margin: 0; font-weight: 500; }
+.timeline-item:last-child { margin-bottom: 0; }
+
+/* --- 6. Location Section (Center Align) --- */
+.location-section .section-content {
+  text-align: center;
+  margin-top: 5rem;
+}
+.map-placeholder {
+  width: 100%;
+  height: 800px;
+  background-color: #e9ecef;
+  margin-top: 2rem;
+  margin-bottom: 5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+}
+.map-placeholder p { color: #6c757d; font-weight: 500; }
