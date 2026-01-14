@@ -1,74 +1,54 @@
-import React, { useState, useEffect } from 'react';
+import React, { useRef } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
-import noticeApi from '../../api/noticeApi';
-import useScrollAnimation from '../../hooks/useScrollAnimation';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useGSAP } from '@gsap/react';
 import './BoardInquiry.css';
 
+gsap.registerPlugin(ScrollTrigger);
+
 const BoardInquiry = () => {
-  const [notices, setNotices] = useState([]);
-  
-  // 두 섹션을 개별적으로 애니메이션 처리
-  const noticeAni = useScrollAnimation(0.2);
-  const contactAni = useScrollAnimation(0.2);
+  const wrapperRef = useRef(null);
 
-  useEffect(() => {
-    const fetchLatestNotices = async () => {
-      try {
-        const response = await noticeApi.getNotices(1, 3);
-        if (response.data.success) {
-          setNotices(response.data.data.notices);
-        }
-      } catch (error) {
-        console.error('Failed to fetch notices for home:', error);
-        // API call failed, no mock data fallback
-        setNotices([]);
+  useGSAP(() => {
+    // 문의하기 섹션 애니메이션 (배경 효과 포함)
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: '.contact-dark-section',
+        start: 'top 70%',
+        toggleActions: 'play none none reverse'
       }
-    };
-    fetchLatestNotices();
-  }, []);
+    });
 
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    if (isNaN(date)) return dateString; // Already formatted or invalid
-    return `${date.getFullYear()}.${String(date.getMonth() + 1).padStart(2, '0')}.${String(date.getDate()).padStart(2, '0')}`;
-  };
+    tl.from('.contact-dark-section', {
+      clipPath: 'inset(100% 0% 0% 0%)', // 아래에서 위로 커튼 열리듯 등장
+      duration: 1.2,
+      ease: 'power4.inOut'
+    })
+    .from('.contact-bg-pattern', {
+      scale: 1.2,
+      rotation: 5,
+      opacity: 0,
+      duration: 1.5,
+      ease: 'power2.out'
+    }, '<') // 섹션 등장과 동시에 배경 애니메이션 시작
+    .from('.contact-content-animate', { // 내부 컨텐츠들
+      y: 30,
+      opacity: 0,
+      duration: 0.8,
+      stagger: 0.2
+    }, '-=0.5');
+
+  }, { scope: wrapperRef });
 
   return (
-    <div className="board-inquiry-wrapper">
+    <div className="board-inquiry-wrapper" ref={wrapperRef}>
       
-      {/* 1. 상단: 공지사항 */}
-      <section 
-        className={`notice-section fade-up-element ${noticeAni.isVisible ? 'is-visible' : ''}`} 
-        ref={noticeAni.elementRef}
-      >
-        <Container>
-          <div className="d-flex justify-content-between align-items-end mb-4">
-            <h3 className="section-title-sm mb-0">Notice</h3>
-            <Link to="/notice" className="text-muted text-decoration-none">more +</Link>
-          </div>
-          <div className="simple-notice-list">
-            {notices.map((item) => (
-              <div key={item.id} className="simple-notice-item">
-                <Link to={`/notice/${item.id}`} className="simple-notice-title">· {item.title}</Link>
-                <span className="simple-notice-date">{formatDate(item.createdAt)}</span>
-              </div>
-            ))}
-            {notices.length === 0 && (
-              <p className="py-4 text-center text-muted">등록된 공지사항이 없습니다.</p>
-            )}
-          </div>
-        </Container>
-      </section>
-
-      {/* 2. 하단: 제품문의 (Dark Section) */}
-      <section 
-        className={`contact-dark-section fade-up-element ${contactAni.isVisible ? 'is-visible' : ''}`} 
-        ref={contactAni.elementRef}
-      >
+      {/* 문의하기 (Dark Section) - Notice 영역 제거됨 */}
+      <section className="contact-dark-section">
         <div className="contact-bg-pattern"></div>
         <Container style={{ position: 'relative', zIndex: 2 }}>
-          <Row className="gy-5">
+          <Row className="gy-5 contact-content-animate">
             {/* 좌측: 문의 폼 */}
             <Col lg={6}>
               <h3 className="dark-section-title">Inquiry</h3>
@@ -101,7 +81,7 @@ const BoardInquiry = () => {
             </Col>
 
             {/* 우측: 유선상담 정보 */}
-            <Col lg={6} className="ps-lg-5">
+            <Col lg={6} className="ps-lg-5 contact-content-animate">
               <div className="info-group mb-5">
                 <span className="info-label">Customer Center</span>
                 <div className="info-phone">070-7709-2631</div>

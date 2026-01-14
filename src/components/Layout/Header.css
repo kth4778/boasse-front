@@ -1,99 +1,100 @@
 .header-wrapper {
-  background-color: transparent;
-  border-bottom: 1px solid rgba(255,255,255,0.1);
+  background-color: transparent !important;
+  border-bottom: none !important;
   position: fixed;
   width: 100%;
   top: 0;
   z-index: 1000;
-  transition: all 0.4s ease;
-  padding: 15px 0; /* 로고가 커짐에 따라 패딩 약간 조절 */
+  transition: padding 0.4s ease;
+  padding: 20px 0;
 }
 
 .header-wrapper.scrolled {
-  background-color: #fff;
-  box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-  padding: 5px 0; /* 스크롤 시엔 컴팩트하게 */
-  border-bottom: none;
+  /* 스크롤 시에도 배경색을 투명하게 유지 */
+  background-color: transparent !important;
+  backdrop-filter: none;
+  box-shadow: none;
+  padding: 10px 0;
 }
 
-/* 로고 이미지 스타일 - 크기 확대 */
-.header-logo {
-  max-height: 65px; /* 기존 45px에서 확대 */
+/* 로고 스타일 */
+.header-logo-symbol {
+  height: 60px; /* 45px -> 60px */
   width: auto;
-  transition: all 0.4s;
+  transition: all 0.4s ease;
+}
+
+/* 로고 텍스트 래퍼: 애니메이션 시 잘림 효과를 위해 overflow hidden */
+.logo-text-wrapper {
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+
+.header-logo-text {
+  height: 32px; /* 24px -> 32px */
+  width: auto;
 }
 
 .navbar-brand {
-  margin-right: 50px;
+  margin-right: 0;
+  padding: 0;
+  min-width: 200px; /* 크기에 맞춰 최소 너비 확장 */
 }
 
-.nav-link {
+/* 데스크탑 네비게이션 */
+.desktop-nav {
+  align-items: center;
+}
+
+.desktop-nav .nav-link {
   font-weight: 600;
-  font-size: 1.05rem;
-  color: rgba(255, 255, 255, 0.9) !important;
-  margin: 0 15px;
+  font-size: 1.1rem;
+  color: #fff !important; /* 항상 흰색 유지 (투명 배경일 때 가독성 고려) */
+  margin: 0 20px;
   position: relative;
-  transition: color 0.3s;
-  padding: 25px 0 !important;
+  padding: 10px 0 !important;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.5); /* 가독성을 위해 그림자 강화 */
+  will-change: transform, opacity;
 }
 
-.nav-link:hover {
+.desktop-nav .nav-link:hover {
+  opacity: 0.8;
+}
+
+/* 스크롤 시에도 글자색을 흰색으로 유지하거나 배경에 맞춰 조절 필요 */
+/* 일단 투명 배경이므로 흰색을 기본으로 유지합니다. */
+.header-wrapper.scrolled .desktop-nav .nav-link {
   color: #fff !important;
-  text-shadow: 0 0 10px rgba(255,255,255,0.5);
+  text-shadow: 0 2px 4px rgba(0,0,0,0.5);
 }
 
-.header-wrapper.scrolled .nav-link {
-  color: #444 !important;
-  text-shadow: none;
-}
-
-.header-wrapper.scrolled .nav-link:hover {
-  color: var(--primary-color) !important;
-}
-
-.nav-link::after {
-  content: '';
-  position: absolute;
-  bottom: 15px;
-  left: 0;
-  width: 0;
-  height: 3px;
-  background-color: #fff;
-  transition: width 0.3s;
-}
-
-.header-wrapper.scrolled .nav-link::after {
-  background-color: var(--primary-color);
-}
-
-.nav-link:hover::after {
-  width: 100%;
-}
-
-.search-icon {
-  color: #fff;
+/* 햄버거 버튼 */
+.menu-trigger {
   cursor: pointer;
-  transition: color 0.3s;
+  padding: 10px;
+  display: block; 
 }
 
-.header-wrapper.scrolled .search-icon {
-  color: #333;
+/* Offcanvas 메뉴 스타일 */
+.header-offcanvas .offcanvas-header {
+  border-bottom: 1px solid #eee;
 }
 
-.header-wrapper.scrolled .search-icon:hover {
-  color: var(--primary-color);
+.header-offcanvas .offcanvas-body {
+  padding: 30px;
 }
 
-.navbar-toggler {
-  border-color: rgba(255,255,255,0.5);
-}
-.navbar-toggler-icon {
-  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(255, 255, 255, 1)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+.header-offcanvas .nav-link {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #333 !important;
+  margin-bottom: 20px;
+  border-bottom: 1px solid transparent;
+  transition: all 0.3s;
 }
 
-.header-wrapper.scrolled .navbar-toggler {
-  border-color: rgba(0,0,0,0.1);
-}
-.header-wrapper.scrolled .navbar-toggler-icon {
-  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(0, 0, 0, 0.55)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+.header-offcanvas .nav-link:hover {
+  color: var(--bs-primary) !important;
+  padding-left: 10px;
 }
