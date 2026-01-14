@@ -25,13 +25,9 @@ const NoticeList = () => {
       }
     } catch (error) {
       console.error('Failed to fetch notices:', error);
-      // Mock data for development if API is not yet available
-      setNotices([
-        { id: 1, title: 'BOAS-SE 공식 웹사이트 오픈 안내', author: '관리자', createdAt: '2026-01-13T00:00:00Z', viewCount: 124, hasAttachments: true },
-        { id: 2, title: '2026년 상반기 신입 사원 채용 공고', author: '인사팀', createdAt: '2026-01-10T00:00:00Z', viewCount: 450, hasAttachments: false },
-        { id: 3, title: '[안내] 설 연휴 휴무 및 고객센터 운영 안내', author: '관리자', createdAt: '2026-01-05T00:00:00Z', viewCount: 89, hasAttachments: false },
-      ]);
-      setPagination({ totalPages: 1, currentPage: 1 });
+      // API call failed, no mock data fallback
+      setNotices([]);
+      setPagination({ totalPages: 0, currentPage: 1 });
     } finally {
       setLoading(false);
     }

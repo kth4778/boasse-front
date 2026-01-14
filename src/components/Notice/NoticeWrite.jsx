@@ -28,12 +28,8 @@ const NoticeWrite = () => {
         }
       } catch (error) {
         console.error('Failed to fetch notice detail for edit:', error);
-        // Mock for dev
-        setFormData(prev => ({ 
-          ...prev,
-          title: 'BOAS-SE 공식 웹사이트 오픈 안내', 
-          content: '안녕하세요, BOAS-SE입니다.\n\n드디어 저희 공식 웹사이트가 오픈되었습니다.',
-        }));
+        // API call failed, no mock data fallback
+        // Optionally alert the user or redirect
       }
     };
 
