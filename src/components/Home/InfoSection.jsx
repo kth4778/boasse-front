@@ -12,6 +12,7 @@ const InfoSection = () => {
   const containerRef = useRef(null);
   const contentRef = useRef(null);
   const [activeTab, setActiveTab] = useState(1);
+  const [selectedImgIndex, setSelectedImgIndex] = useState(0); // 추가: 현재 선택된 이미지 인덱스
   
   // 탭 데이터 정의
   const tabData = [
@@ -25,11 +26,11 @@ const InfoSection = () => {
         '초정밀 환경 감지 센서 네트워크 구축',
         '실시간 데이터 모니터링 및 이상 알림'
       ],
-      mainImage: 'https://images.unsplash.com/photo-1553406830-ef2513450d76?auto=format&fit=crop&w=800&q=80',
+      // thumbnails 데이터로 mainImage를 대체하거나 연동하기 위해 수정
       thumbnails: [
-        'https://images.unsplash.com/photo-1553406830-ef2513450d76?auto=format&fit=crop&w=200&q=80',
-        'https://images.unsplash.com/photo-1581092334651-ddf26d9a09d0?auto=format&fit=crop&w=200&q=80',
-        'https://images.unsplash.com/photo-1530893609608-32a9af3aa95c?auto=format&fit=crop&w=200&q=80'
+        'https://images.unsplash.com/photo-1553406830-ef2513450d76?auto=format&w=800&q=80',
+        'https://images.unsplash.com/photo-1581092334651-ddf26d9a09d0?auto=format&w=800&q=80',
+        'https://images.unsplash.com/photo-1530893609608-32a9af3aa95c?auto=format&w=800&q=80'
       ],
       link: '/business'
     },
@@ -43,11 +44,10 @@ const InfoSection = () => {
         '24시간 원격 제어 및 자동화 시스템',
         '복합 환경 제어 알고리즘 탑재'
       ],
-      mainImage: 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80',
       thumbnails: [
-        'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=200&q=80',
-        'https://images.unsplash.com/photo-1581094288338-2314dddb7ece?auto=format&fit=crop&w=200&q=80',
-        'https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?auto=format&fit=crop&w=200&q=80'
+        'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&w=800&q=80',
+        'https://images.unsplash.com/photo-1581094288338-2314dddb7ece?auto=format&w=800&q=80',
+        'https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?auto=format&w=800&q=80'
       ],
       link: '/business'
     },
@@ -61,11 +61,10 @@ const InfoSection = () => {
         '빅데이터 기반 작물 생육 정밀 분석',
         'AI 예측 모델링을 통한 생산성 향상'
       ],
-      mainImage: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80',
       thumbnails: [
-        'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=200&q=80',
-        'https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?auto=format&fit=crop&w=200&q=80',
-        'https://images.unsplash.com/photo-1589254065878-42c9da997008?auto=format&fit=crop&w=200&q=80'
+        'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&w=800&q=80',
+        'https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?auto=format&w=800&q=80',
+        'https://images.unsplash.com/photo-1589254065878-42c9da997008?auto=format&w=800&q=80'
       ],
       link: '/business'
     },
@@ -79,11 +78,10 @@ const InfoSection = () => {
         '신재생 에너지 융복합 솔루션',
         '에너지 효율 최적화 및 탄소 저감'
       ],
-      mainImage: 'https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?auto=format&fit=crop&w=800&q=80',
       thumbnails: [
-        'https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?auto=format&fit=crop&w=200&q=80',
-        'https://images.unsplash.com/photo-1497435334941-8c899ee7e8e9?auto=format&fit=crop&w=200&q=80',
-        'https://images.unsplash.com/photo-1466692476868-aef1dfb1e735?auto=format&fit=crop&w=200&q=80'
+        'https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?auto=format&w=800&q=80',
+        'https://images.unsplash.com/photo-1497435334941-8c899ee7e8e9?auto=format&w=800&q=80',
+        'https://images.unsplash.com/photo-1466692476868-aef1dfb1e735?auto=format&w=800&q=80'
       ],
       link: '/business'
     }
@@ -91,8 +89,9 @@ const InfoSection = () => {
 
   const currentData = tabData.find(item => item.id === activeTab);
 
-  // 탭 변경 시 애니메이션 효과
+  // 탭 변경 시 애니메이션 효과 및 선택 이미지 초기화
   useEffect(() => {
+    setSelectedImgIndex(0); // 탭이 바뀌면 첫 번째 이미지로 초기화
     if (contentRef.current) {
       gsap.fromTo(contentRef.current,
         { opacity: 0, y: 20 },
@@ -136,12 +135,16 @@ const InfoSection = () => {
             <Col lg={6} className="mb-4 mb-lg-0">
               <div className="info-gallery">
                 <div className="main-img-wrapper mb-3">
-                  <img src={currentData.mainImage} alt={currentData.title} className="main-img" />
+                  {/* 선택된 인덱스의 이미지를 메인으로 표시 */}
+                  <img src={currentData.thumbnails[selectedImgIndex]} alt={currentData.title} className="main-img" />
                 </div>
                 <Row className="g-2">
                   {currentData.thumbnails.map((thumb, index) => (
                     <Col key={index} xs={4}>
-                      <div className="thumb-img-wrapper">
+                      <div 
+                        className={`thumb-img-wrapper ${selectedImgIndex === index ? 'active' : ''}`}
+                        onClick={() => setSelectedImgIndex(index)}
+                      >
                         <img src={thumb} alt={`Thumbnail ${index + 1}`} className="thumb-img" />
                       </div>
                     </Col>

@@ -3,6 +3,7 @@ import HeroSlider from './HeroSlider';
 import InfoSection from './InfoSection';
 import ProductCards from './ProductCards';
 import CasesCarousel from './CasesCarousel';
+import PartnersSection from './PartnersSection';
 import BoardInquiry from './BoardInquiry';
 
 const MainPage = () => {
@@ -12,6 +13,7 @@ const MainPage = () => {
       <InfoSection />
       <ProductCards />
       <CasesCarousel />
+      <PartnersSection />
       <BoardInquiry />
     </>
   );

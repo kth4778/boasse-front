@@ -1,25 +1,34 @@
 .header-wrapper {
-  background-color: transparent !important;
+  background-color: transparent;
   border-bottom: none !important;
   position: fixed;
   width: 100%;
   top: 0;
   z-index: 1000;
-  transition: padding 0.4s ease;
+  transition: all 0.4s ease; /* 모든 속성 변화에 transition 적용 */
   padding: 20px 0;
 }
 
-.header-wrapper.scrolled {
-  /* 스크롤 시에도 배경색을 투명하게 유지 */
-  background-color: transparent !important;
+/* 블랙 테마 (HeroSlider를 벗어났을 때: 투명 배경 유지 + 블랙 텍스트) */
+.header-wrapper.header-dark {
+  background-color: transparent !important; /* 배경 투명 유지 */
   backdrop-filter: none;
   box-shadow: none;
   padding: 10px 0;
 }
 
+.header-wrapper.header-dark .desktop-nav .nav-link {
+  color: #000 !important;
+  text-shadow: none;
+}
+
+.header-wrapper.scrolled {
+  /* header-dark와 속성이 겹치므로 통합 관리하거나 보조적인 효과만 부여 */
+}
+
 /* 로고 스타일 */
 .header-logo-symbol {
-  height: 60px; /* 45px -> 60px */
+  height: 80px; /* 60px -> 80px */
   width: auto;
   transition: all 0.4s ease;
 }
@@ -32,14 +41,14 @@
 }
 
 .header-logo-text {
-  height: 32px; /* 24px -> 32px */
+  height: 42px; /* 32px -> 42px */
   width: auto;
 }
 
 .navbar-brand {
   margin-right: 0;
   padding: 0;
-  min-width: 200px; /* 크기에 맞춰 최소 너비 확장 */
+  min-width: 280px; /* 200px -> 280px */
 }
 
 /* 데스크탑 네비게이션 */
@@ -48,14 +57,25 @@
 }
 
 .desktop-nav .nav-link {
-  font-weight: 600;
-  font-size: 1.1rem;
+  font-weight: 700; /* 800 -> 700 (두께 약간 축소) */
+  font-size: 1.5rem; /* 1.25rem -> 1.5rem (약 1.2배 확대) */
   color: #fff !important; /* 항상 흰색 유지 (투명 배경일 때 가독성 고려) */
-  margin: 0 20px;
+  margin: 0 25px; /* 간격 미세 조정 */
   position: relative;
   padding: 10px 0 !important;
-  text-shadow: 0 2px 4px rgba(0,0,0,0.5); /* 가독성을 위해 그림자 강화 */
+  text-shadow: 0 2px 5px rgba(0,0,0,0.4);
   will-change: transform, opacity;
+  transition: color 0.4s ease, text-shadow 0.4s ease;
+}
+
+/* 블랙 테마 (흰색 배경용) */
+.header-wrapper.header-dark .desktop-nav .nav-link {
+  color: #000 !important;
+  text-shadow: none; /* 흰색 배경에서는 그림자 제거 */
+}
+
+.header-wrapper.header-dark .menu-trigger {
+  transition: color 0.4s ease;
 }
 
 .desktop-nav .nav-link:hover {
@@ -65,8 +85,7 @@
 /* 스크롤 시에도 글자색을 흰색으로 유지하거나 배경에 맞춰 조절 필요 */
 /* 일단 투명 배경이므로 흰색을 기본으로 유지합니다. */
 .header-wrapper.scrolled .desktop-nav .nav-link {
-  color: #fff !important;
-  text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+  /* color: #fff !important;  <- 이 부분을 header-dark가 덮어써야 하므로 주석 처리하거나 조정 */
 }
 
 /* 햄버거 버튼 */
