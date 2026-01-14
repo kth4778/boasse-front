@@ -2,10 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import noticeApi from '../../api/noticeApi';
+import useScrollAnimation from '../../hooks/useScrollAnimation';
 import './BoardInquiry.css';
 
 const BoardInquiry = () => {
   const [notices, setNotices] = useState([]);
+  
+  // 두 섹션을 개별적으로 애니메이션 처리
+  const noticeAni = useScrollAnimation(0.2);
+  const contactAni = useScrollAnimation(0.2);
 
   useEffect(() => {
     const fetchLatestNotices = async () => {
@@ -33,7 +38,10 @@ const BoardInquiry = () => {
     <div className="board-inquiry-wrapper">
       
       {/* 1. 상단: 공지사항 */}
-      <section className="notice-section">
+      <section 
+        className={`notice-section fade-up-element ${noticeAni.isVisible ? 'is-visible' : ''}`} 
+        ref={noticeAni.elementRef}
+      >
         <Container>
           <div className="d-flex justify-content-between align-items-end mb-4">
             <h3 className="section-title-sm mb-0">Notice</h3>
@@ -54,7 +62,10 @@ const BoardInquiry = () => {
       </section>
 
       {/* 2. 하단: 제품문의 (Dark Section) */}
-      <section className="contact-dark-section">
+      <section 
+        className={`contact-dark-section fade-up-element ${contactAni.isVisible ? 'is-visible' : ''}`} 
+        ref={contactAni.elementRef}
+      >
         <div className="contact-bg-pattern"></div>
         <Container style={{ position: 'relative', zIndex: 2 }}>
           <Row className="gy-5">

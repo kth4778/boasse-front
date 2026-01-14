@@ -1,8 +1,11 @@
 import React from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
+import useScrollAnimation from '../../hooks/useScrollAnimation';
 import './ProductCards.css';
 
 const ProductCards = () => {
+  const { elementRef, isVisible } = useScrollAnimation(0.2);
+
   // TODO: [DATA] 제품 목록 데이터 수정
   const products = [
     {
@@ -36,12 +39,16 @@ const ProductCards = () => {
   ];
 
   return (
-    <section className="product-section">
+    <section className="product-section" ref={elementRef}>
       <Container>
         <Row className="g-4">
-          {products.map((item) => (
+          {products.map((item, index) => (
             <Col key={item.id} lg={3} md={6} sm={12}>
-              <a href={item.link} className="product-card">
+              <a 
+                href={item.link} 
+                className={`product-card apple-card apple-reveal ${isVisible ? 'is-visible' : ''}`}
+                style={{ transitionDelay: `${index * 200}ms` }}
+              >
                 <div 
                   className="product-bg" 
                   style={{ backgroundImage: `url(${item.image})` }} 

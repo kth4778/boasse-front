@@ -6,22 +6,33 @@
 :root {
   --primary-color: #8CC63F; /* BOAS 로고와 유사한 밝은 연두/녹색 */
   --secondary-color: #6AA42E; /* 약간 더 어두운 녹색 */
-  --text-dark: #333333;
+  --text-dark: #1d1d1f; /* 애플 스타일의 짙은 회색 */
+  --text-gray: #86868b; /* 애플 스타일의 중간 회색 */
   --text-light: #ffffff;
-  --bg-light: #f8f9fa;
+  --bg-light: #fbfbfd; /* 애플 스타일의 아주 연한 회색 배경 */
+  
+  /* Animation Easing */
+  --ease-apple: cubic-bezier(0.25, 0.1, 0.25, 1.0);
 }
 
 body {
-  font-family: 'Roboto', 'Noto Sans KR', Dotum, '돋움', Helvetica, sans-serif;
+  font-family: 'SF Pro Text', 'SF Pro Icons', 'Helvetica Neue', 'Helvetica', 'Arial', 'Noto Sans KR', sans-serif;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   color: var(--text-dark);
+  -webkit-font-smoothing: antialiased; /* 폰트 렌더링 부드럽게 */
+  background-color: #fff;
 }
 
 a {
   text-decoration: none;
   color: inherit;
+  transition: opacity 0.2s;
+}
+
+a:hover {
+  opacity: 0.8;
 }
 
 ul, li {
@@ -37,4 +48,65 @@ ul, li {
 
 .bg-primary-custom {
   background-color: var(--primary-color) !important;
+}
+
+/* =========================================
+   Apple-style Animations
+   ========================================= */
+
+/* 기본 Fade Up 애니메이션 */
+.fade-up-element {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 1s var(--ease-apple), transform 1s var(--ease-apple);
+  will-change: opacity, transform;
+}
+
+.fade-up-element.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* 더 강력한 Reveal 효과 (Scale + Blur + Translate) */
+.apple-reveal {
+  opacity: 0;
+  transform: translateY(100px) scale(0.95);
+  filter: blur(10px);
+  transition: opacity 1.2s var(--ease-apple), transform 1.2s var(--ease-apple), filter 1.2s var(--ease-apple);
+  will-change: opacity, transform, filter;
+}
+
+.apple-reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  filter: blur(0);
+}
+
+/* 순차적 등장 (Stagger) 딜레이 클래스 */
+.delay-100 { transition-delay: 0.1s; }
+.delay-200 { transition-delay: 0.2s; }
+.delay-300 { transition-delay: 0.3s; }
+.delay-400 { transition-delay: 0.4s; }
+.delay-500 { transition-delay: 0.5s; }
+
+/* 줌인 효과 (이미지 등) */
+.zoom-in-element {
+  opacity: 0;
+  transform: scale(0.95);
+  transition: opacity 1.2s var(--ease-apple), transform 1.2s var(--ease-apple);
+}
+
+.zoom-in-element.is-visible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* 부드러운 카드 호버 효과 */
+.apple-card {
+  transition: transform 0.4s var(--ease-apple), box-shadow 0.4s var(--ease-apple);
+}
+
+.apple-card:hover {
+  transform: translateY(-8px) scale(1.01);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
 }

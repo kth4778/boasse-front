@@ -19,8 +19,16 @@
   height: 100%;
   background-size: cover;
   background-position: center;
-  transition: transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transition: transform 1.5s cubic-bezier(0.2, 0, 0.2, 1), filter 1.5s ease;
   opacity: 0.9;
+  transform: scale(1.2); /* 초기 상태는 더 확대 */
+  filter: blur(10px); /* 초기 상태는 블러 처리 */
+}
+
+/* 카드가 나타날 때 블러가 사라지고 크기가 조정되는 효과 */
+.product-card.is-visible .product-bg {
+  transform: scale(1.1);
+  filter: blur(0);
 }
 
 .product-overlay {
@@ -39,7 +47,7 @@
 }
 
 .product-card:hover .product-bg {
-  transform: scale(1.1);
+  transform: scale(1.15);
   opacity: 1;
 }
 
