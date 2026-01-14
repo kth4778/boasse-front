@@ -16,11 +16,8 @@ const BoardInquiry = () => {
         }
       } catch (error) {
         console.error('Failed to fetch notices for home:', error);
-        // Fallback mock
-        setNotices([
-          { id: 1, title: 'BOAS-SE 공식 웹사이트 오픈 안내', createdAt: '2026.01.13' },
-          { id: 2, title: '2026년 상반기 신입 사원 채용 공고', createdAt: '2026.01.10' },
-        ]);
+        // API call failed, no mock data fallback
+        setNotices([]);
       }
     };
     fetchLatestNotices();

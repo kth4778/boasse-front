@@ -25,19 +25,8 @@ const NoticeDetail = () => {
         }
       } catch (error) {
         console.error('Failed to fetch notice detail:', error);
-        // Mock data for development
-        setNotice({
-          id: id,
-          title: 'BOAS-SE 공식 웹사이트 오픈 안내',
-          content: '<p>안녕하세요, BOAS-SE입니다.</p><p>드디어 저희 공식 웹사이트가 오픈되었습니다. 앞으로 이 곳을 통해 다양한 소식과 제품 정보를 전달해 드릴 예정입니다.</p><p>많은 관심 부탁드립니다. 감사합니다.</p>',
-          author: '관리자',
-          viewCount: 124,
-          createdAt: '2026-01-13T09:00:00Z',
-          attachments: [
-            { id: 1, originalName: '회사소개서.pdf', size: 2450000, url: '#' },
-            { id: 2, originalName: '인증서_모음.zip', size: 10500000, url: '#' }
-          ]
-        });
+        // API call failed, no mock data fallback
+        setNotice(null);
       } finally {
         setLoading(false);
       }
