@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Container, Form, Button, Row, Col } from 'react-bootstrap';
 import { useNavigate, useParams } from 'react-router-dom';
 import noticeApi from '../../api/noticeApi';
-import { FaSave, FaTimes } from 'react-icons/fa';
+import { FaSave, FaTimes, FaTrash } from 'react-icons/fa';
 import './Notice.css';
 
 const NoticeWrite = () => {
@@ -16,6 +16,8 @@ const NoticeWrite = () => {
     password: '',
   });
   const [files, setFiles] = useState([]);
+  const [existingFiles, setExistingFiles] = useState([]);
+  const [removeFileIds, setRemoveFileIds] = useState([]);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -23,8 +25,11 @@ const NoticeWrite = () => {
       try {
         const response = await noticeApi.getNoticeDetail(id);
         if (response.data.success) {
-          const { title, content } = response.data.data;
+          const { title, content, attachments } = response.data.data;
           setFormData(prev => ({ ...prev, title, content }));
+          if (attachments) {
+            setExistingFiles(attachments);
+          }
         }
       } catch (error) {
         console.error('Failed to fetch notice detail for edit:', error);
@@ -47,6 +52,11 @@ const NoticeWrite = () => {
     setFiles(Array.from(e.target.files));
   };
 
+  const handleRemoveExistingFile = (fileId) => {
+    setRemoveFileIds((prev) => [...prev, fileId]);
+    setExistingFiles((prev) => prev.filter((file) => file.id !== fileId));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!formData.title || !formData.content || !formData.password) {
@@ -59,6 +69,10 @@ const NoticeWrite = () => {
     data.append('content', formData.content);
     data.append('password', formData.password);
     files.forEach((file) => data.append('files', file));
+    
+    if (removeFileIds.length > 0) {
+      data.append('removeFileIds', removeFileIds.join(','));
+    }
 
     setLoading(true);
     try {
@@ -129,6 +143,31 @@ const NoticeWrite = () => {
                 <Form.Text className="text-muted">
                   여러 파일을 선택할 수 있습니다.
                 </Form.Text>
+
+                {/* 기존 첨부파일 목록 표시 */}
+                {isEdit && existingFiles.length > 0 && (
+                  <div className="mt-3">
+                    <p className="fw-bold mb-2 small text-secondary">기존 첨부파일</p>
+                    <ul className="list-unstyled">
+                      {existingFiles.map((file) => (
+                        <li key={file.id} className="d-flex align-items-center mb-2 p-2 border rounded bg-light">
+                          <span className="text-truncate me-auto" style={{ maxWidth: '80%' }}>
+                            {file.originalName}
+                          </span>
+                          <Button 
+                            variant="outline-danger" 
+                            size="sm" 
+                            className="ms-2 py-0 px-2"
+                            onClick={() => handleRemoveExistingFile(file.id)}
+                            title="삭제"
+                          >
+                            <FaTrash size={12} />
+                          </Button>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
               </Form.Group>
             </Col>
             <Col md={6}>
