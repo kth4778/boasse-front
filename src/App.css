@@ -1,1 +1,21 @@
-/* 전역 스타일 외에 App 컴포넌트 전용 스타일이 필요하면 여기에 작성 */
+/* Global Styles */
+body {
+  background-color: #ffffff; /* 기본 흰색 배경으로 복구 */
+  color: #333;
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+.App {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 모바일 대응 */
+@media (max-width: 1200px) {
+}
+
+@media (max-width: 768px) {
+}

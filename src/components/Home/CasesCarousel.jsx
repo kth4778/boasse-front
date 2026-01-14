@@ -1,15 +1,19 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { Container } from 'react-bootstrap';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Autoplay } from 'swiper/modules';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
-import useScrollAnimation from '../../hooks/useScrollAnimation';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useGSAP } from '@gsap/react';
 import './CasesCarousel.css';
 
 import 'swiper/css';
 
+gsap.registerPlugin(ScrollTrigger);
+
 const CasesCarousel = () => {
-  const { elementRef, isVisible } = useScrollAnimation(0.2);
+  const containerRef = useRef(null);
 
   // TODO: [DATA] 설치 사례 데이터 수정 (이미지, 제목)
   const cases = [
@@ -39,53 +43,75 @@ const CasesCarousel = () => {
     }
   ];
 
+  useGSAP(() => {
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: containerRef.current,
+        start: 'top 75%',
+        toggleActions: 'play none none reverse'
+      }
+    });
+
+    tl.from('.section-header', {
+      y: 40,
+      opacity: 0,
+      duration: 1,
+      ease: 'power3.out'
+    })
+    .from('.cases-swiper', {
+      x: 50, // 오른쪽에서 살짝 등장
+      opacity: 0,
+      duration: 1,
+      ease: 'power3.out'
+    }, '-=0.5'); // 헤더 애니메이션 끝나기 0.5초 전에 시작 (겹침 효과)
+
+  }, { scope: containerRef });
+
   return (
-    <section className="cases-section" ref={elementRef}>
+    <section className="cases-section" ref={containerRef}>
       <Container className="position-relative">
-        <div className={`section-header fade-up-element ${isVisible ? 'is-visible' : ''}`}>
+        <div className="section-header">
           {/* TODO: [TEXT] 섹션 소제목 수정 */}
           <span className="sub-title">SUB TITLE</span>
           {/* TODO: [TEXT] 섹션 메인 제목 수정 */}
           <h2 className="main-title">MAIN TITLE</h2>
         </div>
 
-        <div className={`fade-up-element ${isVisible ? 'is-visible' : ''}`} style={{ transitionDelay: '0.2s' }}>
-          <Swiper
-            modules={[Navigation, Autoplay]}
-            spaceBetween={30}
-            slidesPerView={1}
-            navigation={{
-              prevEl: '.nav-btn-prev',
-              nextEl: '.nav-btn-next',
-            }}
-            autoplay={{ delay: 4000, disableOnInteraction: false }}
-            breakpoints={{
-              576: { slidesPerView: 2 },
-              992: { slidesPerView: 3 },
-            }}
-            className="cases-swiper"
-          >
-            {cases.map((item) => (
-              <SwiperSlide key={item.id}>
-                <a href={item.link} className="case-card apple-card">
-                  <div className="case-img-wrapper">
-                    <img src={item.image} alt={item.title} className="case-img" />
-                  </div>
-                  <h3 className="case-title">{item.title}</h3>
-                </a>
-              </SwiperSlide>
-            ))}
+        <Swiper
+          modules={[Navigation, Autoplay]}
+          spaceBetween={30}
+          slidesPerView={1}
+          navigation={{
+            prevEl: '.nav-btn-prev',
+            nextEl: '.nav-btn-next',
+          }}
+          autoplay={{ delay: 4000, disableOnInteraction: false }}
+          breakpoints={{
+            576: { slidesPerView: 2 },
+            992: { slidesPerView: 3 },
+          }}
+          className="cases-swiper"
+        >
+          {cases.map((item) => (
+            <SwiperSlide key={item.id}>
+              <a href={item.link} className="case-card apple-card">
+                <div className="case-img-wrapper">
+                  <img src={item.image} alt={item.title} className="case-img" />
+                </div>
+                <h3 className="case-title">{item.title}</h3>
+              </a>
+            </SwiperSlide>
+          ))}
 
-            <div className="custom-nav-wrapper">
-              <button className="nav-btn nav-btn-prev">
-                <FaChevronLeft />
-              </button>
-              <button className="nav-btn nav-btn-next">
-                <FaChevronRight />
-              </button>
-            </div>
-          </Swiper>
-        </div>
+          <div className="custom-nav-wrapper">
+            <button className="nav-btn nav-btn-prev">
+              <FaChevronLeft />
+            </button>
+            <button className="nav-btn nav-btn-next">
+              <FaChevronRight />
+            </button>
+          </div>
+        </Swiper>
       </Container>
     </section>
   );
