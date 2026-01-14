@@ -1,9 +1,12 @@
 import React from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import { FaChevronRight, FaChalkboardTeacher, FaTools, FaImages, FaQuestionCircle } from 'react-icons/fa';
+import useScrollAnimation from '../../hooks/useScrollAnimation';
 import './InfoSection.css';
 
 const InfoSection = () => {
+  const { elementRef, isVisible } = useScrollAnimation(0.2);
+
   // TODO: [DATA] 안내 섹션 데이터 수정 (아이콘, 제목, 링크)
   const infoData = [
     {
@@ -33,12 +36,15 @@ const InfoSection = () => {
   ];
 
   return (
-    <section className="info-section">
+    <section className="info-section" ref={elementRef}>
       <Container>
         <Row className="g-4">
-          {infoData.map((item) => (
+          {infoData.map((item, index) => (
             <Col key={item.id} lg={3} md={6} sm={12}>
-              <div className="info-card">
+              <div 
+                className={`info-card apple-card fade-up-element ${isVisible ? 'is-visible' : ''}`}
+                style={{ transitionDelay: `${index * 150}ms` }}
+              >
                 <div className="info-icon-wrapper">
                   {item.icon}
                 </div>
