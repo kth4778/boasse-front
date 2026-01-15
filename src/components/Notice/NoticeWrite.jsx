@@ -49,7 +49,14 @@ const NoticeWrite = () => {
   };
 
   const handleFileChange = (e) => {
-    setFiles(Array.from(e.target.files));
+    const selectedFiles = Array.from(e.target.files);
+    setFiles((prev) => [...prev, ...selectedFiles]);
+    // 파일 선택 후 input 비우기 (같은 파일 다시 선택 가능하게)
+    e.target.value = '';
+  };
+
+  const handleRemoveNewFile = (index) => {
+    setFiles((prev) => prev.filter((_, i) => i !== index));
   };
 
   const handleRemoveExistingFile = (fileId) => {
@@ -144,10 +151,35 @@ const NoticeWrite = () => {
                   여러 파일을 선택할 수 있습니다.
                 </Form.Text>
 
+                {/* 새로 선택한 파일 목록 표시 */}
+                {files.length > 0 && (
+                  <div className="mt-3">
+                    <p className="fw-bold mb-2 small text-primary">새로 선택한 파일</p>
+                    <ul className="list-unstyled">
+                      {files.map((file, idx) => (
+                        <li key={`new-${idx}`} className="d-flex align-items-center mb-2 p-2 border rounded bg-light">
+                          <span className="text-truncate me-auto" style={{ maxWidth: '80%' }}>
+                            {file.name}
+                          </span>
+                          <Button 
+                            variant="outline-danger" 
+                            size="sm" 
+                            className="ms-2 py-0 px-2"
+                            onClick={() => handleRemoveNewFile(idx)}
+                            title="삭제"
+                          >
+                            <FaTrash size={12} />
+                          </Button>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
                 {/* 기존 첨부파일 목록 표시 */}
                 {isEdit && existingFiles.length > 0 && (
                   <div className="mt-3">
-                    <p className="fw-bold mb-2 small text-secondary">기존 첨부파일</p>
+                    <p className="fw-bold mb-2 small text-secondary">기존 첨부파일 (수정 시 삭제 가능)</p>
                     <ul className="list-unstyled">
                       {existingFiles.map((file) => (
                         <li key={file.id} className="d-flex align-items-center mb-2 p-2 border rounded bg-light">
