@@ -19,7 +19,6 @@ function App() {
     // 서브 페이지일 때만 헤더 높이만큼 패딩을 줍니다.
     paddingTop: isHomePage ? '0' : '120px',
     width: '100%',
-    overflowX: 'hidden', // 가로 스크롤 방지
   };
 
   return (

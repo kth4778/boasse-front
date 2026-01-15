@@ -1,7 +1,62 @@
-import React from 'react';
+import React, { useRef } from 'react';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useGSAP } from '@gsap/react';
+import { FaBrain, FaIndustry, FaCarSide, FaLeaf } from 'react-icons/fa';
+import { BsBuildingGear } from 'react-icons/bs';
+import KakaoMap from './Location/KakaoMap';
 import './About.css';
 
+gsap.registerPlugin(ScrollTrigger);
+
 const About = () => {
+  const missionWrapperRef = useRef(null);
+  const missionContentBoxRef = useRef(null);
+  const missionTextGroupRef = useRef(null);
+
+  useGSAP(() => {
+    // ---------------------------------------------------------
+    // [Mission Section] 중앙에서 검은 원이 커지며 등장하는 효과
+    // ---------------------------------------------------------
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: missionWrapperRef.current, // Sticky Wrapper 기준
+        start: "top top",            // 화면 맨 위에 닿을 때 시작
+        end: "+=200%",               // 스크롤 2배 길이만큼 애니메이션 진행
+        pin: true,                   // 화면 고정
+        scrub: 1,                    // 부드러운 되감기
+        pinSpacing: true,            // 공간 확보
+      },
+    });
+
+    // 1. 박스 확대 애니메이션 (점 -> 전체 화면)
+    tl.fromTo(
+      missionContentBoxRef.current, 
+      { 
+        // 시작 상태: 상하좌우 50%씩 잘라내어 화면에 안 보임 (중앙 점 상태)
+        clipPath: "inset(50% 50% 50% 50% round 50%)", 
+        scale: 0.8, // 약간 작게 시작해서 커지는 느낌 추가
+      },
+      { 
+        // 종료 상태: 여백 0% (화면 꽉 채움)
+        clipPath: "inset(0% 0% 0% 0% round 0px)",     
+        scale: 1,
+        ease: "power2.inOut",
+        duration: 1 
+      }
+    );
+    
+    // 2. 텍스트 등장 (박스가 어느 정도 커진 후 나타남)
+    tl.from(missionTextGroupRef.current, {
+      y: 50,
+      opacity: 0,
+      duration: 0.5,
+      ease: "power2.out"
+    }, "-=0.3"); // 박스 애니메이션 끝나기 0.3초 전에 텍스트 시작
+
+  }, { scope: missionWrapperRef });
+
+
   return (
     <div className="about-page">
       {/* 1. Intro Section */}
@@ -11,7 +66,6 @@ const About = () => {
           <p>BOAS-SE 는 고객의 의견을 지속적으로 반영 및 개선하여 정확한 시스템을 개발해 높은 만족도를 제공합니다.<br />
           프로젝트를 성공으로 이끌 BOAS-SE만의 3가지 가치와 <br />
           팀 협업과 단계적 계획으로 오류를 최소화하고, 빠르고 안정적으로 프로젝트를 완수해 나가겠습니다.</p>
-
         </div>
       </section>
 
@@ -34,28 +88,28 @@ const About = () => {
         </div>
       </section>
 
-      {/* 3. Mission Section */}
-      <section className='about-section mission-section'>
-        <div className='section-content'>
-          {/* 타이틀 영역: BOAS-SE(녹색) + 는(검정) */}
-          <h2 className='mission-title'>
-            <span className='brand-green'>BOAS-SE  </span> 는
-          </h2>
-          
-          {/* 본문 영역: 굵고 명확한 메시지 */}
-          <div className='mission-desc'>
-            <p>하드웨어 제조 기술과 ICT 기술을 융합해</p>
-            <p>수시로 변하는 다양한 산업의 요구를 해결하며,</p>
-            <p>효율성을 높이는 지능형 기업입니다.</p>
+      {/* ======================================================= */}
+      {/* 3. Mission Section (★ 고급 스크롤 효과 적용 구간 ★) */}
+      {/* ======================================================= */}
+      <div ref={missionWrapperRef} className="mission-sticky-wrapper">
+        {/* clip-path로 크기가 변할 실제 박스 */}
+        <section ref={missionContentBoxRef} className="mission-content-box about-section mission-section">
+          <div ref={missionTextGroupRef} className="section-content mission-text-group">
+            <h2 className="mission-title">
+              <span className="brand-green">BOAS-SE </span> <span className="mission-title-suffix">는</span>
+            </h2>
+            <div className="mission-desc">
+              <p>하드웨어 제조 기술과 ICT 기술을 융합해</p>
+              <p>수시로 변하는 다양한 산업의 요구를 해결하며,</p>
+              <p>효율성을 높이는 지능형 기업입니다.</p>
+            </div>
+            <div className="mission-graphic">
+              <div className="line"></div>
+              <div className="dot"></div>
+            </div>
           </div>
-
-          {/* 하단 그래픽: 수직선과 점 */}
-          <div className='mission-graphic'>
-            <div className='line'></div>
-            <div className='dot'></div>
-          </div>
-        </div>
-      </section>
+        </section>
+      </div>
 
       {/* 4. Portfolio Section */}
       <section className="about-section portfolio-section">
@@ -64,49 +118,58 @@ const About = () => {
             <h2 className="portfolio-title">BOAS-SE 만의<br />포트폴리오</h2>
             <ul className="portfolio-list">
               <li>
-                <div className="portfolio-icon-placeholder"></div>
+                <div className="portfolio-icon-wrapper">
+                  <FaBrain />
+                </div>
                 <div className="portfolio-item-content">
                   <h3>AI 기반 예측 및 최적화 솔루션</h3>
-                  <p>다양한 산업 현장의 빅데이터를 분석하여 핵심 인사이트를 도출하고, AI 기반 예측 및 최적화 모델을 통해 <br />비즈니스 효율성을 극대화합니다.
+                  <p>다양한 산업 현장의 빅데이터를 분석하여 핵심 인사이트를 도출하고, <strong>AI 기반 예측 및 최적화 모델</strong>을 통해 <br /><strong>비즈니스 효율성을 극대화</strong>합니다.
                   제조 공정의 납기 예측 및 스케줄 최적화, 차량 운행 데이터 기반의 위험 운전 패턴 분석, 제로에너지빌딩(ZEB)의 에너지 소비량 예측, 농작물 병해충 발생 시기 예측 등 각 분야에 특화된<br />
                    AI 기술로 높은 정확도와 신뢰성을 갖춘 솔루션을 제공합니다.</p>
                 </div>
               </li>
               <li>
-                <div className="portfolio-icon-placeholder"></div>
+                <div className="portfolio-icon-wrapper">
+                  <FaIndustry />
+                </div>
                 <div className="portfolio-item-content">
                   <h3>스마트 팩토리 & 디지털 트윈</h3>
                   <p>제조 공정의 디지털 전환(DX)을 위한 통합 솔루션을 제공합니다.<br />
                   생산 설비에 IoT 센서와 MES를 연동하여 설비 가동률, 생산 수량, 품질 상태 등의 데이터를 실시간으로 <br />
-                  수집하고, 이를 3D 디지털 트윈 환경에서 시각화하여 생산 공정 전체를 원격으로 모니터링하고<br />
-                  제어할 수 있습니다. 강화학습, 유전 알고리즘 등 AI 기술을 활용하여 복잡한 생산 환경에서도 최적의 작업 순서를 도출하고 연쇄 지연을 최소화합니다.</p>
+                  수집하고, 이를 <strong>3D 디지털 트윈 환경에서 시각화</strong>하여 <strong>생산 공정 전체를 원격으로 모니터링하고 제어</strong>할 수 있습니다. 강화학습, 유전 알고리즘 등 AI 기술을 활용하여 복잡한 생산 환경에서도 최적의 작업 순서를 도출하고 연쇄 지연을 최소화합니다.</p>
                 </div>
               </li>
               <li>
-                <div className="portfolio-icon-placeholder"></div>
+                <div className="portfolio-icon-wrapper">
+                  <FaCarSide />
+                </div>
                 <div className="portfolio-item-content">
                   <h3>스마트 모빌리티 & 관제 플랫폼</h3>
-                  <p>차량 운행 데이터(DTG)를 실시간으로 수집하고 분석하여 차량 관제, 교통 안전, 친환경 물류를 지원하는 AI 기반 모빌리티 플랫폼을 개발합니다. 스마트폰과 연동되는
-                  '스마트 DTG'를 통해 운행 데이터(위치, 속도, 연료 소모 등)를 수집하고, 위험 운전 패턴 분석 및 사고 위험도 예측, 주행 데이터 기반의 정밀 탄소 배출량 산정 등
+                  <p>차량 운행 데이터(DTG)를 실시간으로 수집하고 분석하여 차량 관제, 교통 안전, 친환경 물류를 지원하는 <strong>AI 기반 모빌리티 플랫폼</strong>을 개발합니다. 스마트폰과 연동되는
+                  '스마트 DTG'를 통해 운행 데이터(위치, 속도, 연료 소모 등)를 수집하고, <strong>위험 운전 패턴 분석 및 사고 위험도 예측</strong>, 주행 데이터 기반의 정밀 탄소 배출량 산정 등
                   지능형 관제 서비스를 제공합니다.</p>
                 </div>
               </li>
               <li>
-                <div className="portfolio-icon-placeholder"></div>
+                <div className="portfolio-icon-wrapper">
+                  <BsBuildingGear />
+                </div>
                 <div className="portfolio-item-content">
                   <h3>스마트 빌딩 & 시설 안전 진단</h3>
-                  <p>건물 및 주요 시설물의 에너지 효율성과 안전성을 극대화하는 지능형 관리 시스템을 구축합니다. <br />
+                  <p>건물 및 주요 시설물의 <strong>에너지 효율성과 안전성을 극대화</strong>하는 지능형 관리 시스템을 구축합니다. <br />
                   제로에너지빌딩(ZEB)의 에너지 생산·소비·자립률을 실시간으로 모니터링하는 '에너지 관리 시스템'부터,<br />
                   3D 영상 및 뎁스 카메라 분석 기술을 통해 승강기 플랫벨트의 이상(흔들림, 파손)을 정밀하게 진단하고 원격으로<br />
-                  감시하는 '시설 안전 진단 솔루션'까지 제공합니다.</p>
+                  감시하는 '<strong>시설 안전 진단 솔루션</strong>'까지 제공합니다.</p>
                 </div>
               </li>
               <li>
-                <div className="portfolio-icon-placeholder"></div>
+                <div className="portfolio-icon-wrapper">
+                  <FaLeaf />
+                </div>
                 <div className="portfolio-item-content">
                   <h3>스마트 팜 & 농업 빅데이터 플랫폼</h3>
-                  <p> IoT 센서와 빅데이터, AI 기술을 융합하여 지속 가능한 정밀 농업을 위한 스마트 팜 솔루션을 제공합니다. <br />
-                  토양과 대기 환경 데이터를 실시간으로 수집하는 자체 개발 센서와 외부 공공 데이터를 통합하여, 과수 병해충의 발생을 예측하고 최적의 방제 시기와 방법을 안내하는 빅데이터 플랫폼을 구축·운영합니다. <br />
+                  <p> IoT 센서와 빅데이터, AI 기술을 융합하여 <strong>지속 가능한 정밀 농업</strong>을 위한 스마트 팜 솔루션을 제공합니다. <br />
+                  토양과 대기 환경 데이터를 실시간으로 수집하는 자체 개발 센서와 외부 공공 데이터를 통합하여, <strong>과수 병해충의 발생을 예측</strong>하고 최적의 방제 시기와 방법을 안내하는 빅데이터 플랫폼을 구축·운영합니다. <br />
                   이를 통해 노동력 및  운영 비용을 절감하고 생산성 증대에 기여합니다.</p>
                 </div>
               </li>
@@ -168,10 +231,7 @@ const About = () => {
       <section className="about-section location-section">
         <div className="section-content">
           <h2>오시는 길</h2>
-          <div className="map-placeholder">
-            {/* 카카오 지도 API를 사용하여 지도를 삽입할 자리입니다. */}
-            <p>Kakao Map Area</p>
-          </div>
+          <KakaoMap />
         </div>
       </section>
     </div>
