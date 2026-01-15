@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
-import { FaBrain, FaIndustry, FaCarSide, FaLeaf } from 'react-icons/fa';
+import { FaBrain, FaIndustry, FaCarSide, FaLeaf, FaCog, FaCogs } from 'react-icons/fa';
 import { BsBuildingGear } from 'react-icons/bs';
 import KakaoMap from './Location/KakaoMap';
 import './About.css';
@@ -22,20 +22,20 @@ const About = () => {
       scrollTrigger: {
         trigger: missionWrapperRef.current, // Sticky Wrapper 기준
         start: "top top",            // 화면 맨 위에 닿을 때 시작
-        end: "+=200%",               // 스크롤 2배 길이만큼 애니메이션 진행
+        end: "+=300%",               // 스크롤 1배 길이만큼만 진행 (매우 빠르게 화면 채움)
         pin: true,                   // 화면 고정
         scrub: 1,                    // 부드러운 되감기
         pinSpacing: true,            // 공간 확보
       },
     });
 
-    // 1. 박스 확대 애니메이션 (점 -> 전체 화면)
+    // 1. 박스 확대 애니메이션 (둥근 사각형 -> 전체 화면)
     tl.fromTo(
       missionContentBoxRef.current, 
       { 
-        // 시작 상태: 상하좌우 50%씩 잘라내어 화면에 안 보임 (중앙 점 상태)
-        clipPath: "inset(50% 50% 50% 50% round 50%)", 
-        scale: 0.8, // 약간 작게 시작해서 커지는 느낌 추가
+        // 시작 상태: 타원이 아닌 '둥근 사각형'으로 시작하며 크기도 큼직하게 설정
+        clipPath: "inset(20% 10% 20% 10% round 50px)", 
+        scale: 0.95, 
       },
       { 
         // 종료 상태: 여백 0% (화면 꽉 채움)
@@ -94,6 +94,12 @@ const About = () => {
       <div ref={missionWrapperRef} className="mission-sticky-wrapper">
         {/* clip-path로 크기가 변할 실제 박스 */}
         <section ref={missionContentBoxRef} className="mission-content-box about-section mission-section">
+          {/* 배경 애니메이션 (기어) */}
+          <div className="mission-bg-overlay">
+            <FaCog className="gear-icon gear-large" />
+            <FaCogs className="gear-icon gear-small" />
+          </div>
+
           <div ref={missionTextGroupRef} className="section-content mission-text-group">
             <h2 className="mission-title">
               <span className="brand-green">BOAS-SE </span> <span className="mission-title-suffix">는</span>
