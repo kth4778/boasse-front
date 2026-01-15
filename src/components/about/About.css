@@ -63,7 +63,7 @@
 
 /* --- 2. Values Section --- */
 .values-section {
-  padding-bottom: 15rem; /* Space before sticky animation */
+  padding-bottom: 0.5rem; /* Space before sticky animation */
 }
 .values-section .section-content {
   text-align: center;
@@ -72,7 +72,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 10rem;
+  margin-bottom: 2rem;
 }
 .value-item { position: relative; }
 .value-item:nth-of-type(1) { margin-right: -30px; z-index: 0; }
@@ -114,14 +114,61 @@
   align-items: center;
   justify-content: center;
   padding: 0;
+  position: relative; /* 배경 요소 배치를 위해 필요 */
+  overflow: hidden;   /* 배경 요소가 박스 밖으로 나가는 것 방지 */
   
   /* GSAP가 이 초기 상태에서 애니메이션을 시작합니다. */
   /* 초기 상태: 상하좌우 50% 여백 = 중앙 0px (완전 숨김) */
   clip-path: inset(50% 50% 50% 50% round 50%);
 }
 
+/* 배경 기어 애니메이션 오버레이 */
+.mission-bg-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1; /* 텍스트(z-index: 2)보다 뒤에 위치 */
+  pointer-events: none; /* 마우스 이벤트 통과 */
+  opacity: 0.15; /* 은은하게 보이도록 투명도 조절 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.gear-icon {
+  position: absolute;
+  color: #fff;
+}
+
+.gear-large {
+  font-size: 50rem; /* 매우 큰 기어 */
+  right: -10%;
+  bottom: -20%;
+  animation: rotate-gear 60s linear infinite;
+}
+
+.gear-small {
+  font-size: 30rem; /* 중간 크기 기어 */
+  left: -5%;
+  top: -10%;
+  animation: rotate-gear-reverse 40s linear infinite;
+}
+
+@keyframes rotate-gear {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes rotate-gear-reverse {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(-360deg); }
+}
+
 .mission-text-group {
   text-align: center;
+  z-index: 2; /* 배경 위에 텍스트 표시 */
   /* GSAP의 from() 애니메이션이 투명도를 제어하므로 CSS에서 opacity를 제거합니다. */
 }
 
