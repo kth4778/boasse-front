@@ -52,46 +52,48 @@ const NoticeList = () => {
       </section>
 
       <Container className="notice-content py-5">
-        <div className="d-flex justify-content-between align-items-center mb-4">
-          <p className="mb-0">총 <strong>{pagination.totalCount || notices.length}</strong>건의 게시물이 있습니다.</p>
-          <Button 
-            className="btn-primary-custom"
-            onClick={() => navigate('/notice/write')}
-          >
-            글쓰기
-          </Button>
-        </div>
+        <div className="notice-list-container">
+          <div className="d-flex justify-content-between align-items-center mb-5">
+            <p className="mb-0 text-muted">총 <strong>{pagination.totalCount || notices.length}</strong>건의 게시물이 있습니다.</p>
+            <Button 
+              className="btn-primary-custom"
+              onClick={() => navigate('/notice/write')}
+            >
+              새 글 작성하기
+            </Button>
+          </div>
 
-        <Table hover responsive className="notice-table">
-          <thead>
-            <tr>
-              <th style={{ width: '80px' }}>번호</th>
-              <th>제목</th>
-              <th style={{ width: '120px' }}>작성자</th>
-              <th style={{ width: '120px' }}>작성일</th>
-              <th style={{ width: '100px' }}>조회수</th>
-            </tr>
-          </thead>
-          <tbody>
-            {notices.map((notice) => (
-              <tr key={notice.id} onClick={() => navigate(`/notice/${notice.id}`)} style={{ cursor: 'pointer' }}>
-                <td>{notice.id}</td>
-                <td className="text-start">
-                  {notice.title}
-                  {notice.hasAttachments && <span className="ms-2 attachment-icon">📎</span>}
-                </td>
-                <td>{notice.author}</td>
-                <td>{formatDate(notice.createdAt)}</td>
-                <td>{notice.viewCount}</td>
-              </tr>
-            ))}
-            {notices.length === 0 && !loading && (
+          <Table hover responsive className="notice-table">
+            <thead>
               <tr>
-                <td colSpan="5" className="py-5 text-center text-muted">등록된 공지사항이 없습니다.</td>
+                <th style={{ width: '80px' }}>No.</th>
+                <th>Subject</th>
+                <th style={{ width: '150px' }}>Author</th>
+                <th style={{ width: '150px' }}>Date</th>
+                <th style={{ width: '100px' }}>Views</th>
               </tr>
-            )}
-          </tbody>
-        </Table>
+            </thead>
+            <tbody>
+              {notices.map((notice) => (
+                <tr key={notice.id} onClick={() => navigate(`/notice/${notice.id}`)} style={{ cursor: 'pointer' }}>
+                  <td>{notice.id}</td>
+                  <td className="text-start">
+                    <span className="notice-title-text">{notice.title}</span>
+                    {notice.hasAttachments && <span className="ms-2 attachment-icon">📎</span>}
+                  </td>
+                  <td>{notice.author}</td>
+                  <td>{formatDate(notice.createdAt)}</td>
+                  <td>{notice.viewCount}</td>
+                </tr>
+              ))}
+              {notices.length === 0 && !loading && (
+                <tr>
+                  <td colSpan="5" className="py-5 text-center text-muted">등록된 공지사항이 없습니다.</td>
+                </tr>
+              )}
+            </tbody>
+          </Table>
+        </div>
 
         {pagination.totalPages > 1 && (
           <div className="d-flex justify-content-center mt-5">

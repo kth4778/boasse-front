@@ -15,11 +15,11 @@ import ProductDetail from './components/product/ProductDetail';
 function App() {
   const location = useLocation();
   const isHomePage = location.pathname === '/';
+  // 배경색이 있는 서브 페이지들(Notice 등)은 헤더 패딩을 별도로 처리하거나 0으로 설정합니다.
+  const isBackgroundPage = location.pathname.startsWith('/notice');
 
   const mainStyle = {
-    // 홈 페이지일 때는 전체 높이 등 레이아웃 제약을 풉니다.
-    // 서브 페이지일 때만 헤더 높이만큼 패딩을 줍니다.
-    paddingTop: isHomePage ? '0' : '120px',
+    paddingTop: (isHomePage || isBackgroundPage) ? '0' : '120px',
     width: '100%',
   };
 

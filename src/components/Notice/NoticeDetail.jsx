@@ -79,60 +79,67 @@ const NoticeDetail = () => {
       <section className="sub-header">
         <Container>
           <h2 className="sub-title-main">Notice</h2>
+          <p className="sub-title-sub">공지사항 상세 보기</p>
         </Container>
       </section>
 
       <Container className="notice-content py-5">
-        <Card className="notice-detail-card border-0 shadow-sm">
-          <Card.Header className="bg-white border-bottom-2 py-4">
-            <h3 className="detail-title mb-3">{notice.title}</h3>
-            <div className="detail-info d-flex text-muted font-size-sm">
-              <span className="me-4"><strong>작성자</strong> {notice.author}</span>
-              <span className="me-4"><strong>작성일</strong> {formatDate(notice.createdAt)}</span>
-              <span><strong>조회수</strong> {notice.viewCount}</span>
+        <div className="notice-detail-container">
+          {/* 상단 헤더 영역 */}
+          <div className="detail-header">
+            <h3 className="detail-title">{notice.title}</h3>
+            <div className="detail-info-bar">
+              <div className="detail-info-item"><strong>작성자</strong> {notice.author}</div>
+              <div className="detail-info-item"><strong>작성일</strong> {formatDate(notice.createdAt)}</div>
+              <div className="detail-info-item"><strong>조회수</strong> {notice.viewCount}</div>
             </div>
-          </Card.Header>
+          </div>
           
-          <Card.Body className="py-5 detail-body">
+          {/* 본문 내용 영역 */}
+          <div className="detail-body">
             <div 
               className="content-area"
               dangerouslySetInnerHTML={{ __html: notice.content }}
             />
-          </Card.Body>
+          </div>
 
+          {/* 첨부파일 영역 */}
           {notice.attachments && notice.attachments.length > 0 && (
-            <Card.Footer className="bg-light border-top-0 py-4">
-              <h5 className="mb-3" style={{ fontSize: '1rem', fontWeight: '700' }}>첨부파일</h5>
-              <ListGroup variant="flush" className="bg-transparent">
+            <div className="detail-attachments">
+              <h5 style={{ fontSize: '1.1rem', fontWeight: '800', color: '#1e2f23' }}>
+                📎 Attached Files ({notice.attachments.length})
+              </h5>
+              <div className="attachment-list">
                 {notice.attachments.map((file) => (
-                  <ListGroup.Item key={file.id} className="bg-transparent px-0 d-flex justify-content-between align-items-center">
-                    <span className="text-muted">
-                      {file.originalName} ({formatSize(file.size)})
+                  <div key={file.id} className="attachment-card">
+                    <span className="file-name" title={file.originalName}>
+                      {file.originalName} <small className="text-muted ms-1">({formatSize(file.size)})</small>
                     </span>
-                    <Button variant="outline-secondary" size="sm" href={file.url} download>
-                      <FaDownload className="me-1" /> 다운로드
-                    </Button>
-                  </ListGroup.Item>
+                    <a href={file.url} download className="download-btn-sm">
+                      DOWNLOAD →
+                    </a>
+                  </div>
                 ))}
-              </ListGroup>
-            </Card.Footer>
+              </div>
+            </div>
           )}
-        </Card>
+        </div>
 
-        <div className="d-flex justify-content-between mt-4">
-          <Button variant="outline-dark" onClick={() => navigate('/notice')}>
-            <FaList className="me-1" /> 목록으로
+        {/* 하단 버튼 영역 */}
+        <div className="d-flex justify-content-between align-items-center notice-footer-btns">
+          <Button variant="outline-secondary" className="btn-list" onClick={() => navigate('/notice')}>
+            <FaList className="me-2" /> 목록으로
           </Button>
           <div className="admin-btns">
             <Button 
-              variant="outline-primary" 
-              className="me-2"
+              variant="outline-dark" 
+              className="me-2 px-4"
               onClick={() => navigate(`/notice/edit/${notice.id}`)}
             >
-              <FaEdit className="me-1" /> 수정
+              <FaEdit className="me-2" /> 수정
             </Button>
-            <Button variant="outline-danger" onClick={() => setShowDeleteModal(true)}>
-              <FaTrash className="me-1" /> 삭제
+            <Button variant="outline-danger" className="px-4" onClick={() => setShowDeleteModal(true)}>
+              <FaTrash className="me-2" /> 삭제
             </Button>
           </div>
         </div>
