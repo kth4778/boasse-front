@@ -10,6 +10,7 @@ import NoticeDetail from './components/Notice/NoticeDetail';
 import NoticeWrite from './components/Notice/NoticeWrite';
 import About from './components/about/About';
 import Product from './components/product/Product';
+import ProductDetail from './components/product/ProductDetail';
 
 function App() {
   const location = useLocation();
@@ -36,6 +37,7 @@ function App() {
           <Route path="/notice/edit/:id" element={<NoticeWrite />} />
           <Route path="/about" element={<About />} />
           <Route path="/product" element={<Product />} />
+          <Route path="/product/:id" element={<ProductDetail />} />
         </Routes>
       </main>
 
