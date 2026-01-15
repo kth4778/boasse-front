@@ -65,13 +65,13 @@ const ProductCards = () => {
   useGSAP(() => {
     ScrollTrigger.refresh();
 
-    // 1. 컨테이너 확장 애니메이션
+    // 단일 타임라인으로 확장과 축소를 한 번에 관리
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: containerRef.current,
-        start: 'top 95%',
-        end: 'bottom 5%',
-        scrub: 2,
+        start: 'top bottom', // 아래에서 보이기 시작할 때
+        end: 'bottom top',   // 위로 완전히 사라질 때
+        scrub: 1,
         invalidateOnRefresh: true,
       }
     });
@@ -83,24 +83,23 @@ const ProductCards = () => {
         borderRadius: '150px',
       },
       {
-        width: '100%',
-        maxWidth: '100%',
-        borderRadius: '0px',
-        duration: 0.35,
-        ease: 'power1.inOut',
+        width: '96%', // 전체 확장이 아닌 96%까지만
+        maxWidth: '1800px',
+        borderRadius: '50px', // 완전히 펴지지 않고 둥근 상태 유지
+        duration: 1.2, // 확장 속도를 더 느리고 여유 있게 (0.5 -> 1.2)
+        ease: 'power2.inOut'
       }
     )
-    .to('.product-expand-wrapper', { duration: 0.3 })
+    .to('.product-expand-wrapper', {
+      duration: 0.6, // 중앙 유지 시간 조정
+    })
     .to('.product-expand-wrapper', {
       width: '85%',
       maxWidth: '1400px',
       borderRadius: '150px',
-      duration: 0.35,
-      ease: 'power1.inOut',
+      duration: 1.2, // 축소 속도도 동일하게 조정
+      ease: 'power2.inOut'
     });
-
-    // 2. 부드러운 Sticky 효과 (GSAP 제거 -> CSS position: sticky 사용)
-    // 복잡한 JS 로직 없이 CSS만으로 가장 자연스러운 스크롤 구현
 
   }, { scope: containerRef });
 

@@ -5,15 +5,14 @@
   width: 100%;
   top: 0;
   z-index: 1000;
-  /* transform 충돌 방지를 위해 transition 속성 명시 */
   transition: background-color 0.4s ease, padding 0.4s ease, backdrop-filter 0.4s ease;
-  padding: 20px 0;
+  padding: 25px 0; /* 기본 패딩 */
 }
 
 .header-wrapper.scrolled {
-  background-color: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(10px);
-  padding: 10px 0;
+  background-color: rgba(0, 0, 0, 0.7); /* 반투명도를 살짝 높여 가독성 확보 */
+  backdrop-filter: blur(15px); /* 블러 효과 강화 */
+  padding: 15px 0; /* 스크롤 시 또는 서브페이지 패딩 */
 }
 
 /* 로고 스타일 */
@@ -34,47 +33,169 @@
 }
 
 .desktop-nav .nav-link {
-  font-weight: 500;
-  font-size: 1.5rem;
-  color: #fff !important; /* 항상 흰색 유지 */
-  margin: 0 25px;
+
+  font-weight: 300;
+
+  font-size: 1.25rem;
+
+  color: #fff !important;
+
+  margin: 0 15px;
+
   position: relative;
+
   padding: 10px 0 !important;
-  text-shadow: 0 2px 5px rgba(0,0,0,0.4);
+
+  text-shadow: 0 2px 5px rgba(0,0,0,0.2);
+
   will-change: transform, opacity;
-  transition: color 0.4s ease, text-shadow 0.4s ease;
+
+  transition: all 0.4s ease;
+
 }
+
+
+
+/* 중앙 가로지르는 녹색 선 */
+
+
+
+.desktop-nav .nav-link::after {
+
+
+
+  content: '';
+
+
+
+  position: absolute;
+
+
+
+  left: 0;
+
+
+
+  top: 55%;
+
+
+
+  width: 0;
+
+
+
+  height: 2px; /* 두께 줄임 (8px -> 2px) */
+
+
+
+  background-color: #2e7d32; /* 더 진한 녹색 */
+
+
+
+  transition: width 0.25s ease-out;
+
+
+
+  z-index: 1; /* 텍스트 위 또는 뒤 (취향에 따라 선택 가능, 현재는 뒤쪽 느낌) */
+
+
+
+  transform: translateY(-50%);
+
+
+
+}
+
+
+
+
+
+
+
+.desktop-nav .nav-link:hover::after {
+
+
+
+  width: 100%;
+
+
+
+}
+
+
+
+
+
+
 
 .desktop-nav .nav-link:hover {
-  opacity: 0.8;
+
+
+
+  opacity: 1;
+
+
+
+  /* font-weight, transform 관련 변화 제거 */
+
+
+
 }
 
-/* 햄버거 버튼 */
-.menu-trigger {
-  cursor: pointer;
-  padding: 10px;
-  display: block; 
+
+
+
+
+
+
+
+
+/* CONTACT US 버튼 */
+
+.contact-btn {
+
+  background-color: #ffffff;
+
+  color: #000000 !important;
+
+  padding: 8px 25px;
+
+  border-radius: 50px;
+
+  font-weight: 600;
+
+  font-size: 1rem;
+
+  text-decoration: none;
+
+  margin-left: 20px;
+
+  transition: all 0.3s ease;
+
+  border: 1px solid #ffffff;
+
 }
 
-/* Offcanvas 메뉴 스타일 */
-.header-offcanvas .offcanvas-header {
-  border-bottom: 1px solid #eee;
+
+
+.contact-btn:hover {
+
+  background-color: transparent;
+
+  color: #ffffff !important;
+
+  border-color: #ffffff;
+
 }
 
-.header-offcanvas .offcanvas-body {
-  padding: 30px;
-}
 
-.header-offcanvas .nav-link {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: #333 !important;
-  margin-bottom: 20px;
-  border-bottom: 1px solid transparent;
-  transition: all 0.3s;
-}
 
-.header-offcanvas .nav-link:hover {
-  color: var(--bs-primary) !important;
-  padding-left: 10px;
+/* 햄버거 버튼 및 Offcanvas 스타일 제거 */
+
+.menu-trigger, 
+
+.header-offcanvas {
+
+  display: none !important;
+
 }

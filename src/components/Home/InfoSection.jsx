@@ -54,8 +54,44 @@ const InfoSection = () => {
     const cards = gsap.utils.toArray('.image-card');
     const texts = gsap.utils.toArray('.info-text-group');
 
+    // --- 배경 파랄락스 애니메이션 추가 ---
+    gsap.to('.forest-layer-1', {
+      y: -100,
+      scrollTrigger: {
+        trigger: sectionRef.current,
+        start: 'top bottom',
+        end: 'bottom top',
+        scrub: 1.5
+      }
+    });
+
+    gsap.to('.forest-layer-2', {
+      y: -50,
+      scrollTrigger: {
+        trigger: sectionRef.current,
+        start: 'top bottom',
+        end: 'bottom top',
+        scrub: 1
+      }
+    });
+
+    // 나뭇잎 파티클 애니메이션
+    gsap.to('.leaf-particle', {
+      y: 'random(-100, 100)',
+      x: 'random(-50, 50)',
+      rotation: 'random(-180, 180)',
+      duration: 'random(3, 5)',
+      repeat: -1,
+      yoyo: true,
+      ease: 'sine.inOut',
+      stagger: {
+        each: 0.2,
+        from: 'random'
+      }
+    });
+    // ---------------------------------
+
     // 1. 초기 상태 설정
-    // 모든 텍스트 숨김 (첫 번째만 보이게 처리할 예정이나, 타임라인에서 처리)
     gsap.set(texts, { autoAlpha: 0, x: -50 });
     // 첫 번째 텍스트 보이기
     gsap.set(texts[0], { autoAlpha: 1, x: 0 });
@@ -167,6 +203,18 @@ const InfoSection = () => {
 
   return (
     <section className="info-section" ref={sectionRef}>
+      {/* 숲 배경 레이어 추가 */}
+      <div className="forest-bg">
+        <div className="forest-layer forest-layer-1"></div>
+        <div className="forest-layer forest-layer-2"></div>
+        <div className="forest-light-rays"></div>
+        
+        {/* 나뭇잎 파티클 10개 생성 */}
+        {[...Array(10)].map((_, i) => (
+          <div key={i} className={`leaf-particle leaf-${i + 1}`}></div>
+        ))}
+      </div>
+
       <div className="info-container" ref={wrapperRef}>
         
         {/* 고정 헤더 영역 */}

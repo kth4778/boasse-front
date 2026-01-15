@@ -1,146 +1,79 @@
-import React, { useRef } from 'react';
-import { Container } from 'react-bootstrap';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, Autoplay } from 'swiper/modules';
-import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { useGSAP } from '@gsap/react';
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import noticeApi from '../../api/noticeApi';
 import './CasesCarousel.css';
 
-import 'swiper/css';
-
-gsap.registerPlugin(ScrollTrigger);
-
 const CasesCarousel = () => {
-  const containerRef = useRef(null);
+  const [notices, setNotices] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  // TODO: [DATA] 설치 사례 데이터 수정 (이미지, 제목)
-  const cases = [
-    {
-      id: 1,
-      title: '설치 사례 제목 1',
-      image: 'https://images.unsplash.com/photo-1581092334651-ddf26d9a09d0?auto=format&fit=crop&w=600&q=80', // TODO: 현장 사진으로 교체
-      link: '/case-1'
-    },
-    {
-      id: 2,
-      title: '설치 사례 제목 2',
-      image: 'https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?auto=format&fit=crop&w=600&q=80',
-      link: '/case-2'
-    },
-    {
-      id: 3,
-      title: '설치 사례 제목 3',
-      image: 'https://images.unsplash.com/photo-1532601224476-15c79f2f7a51?auto=format&fit=crop&w=600&q=80',
-      link: '/case-3'
-    },
-    {
-      id: 4,
-      title: '설치 사례 제목 4',
-      image: 'https://images.unsplash.com/photo-1580894732444-8ecded7900cd?auto=format&fit=crop&w=600&q=80',
-      link: '/case-4'
-    }
-  ];
-
-  // GSAP: 확장 애니메이션 (박스 -> 전면 -> 박스)
-  useGSAP(() => {
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: containerRef.current,
-        start: 'top 95%',
-        end: 'bottom 5%',
-        scrub: 2,
-        invalidateOnRefresh: true,
+  useEffect(() => {
+    const fetchNotices = async () => {
+      setLoading(true);
+      try {
+        const response = await noticeApi.getNotices(1, 3);
+        if (response.data.success) {
+          // 서버 응답 구조: response.data.data.notices
+          setNotices(response.data.data.notices.slice(0, 3));
+        }
+      } catch (error) {
+        console.error('공지사항을 불러오는 중 오류가 발생했습니다:', error);
+        setNotices([]);
+      } finally {
+        setLoading(false);
       }
-    });
+    };
 
-    tl.fromTo('.cases-expand-wrapper', 
-      {
-        width: '85%',
-        maxWidth: '1400px',
-        borderRadius: '150px',
-      },
-      {
-        width: '100%',
-        maxWidth: '100%',
-        borderRadius: '0px',
-        duration: 0.35,
-        ease: 'power1.inOut',
-      }
-    )
-    .to('.cases-expand-wrapper', {
-      duration: 0.3,
-    })
-    .to('.cases-expand-wrapper', {
-      width: '85%',
-      maxWidth: '1400px',
-      borderRadius: '150px',
-      duration: 0.35,
-      ease: 'power1.inOut',
-    });
+    fetchNotices();
+  }, []);
 
-    // 기존 등장 애니메이션도 타임라인에 통합하거나 별도 유지 가능 (여기서는 별도 유지)
-    gsap.from('.section-header', {
-      y: 40,
-      opacity: 0,
-      duration: 1,
-      ease: 'power3.out',
-      scrollTrigger: {
-        trigger: '.cases-expand-wrapper',
-        start: 'top 80%',
-      }
-    });
-
-  }, { scope: containerRef });
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return `${date.getFullYear()}.${String(date.getMonth() + 1).padStart(2, '0')}.${String(date.getDate()).padStart(2, '0')}`;
+  };
 
   return (
-    <section className="cases-section" ref={containerRef}>
-      <div className="cases-expand-wrapper">
-        <Container className="position-relative">
-          <div className="section-header">
-            {/* TODO: [TEXT] 섹션 소제목 수정 */}
-            <span className="sub-title">SUB TITLE</span>
-            {/* TODO: [TEXT] 섹션 메인 제목 수정 */}
-            <h2 className="main-title">MAIN TITLE</h2>
+    <section className="cases-section">
+      <div className="notice-container">
+        <div className="notice-header">
+          <div>
+            <p style={{ color: '#4caf50', fontWeight: '600', marginBottom: '10px', letterSpacing: '1px' }}>NEWS</p>
+            <h2>공지사항</h2>
           </div>
+          <Link to="/notice" className="view-all">
+            전체보기 +
+          </Link>
+        </div>
 
-          <Swiper
-            modules={[Navigation, Autoplay]}
-            spaceBetween={30}
-            slidesPerView={1}
-            navigation={{
-              prevEl: '.nav-btn-prev',
-              nextEl: '.nav-btn-next',
-            }}
-            autoplay={{ delay: 4000, disableOnInteraction: false }}
-            breakpoints={{
-              576: { slidesPerView: 2 },
-              992: { slidesPerView: 3 },
-            }}
-            className="cases-swiper"
-          >
-            {cases.map((item) => (
-              <SwiperSlide key={item.id}>
-                <a href={item.link} className="case-card apple-card">
-                  <div className="case-img-wrapper">
-                    <img src={item.image} alt={item.title} className="case-img" />
-                  </div>
-                  <h3 className="case-title">{item.title}</h3>
-                </a>
-              </SwiperSlide>
-            ))}
-
-            <div className="custom-nav-wrapper">
-              <button className="nav-btn nav-btn-prev">
-                <FaChevronLeft />
-              </button>
-              <button className="nav-btn nav-btn-next">
-                <FaChevronRight />
-              </button>
+        <div className="notice-grid">
+          {loading ? (
+            // 로딩 중 스켈레톤 UI 느낌의 표시
+            [1, 2, 3].map((n) => (
+              <div key={n} className="notice-card" style={{ opacity: 0.5 }}>
+                <div className="notice-tag" style={{ width: '60px', height: '20px', backgroundColor: '#eee' }}></div>
+                <div style={{ width: '100%', height: '24px', backgroundColor: '#eee', marginBottom: '10px' }}></div>
+                <div style={{ width: '80%', height: '24px', backgroundColor: '#eee' }}></div>
+              </div>
+            ))
+          ) : notices.length > 0 ? (
+            notices.map((notice) => (
+              <Link to={`/notice/${notice.id}`} key={notice.id} className="notice-card">
+                <div>
+                  <span className="notice-tag">{notice.category || 'NOTICE'}</span>
+                  <h3 className="notice-title">{notice.title}</h3>
+                </div>
+                <div className="d-flex justify-content-between align-items-center">
+                  <span className="notice-date">{formatDate(notice.createdAt)}</span>
+                  <span className="notice-more">자세히 보기 →</span>
+                </div>
+              </Link>
+            ))
+          ) : (
+            <div className="w-100 text-center py-5" style={{ color: 'rgba(255,255,255,0.6)', gridColumn: '1 / -1' }}>
+              현재 등록된 공지사항이 없습니다.
             </div>
-          </Swiper>
-        </Container>
+          )}
+        </div>
       </div>
     </section>
   );
