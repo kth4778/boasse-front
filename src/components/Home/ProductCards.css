@@ -17,8 +17,8 @@
   margin: 0 auto;
   border-radius: 150px;
   background-color: #ffffff;
-  padding: 160px 0; /* 패딩 증가 */
-  box-shadow: 0 40px 100px rgba(0, 0, 0, 0.15);
+  padding: 160px 0;
+  box-shadow: 0 20px 80px rgba(0, 0, 0, 0.12); /* 쉐도우를 조금 더 부드럽게 */
   position: relative;
   z-index: 5;
   will-change: width, border-radius;

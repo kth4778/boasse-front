@@ -83,22 +83,22 @@ const ProductCards = () => {
         borderRadius: '150px',
       },
       {
-        width: '100%',
-        maxWidth: '100%',
-        borderRadius: '0px',
-        duration: 0.5,
-        ease: 'power1.inOut'
+        width: '96%', // 전체 확장이 아닌 96%까지만
+        maxWidth: '1800px',
+        borderRadius: '50px', // 완전히 펴지지 않고 둥근 상태 유지
+        duration: 1.2, // 확장 속도를 더 느리고 여유 있게 (0.5 -> 1.2)
+        ease: 'power2.inOut'
       }
     )
     .to('.product-expand-wrapper', {
-      duration: 1, // 중앙에서는 확장 상태 유지
+      duration: 0.6, // 중앙 유지 시간 조정
     })
     .to('.product-expand-wrapper', {
       width: '85%',
       maxWidth: '1400px',
       borderRadius: '150px',
-      duration: 0.5,
-      ease: 'power1.inOut'
+      duration: 1.2, // 축소 속도도 동일하게 조정
+      ease: 'power2.inOut'
     });
 
   }, { scope: containerRef });
