@@ -88,7 +88,7 @@
   flex: 0 0 40%;
   height: 400px; /* 텍스트들이 겹쳐있을 공간 */
   position: relative;
-  z-index: 5;
+  z-index: 50; /* 이미지보다 높게 설정하여 겹침 방지 */
   display: flex;
   align-items: center;
 }

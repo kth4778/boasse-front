@@ -111,13 +111,13 @@ const InfoSection = () => {
       const stepTl = gsap.timeline();
 
       // --- 이미지 전환 ---
-      // 현재 카드: 왼쪽으로 이동하며 사라짐 (혹은 뒤로 빠짐)
+      // 현재 카드: 왼쪽으로 살짝 빠지며 뒤로 숨음 (텍스트 영역 침범 최소화)
       stepTl.to(currentCard, {
-        xPercent: -120, // 왼쪽으로 완전히 빠짐
-        scale: 0.8,
+        xPercent: -40, // 너무 멀리 가지 않도록 조정
+        scale: 0.5,    // 작아지면서 뒤로 가는 느낌 강화
         opacity: 0, 
-        duration: 1,
-        ease: 'power1.inOut'
+        duration: 0.8,
+        ease: 'power1.in'
       }, 0);
 
       // 다음 카드: 중앙으로 이동하며 확대
@@ -140,25 +140,24 @@ const InfoSection = () => {
       }
 
       // --- 텍스트 전환 ---
-      // 요청 사항: 
-      // 이전 텍스트: 오른쪽 -> 왼쪽으로 지워짐 (x: 0 -> -50, alpha: 1 -> 0)
+      // 이전 텍스트: 왼쪽으로 사라짐
       stepTl.to(currentText, {
-        x: -50,
+        x: -30,
         autoAlpha: 0,
-        duration: 0.5,
+        duration: 0.4,
         ease: 'power1.in'
       }, 0);
 
-      // 다음 텍스트: 왼쪽 -> 오른쪽으로 나타남 (from x: -50, alpha: 0 -> x: 0, alpha: 1)
+      // 다음 텍스트: 왼쪽에서 등장 (이전 텍스트가 사라진 후 등장하도록 딜레이 조정)
       stepTl.fromTo(nextText, {
-        x: -50,
+        x: -30,
         autoAlpha: 0
       }, {
         x: 0,
         autoAlpha: 1,
         duration: 0.5,
         ease: 'power1.out'
-      }, 0.4); // 텍스트가 겹치지 않게 약간 늦게 시작
+      }, 0.5); // 0.5초 딜레이
 
       // 메인 타임라인에 추가 (각 단계 사이에 약간의 텀을 줄 수도 있음)
       tl.add(stepTl);
