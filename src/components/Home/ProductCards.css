@@ -1,59 +1,177 @@
-.home-product-cards {
-  padding: 4rem 2rem;
-  background-color: #f9f9f9;
-  text-align: center;
+/* --- Product Section Layout --- */
+.product-section {
+  padding: 8rem 0;
+  background-color: #f8f9fa; /* 밝은 회색 배경 */
+  overflow: hidden; /* 확장 애니메이션 시 스크롤 방지 */
 }
 
-.home-product-title {
-  font-size: 2.5rem;
-  font-weight: 700;
-  margin-bottom: 2rem;
-  color: #333;
-}
-
-.home-cards-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1.5rem;
-  max-width: 1200px;
+/* 확장 애니메이션용 래퍼 */
+.product-expand-wrapper {
   margin: 0 auto;
-}
-
-.home-card {
-  background: white;
-  border-radius: 12px;
+  background-color: #fff;
   overflow: hidden;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-  transition: transform 0.3s;
+  /* 초기값은 JS(GSAP)에서 제어하지만 기본 스타일 지정 */
+  width: 85%;
+  max-width: 1400px;
+  border-radius: 150px;
+  padding: 6rem 4rem;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.08);
+  will-change: width, border-radius;
 }
 
-.home-card:hover {
-  transform: translateY(-5px);
+/* 내부 콘텐츠 컨테이너 */
+.product-content-row {
+  position: relative;
+  min-height: 1200px; /* 스크롤 영역 확보 */
 }
 
-.home-card-img {
+/* --- Left: Sticky Title Card --- */
+.sticky-wrapper {
+  /* GSAP Pinning을 위해 position: relative 유지 */
+  height: 100%;
+}
+
+.title-card {
+  background-color: #111; /* 검은색 카드 */
+  color: #fff;
+  border-radius: 40px;
+  padding: 4rem 3rem;
+  text-align: left;
+  height: 600px; /* 고정 높이 */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+}
+
+.title-card-head {
+  font-size: 3.5rem;
+  font-weight: 800;
+  line-height: 1.2;
+  margin-bottom: 2rem;
+  background: linear-gradient(to right, #fff, #aaa);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.title-card-desc {
+  font-size: 1.1rem;
+  line-height: 1.7;
+  color: #ccc;
+  margin-bottom: 3rem;
+  max-width: 90%;
+}
+
+.title-card-btn {
+  display: inline-block;
+  padding: 1rem 2rem;
+  border: 1px solid rgba(255,255,255,0.3);
+  border-radius: 50px;
+  color: #fff;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  width: fit-content;
+}
+
+.title-card-btn:hover {
+  background-color: #fff;
+  color: #111;
+}
+
+/* --- Right: Masonry Grid --- */
+.masonry-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* 2열 */
+  gap: 1.5rem;
+  padding-bottom: 2rem;
+}
+
+.masonry-item {
+  position: relative;
+  border-radius: 30px;
+  overflow: hidden;
+  text-decoration: none;
+  color: #fff;
+  display: block;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  transition: transform 0.4s ease;
+}
+
+.masonry-item:hover {
+  transform: translateY(-10px);
+}
+
+/* 높이 클래스 */
+.masonry-item.tall {
+  height: 500px;
+  grid-row: span 2; /* 2칸 차지 (제대로 동작하려면 masonry 라이브러리 필요하지만 CSS grid로는 한계 있음, 여기선 높이만 다르게) */
+}
+
+.masonry-item.short {
+  height: 340px;
+}
+
+/* 배경 이미지 */
+.masonry-bg {
   width: 100%;
-  height: 200px;
-  object-fit: cover;
-  background-color: #eee;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  transition: transform 0.6s ease;
 }
 
-.home-card-body {
-  padding: 1.5rem;
+.masonry-item:hover .masonry-bg {
+  transform: scale(1.1);
 }
 
-.home-card-body h3 {
-  font-size: 1.25rem;
+/* 오버레이 텍스트 */
+.masonry-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 2rem;
+  background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.masonry-date {
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 1px;
   margin-bottom: 0.5rem;
+  color: #00D05E; /* 포인트 컬러 */
+  text-transform: uppercase;
 }
 
-.home-card-body p {
-  color: #666;
-  font-size: 0.9rem;
+.masonry-title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  line-height: 1.4;
+  margin: 0;
 }
 
-@media (max-width: 768px) {
-  .home-cards-grid {
-    grid-template-columns: 1fr;
+/* 반응형 */
+@media (max-width: 992px) {
+  .product-expand-wrapper {
+    width: 95%;
+    border-radius: 40px; /* 모바일에서 둥글기 축소 */
+    padding: 3rem 1.5rem;
+  }
+  
+  .title-card {
+    height: auto;
+    margin-bottom: 3rem;
+  }
+
+  .masonry-grid {
+    grid-template-columns: 1fr; /* 모바일 1열 */
+  }
+
+  .masonry-item.tall, .masonry-item.short {
+    height: 300px; /* 높이 통일 */
   }
 }

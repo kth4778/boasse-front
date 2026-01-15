@@ -92,6 +92,11 @@
   aspect-ratio: 16 / 10;
   cursor: pointer;
   transition: transform 0.4s ease, box-shadow 0.4s ease;
+  
+  /* Link 스타일 리셋 */
+  text-decoration: none;
+  color: inherit;
+  display: block; /* a 태그는 inline이 기본이므로 block으로 변경 */
 }
 
 .product-card:hover {

@@ -1,6 +1,7 @@
 import React, { useRef } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import { FaArrowRight } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
@@ -11,53 +12,53 @@ gsap.registerPlugin(ScrollTrigger);
 const ProductCards = () => {
   const containerRef = useRef(null);
 
-  // TODO: [DATA] 제품 목록 데이터 (스마트팜 솔루션 & 장비)
+  // 홈 화면용 추천 제품 데이터 (실제 상세 페이지 ID와 매핑)
   const products = [
     {
-      id: 1,
+      id: 2, // IoT 토양 센서
       date: 'HARDWARE',
       title: 'IoT Sensor Node : 초정밀 온실 환경 감지 센서',
-      image: 'https://images.unsplash.com/photo-1553406830-ef2513450d76?auto=format&fit=crop&w=600&q=80', // 전자부품/센서 (안정적인 링크)
-      link: '/product/1',
+      image: 'https://images.unsplash.com/photo-1553406830-ef2513450d76?auto=format&fit=crop&w=600&q=80',
+      link: '/product/2',
       heightClass: 'tall'
     },
     {
-      id: 2,
+      id: 18, // 스마트팜 생육 관리
       date: 'SYSTEM',
       title: 'Auto Control System : 복합 환경 자동 제어기',
-      image: 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=600&q=80', // 반도체/칩
-      link: '/product/2',
+      image: 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=600&q=80',
+      link: '/product/18',
       heightClass: 'short'
     },
     {
-      id: 3,
+      id: 11, // 병해충 예찰 앱
       date: 'SOLUTION',
       title: 'Smart Farm App : 언제 어디서나 농장 통합 관제',
-      image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=600&q=80', // 데이터 대시보드
-      link: '/product/3',
+      image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=600&q=80',
+      link: '/product/11',
       heightClass: 'short'
     },
     {
-      id: 4,
+      id: 4, // 산업용 AI 카메라 (시설 대신 사용)
       date: 'FACILITY',
       title: 'Nutrient Supply : 작물별 맞춤 양액 공급 시스템',
-      image: 'https://images.unsplash.com/photo-1581094288338-2314dddb7ece?auto=format&fit=crop&w=600&q=80', // 설비/물 (안정적인 링크)
+      image: 'https://images.unsplash.com/photo-1581094288338-2314dddb7ece?auto=format&fit=crop&w=600&q=80',
       link: '/product/4',
       heightClass: 'tall'
     },
     {
-      id: 5,
+      id: 5, // 승강기 진단 센서 (에너지 대신 사용)
       date: 'ENERGY',
       title: 'Growth LED : 에너지 저감형 식물 생장 조명',
-      image: 'https://images.unsplash.com/photo-1611270629569-8b357cb88da9?auto=format&fit=crop&w=600&q=80', // 보라색 조명/식물
+      image: 'https://images.unsplash.com/photo-1611270629569-8b357cb88da9?auto=format&fit=crop&w=600&q=80',
       link: '/product/5',
       heightClass: 'tall'
     },
     {
-      id: 6,
+      id: 6, // 대기 환경 관측 스테이션
       date: 'AI & DRONE',
       title: 'Drone Monitoring : AI 기반 드론 예찰 시스템',
-      image: 'https://images.unsplash.com/photo-1506947411487-a56738267384?auto=format&fit=crop&w=600&q=80', // 드론
+      image: 'https://images.unsplash.com/photo-1506947411487-a56738267384?auto=format&fit=crop&w=600&q=80',
       link: '/product/6',
       heightClass: 'short'
     }
@@ -140,9 +141,9 @@ const ProductCards = () => {
                     농업의 생산성을 극대화하고 탄소 배출을 줄이는
                     지속 가능한 솔루션을 제공합니다.
                   </p>
-                  <a href="/product" className="title-card-btn">
+                  <Link to="/product" className="title-card-btn">
                     전체 솔루션 보기
-                  </a>
+                  </Link>
                 </div>
               </div>
             </Col>
@@ -151,7 +152,7 @@ const ProductCards = () => {
             <Col lg={8}>
               <div className="masonry-grid">
                 {products.map((item) => (
-                  <a href={item.link} key={item.id} className={`masonry-item ${item.heightClass}`}>
+                  <Link to={item.link} key={item.id} className={`masonry-item ${item.heightClass}`}>
                     <div 
                       className="masonry-bg" 
                       style={{ backgroundImage: `url(${item.image})` }} 
@@ -160,7 +161,7 @@ const ProductCards = () => {
                       <span className="masonry-date">{item.date}</span>
                       <h3 className="masonry-title">{item.title}</h3>
                     </div>
-                  </a>
+                  </Link>
                 ))}
               </div>
             </Col>
