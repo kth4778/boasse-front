@@ -9,6 +9,8 @@ import NoticeList from './components/Notice/NoticeList';
 import NoticeDetail from './components/Notice/NoticeDetail';
 import NoticeWrite from './components/Notice/NoticeWrite';
 import About from './components/about/About';
+import Product from './components/product/Product';
+import ProductDetail from './components/product/ProductDetail';
 
 function App() {
   const location = useLocation();
@@ -19,7 +21,6 @@ function App() {
     // 서브 페이지일 때만 헤더 높이만큼 패딩을 줍니다.
     paddingTop: isHomePage ? '0' : '120px',
     width: '100%',
-    overflowX: 'hidden', // 가로 스크롤 방지
   };
 
   return (
@@ -35,6 +36,8 @@ function App() {
           <Route path="/notice/write" element={<NoticeWrite />} />
           <Route path="/notice/edit/:id" element={<NoticeWrite />} />
           <Route path="/about" element={<About />} />
+          <Route path="/product" element={<Product />} />
+          <Route path="/product/:id" element={<ProductDetail />} />
         </Routes>
       </main>
 

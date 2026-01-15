@@ -1,23 +1,24 @@
 import React from 'react';
 import './PartnersSection.css';
 
-const PartnersSection = () => {
-  // 협력사 로고 데이터
-  const basePartners = [
-    { id: 1, name: 'LG', logo: 'https://cdn.simpleicons.org/lg' },
-    { id: 2, name: 'SAMSUNG', logo: 'https://cdn.simpleicons.org/samsung' },
-    { id: 3, name: 'HYUNDAI', logo: 'https://cdn.simpleicons.org/hyundai' },
-    { id: 4, name: 'NAVER', logo: 'https://cdn.simpleicons.org/naver' },
-    { id: 5, name: 'KAKAO', logo: 'https://cdn.simpleicons.org/kakao' },
-    { id: 6, name: 'LINE', logo: 'https://cdn.simpleicons.org/line' },
-    { id: 7, name: 'KIA', logo: 'https://cdn.simpleicons.org/kia' },
-    { id: 8, name: 'SK', logo: 'https://cdn.simpleicons.org/sk' }, // SK 추가
-    { id: 9, name: 'KT', logo: 'https://cdn.simpleicons.org/kt' }, // KT 추가
-    { id: 10, name: 'POSCO', logo: 'https://cdn.simpleicons.org/sony' } // 대체 아이콘
-  ];
+// assets/Companies 폴더의 모든 이미지를 자동으로 가져오기
+const companyLogos = import.meta.glob('../../assets/Companies/*.{png,jpg,jpeg,svg}', { eager: true });
 
-  // 무한 스크롤 끊김 방지를 위해 데이터 충분히 복제 (4번 반복)
-  const partners = [...basePartners, ...basePartners, ...basePartners, ...basePartners];
+const PartnersSection = () => {
+  // 가져온 이미지 객체를 배열로 변환
+  const basePartners = Object.entries(companyLogos).map(([path, module], index) => {
+    // 파일명에서 이름 추출 (예: ../../assets/Companies/삼성.png -> 삼성)
+    const fileName = path.split('/').pop().split('.')[0];
+    return {
+      id: index + 1,
+      name: fileName,
+      logo: module.default
+    };
+  });
+
+  // 무한 스크롤 끊김 방지를 위해 데이터 충분히 복제
+  // 데이터 개수가 많아졌으므로 복제 횟수를 조절 (2번만 반복해도 충분)
+  const partners = [...basePartners, ...basePartners];
 
   return (
     <section className="partners-section">
