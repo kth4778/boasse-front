@@ -1,218 +1,206 @@
 .info-section {
-  padding: 120px 0;
-  background-color: #1e2f23; /* ProductSection과 동일한 숲색 배경 */
-  color: #fff; /* 기본 텍스트 색상 흰색 */
-}
-
-/* Header Styles */
-.info-sub-header {
-  font-size: 0.9rem;
-  font-weight: 800;
-  color: #a8b2a8; /* 연한 녹회색으로 변경 */
-  letter-spacing: 1px;
-  margin-bottom: 10px;
-  text-transform: uppercase;
-}
-
-.info-main-header {
-  font-size: 2.5rem;
-  font-weight: 800;
-  color: #ffffff; /* 흰색으로 변경 */
-  margin-bottom: 50px;
-}
-
-/* Tab Navigation Styles */
-.info-tabs-wrapper {
   position: relative;
-  z-index: 10;
-  margin-bottom: 40px !important; /* 간격 조정 */
-}
-
-.info-tab-item {
+  width: 100%;
+  height: 100vh; /* 고정 섹션이므로 100vh 필수 */
   background-color: #fff;
-  border-radius: 15px; /* 조금 더 둥글게 */
-  padding: 20px;
+  overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+/* 전체 컨테이너 */
+.info-container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  max-width: 1600px;
+  padding: 0 5vw;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 상단 헤더 (Business Divisions) - 고정 */
+.info-header {
+  position: absolute;
+  top: 50px; /* 헤더 높이 고려 */
+  left: 5vw;
+  z-index: 10;
+  width: 100%;
+}
+
+.info-top-label {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 5px;
+}
+
+.info-main-title {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #111;
+  line-height: 1.2;
+}
+
+/* 우측 상단 네비게이션 리스트 */
+.info-nav-list {
+  position: absolute;
+  top: 50px;
+  right: 5vw;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: flex-end;
+}
+
+.info-nav-item {
+  font-size: 1rem;
+  font-weight: 400;
+  color: #ccc;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.2); /* 그림자 진하게 */
-  position: relative;
+}
+
+.info-nav-item.active {
+  color: #111;
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+/* 메인 컨텐츠 영역 (텍스트 + 이미지) */
+.info-content-wrapper {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  width: 100%;
   height: 100%;
-  color: #333; /* 탭 내부 글씨는 검은색 */
+  position: relative;
+  padding-top: 80px; /* 헤더 공간 확보 */
 }
 
-.info-tab-item:hover {
-  transform: translateY(-5px);
-  background-color: #f0f0f0;
-}
-
-.info-tab-item.active {
-  background-color: #051937; /* 활성 탭: 짙은 남색 */
-  color: #fff;
-  transform: translateY(-5px);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
-}
-
-.tab-icon {
-  margin-right: 15px;
+/* --- 좌측 텍스트 영역 --- */
+.info-text-area {
+  flex: 0 0 40%;
+  height: 400px; /* 텍스트들이 겹쳐있을 공간 */
+  position: relative;
+  z-index: 50; /* 이미지보다 높게 설정하여 겹침 방지 */
   display: flex;
   align-items: center;
 }
 
-.tab-title {
-  font-size: 1.1rem;
-  font-weight: 700;
-}
-
-/* 말풍선 꼬리 (Arrow) */
-.tab-arrow {
+.info-text-group {
   position: absolute;
-  bottom: -10px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 0;
-  height: 0;
-  border-left: 10px solid transparent;
-  border-right: 10px solid transparent;
-  border-top: 10px solid #051937;
-}
-
-/* Content Area Styles */
-.info-content-area {
-  background-color: #fff; /* 흰색 박스 */
-  padding: 60px; /* 내부 여백 */
-  border-radius: 40px; /* 둥근 모서리 */
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2); /* 깊은 그림자 */
-  color: #333; /* 내부 텍스트는 다시 검은색으로 */
-  margin-top: 20px;
-}
-
-/* Image Gallery */
-.main-img-wrapper {
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
   width: 100%;
+  opacity: 0; /* GSAP로 제어 */
+  visibility: hidden;
+}
+
+.solution-title {
+  font-size: 2.8rem;
+  font-weight: 800;
+  color: #000;
+  margin-bottom: 30px;
+  line-height: 1.3;
+}
+
+.solution-desc {
+  font-size: 1.1rem;
+  color: #444;
+  line-height: 1.7;
+  word-break: keep-all;
+  margin-bottom: 40px;
+  max-width: 90%;
+}
+
+.solution-link {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #111;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  border-bottom: 2px solid #111;
+  padding-bottom: 5px;
+  transition: all 0.3s;
+}
+
+.solution-link:hover {
+  color: #0056b3;
+  border-color: #0056b3;
+}
+
+/* --- 우측 이미지 영역 (3D Carousel) --- */
+.info-image-area {
+  flex: 1;
+  height: 60vh; /* 이미지 영역 높이 */
+  position: relative;
+  perspective: 1000px; /* 3D 원근감 */
+  display: flex;
+  align-items: center;
+  justify-content: center; /* 중앙 정렬 */
+}
+
+.image-card {
+  position: absolute;
+  width: 600px;
   height: 400px;
   border-radius: 20px;
   overflow: hidden;
-  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-  background-color: #f8f9fa; /* 여백 시 보일 배경색 */
+  box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+  transform-style: preserve-3d;
+  will-change: transform, opacity;
+  background-color: #f0f0f0;
+  /* GSAP로 위치/크기 제어되므로 초기값은 중요치 않음 */
 }
 
-.main-img {
+.card-img {
   width: 100%;
   height: 100%;
-  object-fit: contain; /* 잘림 방지 */
-  transition: transform 0.5s ease;
+  object-fit: cover;
 }
 
-.main-img-wrapper:hover .main-img {
-  transform: scale(1.02);
-}
-
-.thumb-img-wrapper {
-  width: 100%;
-  height: 100px;
-  border-radius: 12px;
-  overflow: hidden;
-  cursor: pointer;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-  border: 3px solid transparent; /* 기본 테두리 */
-  transition: all 0.3s ease;
-  opacity: 0.6; /* 기본 불투명도 낮춤 */
-  background-color: #f8f9fa;
-}
-
-.thumb-img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain; /* 썸네일 잘림 방지 */
-}
-
-.thumb-img-wrapper.active {
-  border-color: #051937; /* 활성 탭 색상과 일치 */
-  opacity: 1;
-  box-shadow: 0 8px 20px rgba(5, 25, 55, 0.3);
-  transform: translateY(-3px);
-}
-
-.thumb-img-wrapper:hover {
-  opacity: 1;
-}
-
-/* Details Text */
-.detail-title {
-  font-size: 2.2rem;
-  font-weight: 800;
-  color: #051937;
-  margin-bottom: 20px;
-}
-
-.detail-desc {
-  font-size: 1.1rem;
-  color: #555;
-  line-height: 1.8;
-  margin-bottom: 30px;
-}
-
-.feature-item {
-  display: flex;
-  align-items: center;
-  font-size: 1.1rem;
-  color: #333;
-  font-weight: 600;
-  margin-bottom: 15px;
-  background-color: #f8f9fa;
-  padding: 10px 15px;
-  border-radius: 10px;
-}
-
-.feature-icon {
-  color: #1e2f23; /* 체크 아이콘 색상을 배경색과 맞춤 */
-  font-size: 1.2rem;
-}
-
-.detail-btn {
-  display: inline-flex;
-  align-items: center;
-  background-color: #051937;
-  color: #fff;
-  padding: 18px 40px;
-  border-radius: 50px;
-  font-weight: 700;
-  text-decoration: none;
-  transition: all 0.3s ease;
-  margin-top: 20px;
-}
-
-.detail-btn:hover {
-  background-color: #0a2e5c;
-  transform: translateX(5px);
-  color: #fff;
-  box-shadow: 0 5px 15px rgba(5, 25, 55, 0.3);
-}
-
-/* Responsive */
+/* 모바일 대응 */
 @media (max-width: 992px) {
-  .info-tab-item {
-    padding: 15px;
-    margin-bottom: 10px;
+  .info-content-wrapper {
+    flex-direction: column;
+    justify-content: center;
+    padding-top: 120px;
+  }
+
+  .info-text-area {
+    width: 100%;
+    height: 250px; /* 텍스트 영역 높이 축소 */
+    margin-bottom: 30px;
+    flex: none;
+  }
+
+  .solution-title {
+    font-size: 2rem;
+    margin-bottom: 15px;
   }
   
-  .tab-arrow {
-    display: none;
+  .solution-desc {
+    font-size: 1rem;
+    margin-bottom: 20px;
   }
-  
-  .info-content-area {
-    padding: 30px;
-    border-radius: 24px;
+
+  .info-image-area {
+    width: 100%;
+    height: 40vh;
+    flex: none;
   }
-  
-  .main-img-wrapper {
-    height: 250px;
-  }
-  
-  .thumb-img-wrapper {
-    height: 70px;
+
+  .image-card {
+    width: 90%;
+    height: 100%;
+    max-width: 400px;
   }
 }
