@@ -34,9 +34,9 @@
 
 .desktop-nav .nav-link {
 
-  font-weight: 300; /* 두께 줄임 (500 -> 300) */
+  font-weight: 300;
 
-  font-size: 1.25rem; /* 크기도 살짝 조정 */
+  font-size: 1.25rem;
 
   color: #fff !important;
 
@@ -56,13 +56,97 @@
 
 
 
-.desktop-nav .nav-link:hover {
+/* 중앙 가로지르는 녹색 선 */
 
-  opacity: 0.7;
 
-  font-weight: 400; /* 호버 시 약간 선명하게 */
+
+.desktop-nav .nav-link::after {
+
+
+
+  content: '';
+
+
+
+  position: absolute;
+
+
+
+  left: 0;
+
+
+
+  top: 55%;
+
+
+
+  width: 0;
+
+
+
+  height: 2px; /* 두께 줄임 (8px -> 2px) */
+
+
+
+  background-color: #2e7d32; /* 더 진한 녹색 */
+
+
+
+  transition: width 0.25s ease-out;
+
+
+
+  z-index: 1; /* 텍스트 위 또는 뒤 (취향에 따라 선택 가능, 현재는 뒤쪽 느낌) */
+
+
+
+  transform: translateY(-50%);
+
+
 
 }
+
+
+
+
+
+
+
+.desktop-nav .nav-link:hover::after {
+
+
+
+  width: 100%;
+
+
+
+}
+
+
+
+
+
+
+
+.desktop-nav .nav-link:hover {
+
+
+
+  opacity: 1;
+
+
+
+  /* font-weight, transform 관련 변화 제거 */
+
+
+
+}
+
+
+
+
+
+
 
 
 

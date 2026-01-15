@@ -63,8 +63,44 @@ const ProductCards = () => {
   ];
 
   useGSAP(() => {
-    // 애니메이션 제거: 카드 떨림 방지를 위해 정적 레이아웃으로 변경
     ScrollTrigger.refresh();
+
+    // 단일 타임라인으로 확장과 축소를 한 번에 관리
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: containerRef.current,
+        start: 'top bottom', // 아래에서 보이기 시작할 때
+        end: 'bottom top',   // 위로 완전히 사라질 때
+        scrub: 1,
+        invalidateOnRefresh: true,
+      }
+    });
+
+    tl.fromTo('.product-expand-wrapper', 
+      {
+        width: '85%',
+        maxWidth: '1400px',
+        borderRadius: '150px',
+      },
+      {
+        width: '100%',
+        maxWidth: '100%',
+        borderRadius: '0px',
+        duration: 0.5,
+        ease: 'power1.inOut'
+      }
+    )
+    .to('.product-expand-wrapper', {
+      duration: 1, // 중앙에서는 확장 상태 유지
+    })
+    .to('.product-expand-wrapper', {
+      width: '85%',
+      maxWidth: '1400px',
+      borderRadius: '150px',
+      duration: 0.5,
+      ease: 'power1.inOut'
+    });
+
   }, { scope: containerRef });
 
   return (
