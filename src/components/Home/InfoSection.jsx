@@ -1,221 +1,182 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
-import { FaArrowRight, FaCheckCircle, FaWifi, FaCogs, FaChartLine, FaLeaf } from 'react-icons/fa';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { FaArrowRight } from 'react-icons/fa';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation, Pagination, EffectCreative, Controller } from 'swiper/modules';
 import { useGSAP } from '@gsap/react';
-import './InfoSection.css';
+import gsap from 'gsap';
 
-gsap.registerPlugin(ScrollTrigger);
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+import 'swiper/css/effect-creative';
+import './InfoSection.css';
 
 const InfoSection = () => {
   const containerRef = useRef(null);
-  const contentRef = useRef(null);
-  const [activeTab, setActiveTab] = useState(1);
-  const [selectedImgIndex, setSelectedImgIndex] = useState(0); // 추가: 현재 선택된 이미지 인덱스
-  
-  // 탭 데이터 정의
-  const tabData = [
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [swiperInstance, setSwiperInstance] = useState(null);
+
+  // 데이터 정의
+  const solutions = [
     {
       id: 1,
-      tabTitle: 'Smart Sensing',
-      icon: <FaWifi size={24} />,
-      title: 'Smart Sensing System',
+      category: 'Smart Sensing',
+      title: '스마트 센싱 시스템',
       desc: '농장 내부의 온도, 습도, CO2, 광량 등 작물 생장에 필수적인 환경 데이터를 초정밀 센서로 실시간 수집합니다. 수집된 데이터는 클라우드 서버로 전송되어 정밀한 분석의 기초가 됩니다.',
-      features: [
-        '초정밀 환경 감지 센서 네트워크 구축',
-        '실시간 데이터 모니터링 및 이상 알림'
-      ],
-      // thumbnails 데이터로 mainImage를 대체하거나 연동하기 위해 수정
-      thumbnails: [
-        'https://images.unsplash.com/photo-1553406830-ef2513450d76?auto=format&w=800&q=80',
-        'https://images.unsplash.com/photo-1581092334651-ddf26d9a09d0?auto=format&w=800&q=80',
-        'https://images.unsplash.com/photo-1530893609608-32a9af3aa95c?auto=format&w=800&q=80'
-      ],
+      image: 'https://images.unsplash.com/photo-1553406830-ef2513450d76?auto=format&w=1200&q=80',
       link: '/business'
     },
     {
       id: 2,
-      tabTitle: 'Auto Control',
-      icon: <FaCogs size={24} />,
-      title: 'Remote Control System',
+      category: 'Auto Control',
+      title: '원격 제어 시스템',
       desc: '언제 어디서나 스마트폰과 PC를 통해 농장 설비를 원격으로 제어할 수 있습니다. 천창 개폐, 관수, 냉난방 등을 자동화하여 노동력을 절감하고 최적의 생육 환경을 유지합니다.',
-      features: [
-        '24시간 원격 제어 및 자동화 시스템',
-        '복합 환경 제어 알고리즘 탑재'
-      ],
-      thumbnails: [
-        'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&w=800&q=80',
-        'https://images.unsplash.com/photo-1581094288338-2314dddb7ece?auto=format&w=800&q=80',
-        'https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?auto=format&w=800&q=80'
-      ],
+      image: 'https://images.unsplash.com/photo-1581094288338-2314dddb7ece?auto=format&w=1200&q=80',
       link: '/business'
     },
     {
       id: 3,
-      tabTitle: 'Data Analysis',
-      icon: <FaChartLine size={24} />,
-      title: 'Growth Data Analysis',
+      category: 'Data Analysis',
+      title: '생육 데이터 분석',
       desc: '축적된 빅데이터를 AI가 분석하여 작물별 최적의 생육 레시피를 제공합니다. 생산량 예측, 병해충 예방 등 데이터 기반의 의사결정을 지원하여 농가 소득 증대에 기여합니다.',
-      features: [
-        '빅데이터 기반 작물 생육 정밀 분석',
-        'AI 예측 모델링을 통한 생산성 향상'
-      ],
-      thumbnails: [
-        'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&w=800&q=80',
-        'https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?auto=format&w=800&q=80',
-        'https://images.unsplash.com/photo-1589254065878-42c9da997008?auto=format&w=800&q=80'
-      ],
+      image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&w=1200&q=80',
       link: '/business'
     },
     {
       id: 4,
-      tabTitle: 'Green Energy',
-      icon: <FaLeaf size={24} />,
-      title: 'Eco-Friendly Energy',
+      category: 'Green Energy',
+      title: '친환경 에너지 솔루션',
       desc: '지열, 태양광 등 신재생 에너지를 활용한 저탄소 에너지 솔루션을 제공합니다. 에너지 비용을 절감하고 탄소 중립을 실현하여 지속 가능한 미래 농업을 만들어갑니다.',
-      features: [
-        '신재생 에너지 융복합 솔루션',
-        '에너지 효율 최적화 및 탄소 저감'
-      ],
-      thumbnails: [
-        'https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?auto=format&w=800&q=80',
-        'https://images.unsplash.com/photo-1497435334941-8c899ee7e8e9?auto=format&w=800&q=80',
-        'https://images.unsplash.com/photo-1466692476868-aef1dfb1e735?auto=format&w=800&q=80'
-      ],
+      image: 'https://images.unsplash.com/photo-1466692476868-aef1dfb1e735?auto=format&w=1200&q=80',
       link: '/business'
     }
   ];
 
-  const currentData = tabData.find(item => item.id === activeTab);
+  const activeSolution = solutions[activeIndex];
 
-  // 탭 변경 시 애니메이션 효과 및 선택 이미지 초기화
-  useEffect(() => {
-    setSelectedImgIndex(0); // 탭이 바뀌면 첫 번째 이미지로 초기화
-    if (contentRef.current) {
-      gsap.fromTo(contentRef.current,
-        { opacity: 0, y: 20 },
-        { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' }
-      );
-    }
-  }, [activeTab]);
-
-  // GSAP: 확장 애니메이션 (박스 -> 전면 -> 박스)
+  // GSAP: 섹션 진입 시 텍스트 애니메이션
   useGSAP(() => {
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: containerRef.current,
-        start: 'top 95%',
-        end: 'bottom 5%',
-        scrub: 1.3,         // 관성 감소 (스크롤에 더 빠르게 반응)
-        invalidateOnRefresh: true,
-      }
-    });
-
-    tl.fromTo('.info-expand-wrapper', 
-      {
-        width: '85%',
-        maxWidth: '1400px',
-        borderRadius: '150px',
-      },
-      {
-        width: '100%',
-        maxWidth: '100%',
-        borderRadius: '0px',
-        duration: 0.23,     // 확장 속도 1.5배 상향 (0.35 -> 0.23)
-        ease: 'power1.inOut',
-      }
-    )
-    .to('.info-expand-wrapper', {
-      duration: 0.54,        // 중간 유지 구간 비중 확대
-    })
-    .to('.info-expand-wrapper', {
-      width: '85%',
-      maxWidth: '1400px',
-      borderRadius: '150px',
-      duration: 0.23,     // 축소 속도 1.5배 상향 (0.35 -> 0.23)
-      ease: 'power1.inOut',
-    });
+    gsap.fromTo('.info-text-content', 
+      { opacity: 0, y: 30 },
+      { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out', scrollTrigger: { trigger: containerRef.current, start: 'top 80%' } }
+    );
   }, { scope: containerRef });
+
+  // 슬라이드 변경 핸들러
+  const handleSlideChange = (swiper) => {
+    setActiveIndex(swiper.activeIndex);
+    // 텍스트 변경 시 깜빡임 효과
+    gsap.fromTo('.info-text-anim',
+      { opacity: 0, y: 10 },
+      { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' }
+    );
+  };
+
+  const handleNavClick = (index) => {
+    if (swiperInstance) {
+      swiperInstance.slideTo(index);
+    }
+  };
 
   return (
     <section className="info-section" ref={containerRef}>
-      <div className="info-expand-wrapper">
-        <Container>
-          {/* Header */}
-          <div className="text-center mb-5">
-            <h4 className="info-sub-header">ABOUT OUR TECHNOLOGIES</h4>
-            <h2 className="info-main-header">BOAS-SE 핵심 솔루션</h2>
-          </div>
+      <Container fluid className="px-lg-5">
+        <Row className="mb-5 align-items-end info-header-row">
+          <Col lg={4} className="mb-4 mb-lg-0">
+            <h4 className="info-top-label">Business Divisions</h4>
+            <h2 className="info-main-title">BOAS-SE<br />핵심 솔루션</h2>
+          </Col>
+          <Col lg={8} className="d-flex justify-content-lg-end align-items-center">
+             <div className="info-nav-list">
+               {solutions.map((sol, idx) => (
+                 <div 
+                  key={sol.id} 
+                  className={`info-nav-item ${activeIndex === idx ? 'active' : ''}`}
+                  onClick={() => handleNavClick(idx)}
+                 >
+                   {activeIndex === idx && <span className="arrow-indicator">→</span>}
+                   <span className="nav-text">{sol.category}</span>
+                 </div>
+               ))}
+             </div>
+          </Col>
+        </Row>
 
-          {/* Tab Navigation */}
-          <div className="info-tabs-wrapper mb-5">
-            <Row className="g-3 justify-content-center">
-              {tabData.map((tab) => (
-                <Col key={tab.id} lg={3} md={6} sm={6}>
-                  <div 
-                    className={`info-tab-item ${activeTab === tab.id ? 'active' : ''}`}
-                    onClick={() => setActiveTab(tab.id)}
-                  >
-                    <div className="tab-icon">{tab.icon}</div>
-                    <span className="tab-title">{tab.tabTitle}</span>
-                    {/* 말풍선 꼬리 (Active 시 표시) */}
-                    {activeTab === tab.id && <div className="tab-arrow"></div>}
+        <Row className="align-items-stretch content-row">
+          {/* Left: Text Content */}
+          <Col lg={4} className="d-flex flex-column justify-content-center pe-lg-5 mb-5 mb-lg-0 info-text-col">
+            <div className="info-text-content info-text-anim">
+              <h3 className="solution-title mb-4">{activeSolution.title}</h3>
+              <p className="solution-desc mb-5">{activeSolution.desc}</p>
+              <a href={activeSolution.link} className="solution-link">
+                자세히 보기 <FaArrowRight className="ms-2" />
+              </a>
+            </div>
+          </Col>
+
+          {/* Right: Swiper Slider */}
+          <Col lg={8} className="ps-lg-0 info-slider-col">
+            <Swiper
+              onSwiper={setSwiperInstance}
+              onSlideChange={handleSlideChange}
+              modules={[Navigation, Pagination, EffectCreative, Controller]}
+              spaceBetween={30}
+              slidesPerView={1.5} // 중요: 다음/이전 슬라이드가 보이도록 설정
+              centeredSlides={true} // 활성 슬라이드를 가운데(혹은 왼쪽 정렬 제어)
+              grabCursor={true}
+              effect={'creative'}
+              creativeEffect={{
+                limitProgress: 2, // 렌더링 최적화
+                prev: {
+                  // 이전 슬라이드: 왼쪽으로 이동하면서 살짝 보임, 스케일 줄임, 어둡게
+                  translate: ['-55%', 0, -200], // [x, y, z]
+                  scale: 0.9,
+                  opacity: 0.6,
+                  origin: 'right center', // 오른쪽 기준 정렬
+                },
+                next: {
+                  // 다음 슬라이드: 오른쪽에서 대기, 약간 겹침
+                  translate: ['60%', 0, 0], 
+                  scale: 1,
+                  opacity: 1,
+                  origin: 'left center',
+                  shadow: true,
+                },
+              }}
+              className="info-swiper"
+              breakpoints={{
+                // 모바일에서는 하나씩
+                320: {
+                  slidesPerView: 1,
+                  effect: 'slide', // 모바일은 일반 슬라이드
+                  spaceBetween: 20
+                },
+                992: {
+                  slidesPerView: 1.6, // 데스크탑 비율
+                  spaceBetween: -50, // 겹침 효과를 위해 음수 마진 활용 가능 (creative effect와 조합)
+                }
+              }}
+            >
+              {solutions.map((sol) => (
+                <SwiperSlide key={sol.id} className="info-slide">
+                  <div className="slide-img-wrapper">
+                    <img src={sol.image} alt={sol.title} className="slide-img" />
+                    <div className="slide-overlay"></div>
                   </div>
-                </Col>
+                </SwiperSlide>
               ))}
-            </Row>
-          </div>
-
-          {/* Content Area */}
-          <div className="info-content-area" ref={contentRef}>
-            <Row className="align-items-center">
-              {/* Left: Image Gallery */}
-              <Col lg={6} className="mb-4 mb-lg-0">
-                <div className="info-gallery">
-                  <div className="main-img-wrapper mb-3">
-                    {/* 선택된 인덱스의 이미지를 메인으로 표시 */}
-                    <img src={currentData.thumbnails[selectedImgIndex]} alt={currentData.title} className="main-img" />
-                  </div>
-                  <Row className="g-2">
-                    {currentData.thumbnails.map((thumb, index) => (
-                      <Col key={index} xs={4}>
-                        <div 
-                          className={`thumb-img-wrapper ${selectedImgIndex === index ? 'active' : ''}`}
-                          onClick={() => setSelectedImgIndex(index)}
-                        >
-                          <img src={thumb} alt={`Thumbnail ${index + 1}`} className="thumb-img" />
-                        </div>
-                      </Col>
-                    ))}
-                  </Row>
-                </div>
-              </Col>
-
-              {/* Right: Text Info */}
-              <Col lg={6} className="ps-lg-5">
-                <div className="info-details">
-                  <h3 className="detail-title mb-4">{currentData.title}</h3>
-                  <p className="detail-desc mb-4">{currentData.desc}</p>
-                  
-                  <div className="detail-features mb-5">
-                    {currentData.features.map((feature, idx) => (
-                      <div key={idx} className="feature-item mb-2">
-                        <FaCheckCircle className="feature-icon me-2" />
-                        <span>{feature}</span>
-                      </div>
-                    ))}
-                  </div>
-
-                <a href={currentData.link} className="detail-btn">
-                  솔루션 자세히 보기 <FaArrowRight className="ms-2" />
-                </a>
-              </div>
-            </Col>
-          </Row>
-        </div>
+            </Swiper>
+            
+            {/* Custom Navigation Buttons (Optional) */}
+            <div className="swiper-custom-nav mt-4 d-flex gap-3 d-lg-none">
+                {/* 모바일용 간단 네비게이션 */}
+                <button onClick={() => swiperInstance?.slidePrev()} className="btn btn-outline-dark btn-sm">Prev</button>
+                <button onClick={() => swiperInstance?.slideNext()} className="btn btn-outline-dark btn-sm">Next</button>
+            </div>
+          </Col>
+        </Row>
       </Container>
-      </div>
     </section>
   );
 };
