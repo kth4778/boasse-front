@@ -14,68 +14,50 @@
 .product-expand-wrapper {
   width: 85%;
   max-width: 1400px;
-  margin: 0; /* flex로 정렬하므로 margin: auto 대신 0 */
+  margin: 0 auto;
   border-radius: 150px;
   background-color: #ffffff;
-  padding: 120px 0;
-  box-shadow: 0 40px 100px rgba(0, 0, 0, 0.2);
-  overflow: visible; /* 내부 Sticky 작동을 위해 hidden 제거 */
+  padding: 160px 0;
+  box-shadow: 0 20px 80px rgba(0, 0, 0, 0.12); /* 쉐도우를 조금 더 부드럽게 */
   position: relative;
   z-index: 5;
-  transform: translateZ(0);
-  transform-origin: center center; /* 추가: 중앙에서부터 확장되도록 설정 */
+  will-change: width, border-radius;
 }
 
-/* --- Right: Masonry Grid (3 Columns) --- */
+/* --- Right: Masonry Grid (3 Columns) - 세로 길이 다양화 복구 --- */
 .masonry-grid {
-  display: block; /* Masonry를 위한 Block */
-  column-count: 3; /* 3열 배치 */
-  column-gap: 20px;
+  display: block;
+  column-count: 3;
+  column-gap: 25px;
   padding-bottom: 2rem;
-  
-  /* 그리드 전체 떨림 방지 */
-  transform: translateZ(0);
 }
 
 .masonry-item {
   position: relative;
-  border-radius: 20px; /* 카드 둥글기 */
+  border-radius: 24px;
   overflow: hidden;
   text-decoration: none;
   color: #fff;
-  
-  /* Masonry 핵심 */
-  display: inline-block;
+  display: inline-block; /* Masonry 필수 */
   width: 100%;
-  margin-bottom: 20px; /* 아래 여백 */
+  margin-bottom: 25px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+  transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
   
-  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-  transition: transform 0.4s ease;
-  
-  /* 강력한 떨림 방지 */
-  -webkit-transform: translateZ(0);
-  transform: translateZ(0);
+  /* 떨림 방지 최소한의 장치 */
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
-  perspective: 1000px;
+  transform: translateZ(0);
 }
 
 .masonry-item:hover {
-  transform: translateY(-8px);
+  transform: translateY(-10px);
 }
 
-/* 높이 다양화 (지그재그) - 전체적으로 세로 길이 확장 */
-.masonry-item.tall {
-  height: 600px;
-}
-
-.masonry-item.medium {
-  height: 480px;
-}
-
-.masonry-item.short {
-  height: 350px;
-}
+/* 높이 다양화 (확실하게 차이 부여) */
+.masonry-item.tall { height: 650px; }
+.masonry-item.medium { height: 480px; }
+.masonry-item.short { height: 380px; }
 
 /* 배경 이미지 */
 .masonry-bg {
@@ -149,8 +131,8 @@
   /* CSS Sticky: 가장 자연스럽고 심플한 고정 */
   position: -webkit-sticky;
   position: sticky;
-  top: 120px; /* 상단 여백 */
-  align-self: flex-start; /* 중요: 부모 높이 내에서 상단 고정 */
+  top: 150px; /* 헤더 높이를 고려하여 여유 있게 설정 */
+  align-self: flex-start;
   
   height: auto; 
   min-height: 350px;
@@ -158,10 +140,10 @@
   box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
   z-index: 10;
   
-  /* 하드웨어 가속 (떨림 방지용으로만 유지) */
-  -webkit-backface-visibility: hidden;
+  /* 하드웨어 가속 및 떨림 방지 */
+  will-change: transform, top;
+  transform: translate3d(0, 0, 0);
   backface-visibility: hidden;
-  transform: translateZ(0);
 }
 
 /* Title Card 내부 텍스트 스타일은 유지 또는 미세 조정 */
