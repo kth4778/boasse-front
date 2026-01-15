@@ -9,6 +9,8 @@ const NoticeList = () => {
   const [pagination, setPagination] = useState({});
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(false);
+  const [searchKeyword, setSearchKeyword] = useState('');
+  const [searchType, setSearchType] = useState('title');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -25,13 +27,21 @@ const NoticeList = () => {
       }
     } catch (error) {
       console.error('Failed to fetch notices:', error);
-      // API call failed, no mock data fallback
       setNotices([]);
       setPagination({ totalPages: 0, currentPage: 1 });
     } finally {
       setLoading(false);
     }
   };
+
+  // 임시 필터링 로직 (프론트엔드 내에서 처리)
+  const filteredNotices = notices.filter((notice) => {
+    if (!searchKeyword) return true;
+    const keyword = searchKeyword.toLowerCase();
+    if (searchType === 'title') return notice.title.toLowerCase().includes(keyword);
+    if (searchType === 'author') return notice.author.toLowerCase().includes(keyword);
+    return notice.title.toLowerCase().includes(keyword) || notice.author.toLowerCase().includes(keyword);
+  });
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -53,14 +63,36 @@ const NoticeList = () => {
 
       <Container className="notice-content py-5">
         <div className="notice-list-container">
-          <div className="d-flex justify-content-between align-items-center mb-5">
+          <div className="d-flex flex-wrap justify-content-between align-items-center mb-5 gap-3">
             <p className="mb-0 text-muted">총 <strong>{pagination.totalCount || notices.length}</strong>건의 게시물이 있습니다.</p>
-            <Button 
-              className="btn-primary-custom"
-              onClick={() => navigate('/notice/write')}
-            >
-              새 글 작성하기
-            </Button>
+            
+            {/* 검색창 영역 */}
+            <div className="d-flex gap-2 notice-search-bar">
+              <select 
+                className="form-select" 
+                style={{ width: '100px' }}
+                value={searchType}
+                onChange={(e) => setSearchType(e.target.value)}
+              >
+                <option value="title">제목</option>
+                <option value="author">작성자</option>
+                <option value="all">전체</option>
+              </select>
+              <input 
+                type="text" 
+                className="form-control" 
+                placeholder="검색어를 입력하세요." 
+                style={{ width: '250px' }}
+                value={searchKeyword}
+                onChange={(e) => setSearchKeyword(e.target.value)}
+              />
+              <Button 
+                className="btn-primary-custom"
+                onClick={() => navigate('/notice/write')}
+              >
+                새 글 작성하기
+              </Button>
+            </div>
           </div>
 
           <Table hover responsive className="notice-table">
@@ -74,7 +106,7 @@ const NoticeList = () => {
               </tr>
             </thead>
             <tbody>
-              {notices.map((notice) => (
+              {filteredNotices.map((notice) => (
                 <tr key={notice.id} onClick={() => navigate(`/notice/${notice.id}`)} style={{ cursor: 'pointer' }}>
                   <td>{notice.id}</td>
                   <td className="text-start">
@@ -86,9 +118,11 @@ const NoticeList = () => {
                   <td>{notice.viewCount}</td>
                 </tr>
               ))}
-              {notices.length === 0 && !loading && (
+              {filteredNotices.length === 0 && (
                 <tr>
-                  <td colSpan="5" className="py-5 text-center text-muted">등록된 공지사항이 없습니다.</td>
+                  <td colSpan="5" className="py-5 text-center text-muted">
+                    {searchKeyword ? `'${searchKeyword}'에 대한 검색 결과가 없습니다.` : '등록된 공지사항이 없습니다.'}
+                  </td>
                 </tr>
               )}
             </tbody>

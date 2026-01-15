@@ -30,6 +30,20 @@ paths:
             type: integer
             default: 10
           description: 페이지당 조회 개수
+        - name: keyword
+          in: query
+          required: false
+          schema:
+            type: string
+          description: 검색어
+        - name: searchType
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [title, content, author, all]
+            default: all
+          description: 검색 범위 (제목, 내용, 작성자, 전체)
       responses:
         '200':
           description: 성공적으로 목록을 조회함
