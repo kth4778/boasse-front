@@ -10,36 +10,34 @@
   justify-content: center;
 }
 
-/* 애니메이션 초기 상태 (박스 형태) */
+/* 애니메이션 제거 후 정적 상태 (전체 너비) */
 .product-expand-wrapper {
-  width: 85%;
-  max-width: 1400px;
-  margin: 0; /* flex로 정렬하므로 margin: auto 대신 0 */
-  border-radius: 150px;
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  border-radius: 0; /* 둥근 모서리 제거하여 떨림 방지 */
   background-color: #ffffff;
   padding: 120px 0;
-  box-shadow: 0 40px 100px rgba(0, 0, 0, 0.2);
-  overflow: visible; /* 내부 Sticky 작동을 위해 hidden 제거 */
   position: relative;
   z-index: 5;
-  transform: translateZ(0);
-  transform-origin: center center; /* 추가: 중앙에서부터 확장되도록 설정 */
 }
 
 /* --- Right: Masonry Grid (3 Columns) --- */
 .masonry-grid {
-  display: block; /* Masonry를 위한 Block */
-  column-count: 3; /* 3열 배치 */
+  display: block;
+  column-count: 3;
   column-gap: 20px;
   padding-bottom: 2rem;
   
   /* 그리드 전체 떨림 방지 */
-  transform: translateZ(0);
+  will-change: transform;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
 }
 
 .masonry-item {
   position: relative;
-  border-radius: 20px; /* 카드 둥글기 */
+  border-radius: 20px;
   overflow: hidden;
   text-decoration: none;
   color: #fff;
@@ -47,21 +45,16 @@
   /* Masonry 핵심 */
   display: inline-block;
   width: 100%;
-  margin-bottom: 20px; /* 아래 여백 */
+  margin-bottom: 20px;
   
   box-shadow: 0 10px 25px rgba(0,0,0,0.1);
   transition: transform 0.4s ease;
   
   /* 강력한 떨림 방지 */
-  -webkit-transform: translateZ(0);
-  transform: translateZ(0);
+  will-change: transform;
+  transform: translate3d(0, 0, 0);
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
-  perspective: 1000px;
-}
-
-.masonry-item:hover {
-  transform: translateY(-8px);
 }
 
 /* 높이 다양화 (지그재그) - 전체적으로 세로 길이 확장 */
@@ -149,8 +142,8 @@
   /* CSS Sticky: 가장 자연스럽고 심플한 고정 */
   position: -webkit-sticky;
   position: sticky;
-  top: 120px; /* 상단 여백 */
-  align-self: flex-start; /* 중요: 부모 높이 내에서 상단 고정 */
+  top: 150px; /* 헤더 높이를 고려하여 여유 있게 설정 */
+  align-self: flex-start;
   
   height: auto; 
   min-height: 350px;
@@ -158,10 +151,10 @@
   box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
   z-index: 10;
   
-  /* 하드웨어 가속 (떨림 방지용으로만 유지) */
-  -webkit-backface-visibility: hidden;
+  /* 하드웨어 가속 및 떨림 방지 */
+  will-change: transform, top;
+  transform: translate3d(0, 0, 0);
   backface-visibility: hidden;
-  transform: translateZ(0);
 }
 
 /* Title Card 내부 텍스트 스타일은 유지 또는 미세 조정 */

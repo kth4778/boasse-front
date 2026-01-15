@@ -63,45 +63,8 @@ const ProductCards = () => {
   ];
 
   useGSAP(() => {
+    // 애니메이션 제거: 카드 떨림 방지를 위해 정적 레이아웃으로 변경
     ScrollTrigger.refresh();
-
-    // 1. 컨테이너 확장 애니메이션
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: containerRef.current,
-        start: 'top 95%',
-        end: 'bottom 5%',
-        scrub: 2,
-        invalidateOnRefresh: true,
-      }
-    });
-
-    tl.fromTo('.product-expand-wrapper', 
-      {
-        width: '85%',
-        maxWidth: '1400px',
-        borderRadius: '150px',
-      },
-      {
-        width: '100%',
-        maxWidth: '100%',
-        borderRadius: '0px',
-        duration: 0.35,
-        ease: 'power1.inOut',
-      }
-    )
-    .to('.product-expand-wrapper', { duration: 0.3 })
-    .to('.product-expand-wrapper', {
-      width: '85%',
-      maxWidth: '1400px',
-      borderRadius: '150px',
-      duration: 0.35,
-      ease: 'power1.inOut',
-    });
-
-    // 2. 부드러운 Sticky 효과 (GSAP 제거 -> CSS position: sticky 사용)
-    // 복잡한 JS 로직 없이 CSS만으로 가장 자연스러운 스크롤 구현
-
   }, { scope: containerRef });
 
   return (

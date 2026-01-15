@@ -45,11 +45,11 @@
   align-items: center;
   border-bottom: 1px solid rgba(255,255,255,0.15);
   padding-bottom: 15px;
-  transition: border-color 0.3s;
+  transition: border-color 0.15s ease-out; /* 0.3s -> 0.15s */
 }
 
 .custom-input-group:focus-within {
-  border-bottom-color: var(--primary-color); /* 포커스 시 브랜드 컬러 */
+  border-bottom-color: #fff; /* 더 명확한 시각적 피드백 */
 }
 
 .input-label {
@@ -67,11 +67,12 @@
   width: 100%;
   padding: 5px 15px;
   font-size: 1.05rem;
+  transition: transform 0.15s ease-out;
 }
 
 .custom-input:focus {
   outline: none;
-  background: transparent;
+  background: rgba(255, 255, 255, 0.05); /* 즉각적인 배경 변화 */
   color: #fff;
 }
 
@@ -89,23 +90,27 @@
 }
 
 .submit-btn {
-  background-color: #fff; /* 버튼 배경 흰색 */
-  color: #1A2E1A; /* 글자 딥 그린 */
+  background-color: #fff;
+  color: #1A2E1A;
   border: none;
   padding: 18px 50px;
   font-size: 1.1rem;
   font-weight: 700;
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  border-radius: 50px; /* 둥근 버튼 */
+  transition: all 0.15s cubic-bezier(0.23, 1, 0.32, 1); /* 트랜지션 단축 */
+  border-radius: 50px;
   box-shadow: 0 10px 20px rgba(0,0,0,0.2);
 }
 
 .submit-btn:hover {
-  background-color: var(--primary-color); /* 호버 시 브랜드 컬러 */
-  color: #fff;
-  transform: translateY(-3px);
+  background-color: #fff;
+  color: #4caf50;
+  transform: translateY(-2px) scale(1.02); /* 즉각적이고 탄력적인 움직임 */
   box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+}
+
+.submit-btn:active {
+  transform: translateY(0) scale(0.98); /* 클릭 시 즉각적인 눌림 효과 */
 }
 
 /* 우측 정보 텍스트 */

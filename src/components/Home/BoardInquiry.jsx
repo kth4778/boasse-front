@@ -9,42 +9,47 @@ gsap.registerPlugin(ScrollTrigger);
 
 const BoardInquiry = () => {
   const wrapperRef = useRef(null);
+  const [submitting, setSubmitting] = React.useState(false);
 
   useGSAP(() => {
-    // 문의하기 섹션 애니메이션 (배경 효과 포함)
+    // 문의하기 섹션 애니메이션 (등장은 빠르게, 텍스트는 우아하게)
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: '.contact-dark-section',
-        start: 'top 70%',
+        start: 'top 98%', // 화면 하단에 살짝만 닿아도 즉시 시작
         toggleActions: 'play none none reverse'
       }
     });
 
     tl.from('.contact-dark-section', {
-      clipPath: 'inset(100% 0% 0% 0%)', // 아래에서 위로 커튼 열리듯 등장
-      duration: 0.8, // 1.2 -> 0.8로 단축
-      ease: 'power4.inOut'
-    })
-    .from('.contact-bg-pattern', {
-      scale: 1.2,
-      rotation: 5,
-      opacity: 0,
-      duration: 1.0, // 1.5 -> 1.0으로 단축
+      clipPath: 'inset(100% 0% 0% 0%)',
+      duration: 0.6,
       ease: 'power2.out'
-    }, '<') // 섹션 등장과 동시에 배경 애니메이션 시작
-    .from('.contact-content-animate', { // 내부 컨텐츠들
-      y: 30,
+    })
+    .from('.contact-content-animate', {
+      y: 40,
       opacity: 0,
-      duration: 0.5, // 0.8 -> 0.5로 단축
-      stagger: 0.1 // 0.2 -> 0.1로 단축
-    }, '-=0.3'); // 시작 타이밍 미세 조정
+      duration: 0.8, // 속도를 0.3 -> 0.8로 늦춰 우아하게
+      stagger: 0.15, // 간격을 0.05 -> 0.15로 늘려 순차적으로 올라오는 느낌 강조
+      ease: 'power3.out'
+    }, '-=0.3');
 
   }, { scope: wrapperRef });
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setSubmitting(true);
+    
+    // 즉각적인 피드백을 위해 0.8초 후 알림 표시 (실제 API 연동 시 이 부분을 수정)
+    setTimeout(() => {
+      alert('문의가 접수되었습니다. 빠르게 확인 후 답변드리겠습니다.');
+      setSubmitting(false);
+      e.target.reset();
+    }, 800);
+  };
+
   return (
     <div className="board-inquiry-wrapper" ref={wrapperRef}>
-      
-      {/* 문의하기 (Dark Section) - Notice 영역 제거됨 */}
       <section className="contact-dark-section">
         <div className="contact-bg-pattern"></div>
         <Container style={{ position: 'relative', zIndex: 2 }}>
@@ -52,7 +57,7 @@ const BoardInquiry = () => {
             {/* 좌측: 문의 폼 */}
             <Col lg={6}>
               <h3 className="dark-section-title">문의</h3>
-              <form>
+              <form onSubmit={handleSubmit}>
                 <div className="custom-input-group">
                   <label className="input-label">Name *</label>
                   <input type="text" className="custom-input" placeholder="이름을 입력해 주세요." />

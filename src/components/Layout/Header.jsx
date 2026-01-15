@@ -13,7 +13,6 @@ const Header = () => {
   const location = useLocation();
   const [isExpanded, setIsExpanded] = useState(true);
   const [isTop, setIsTop] = useState(true);
-  const [showOffcanvas, setShowOffcanvas] = useState(false);
   
   const containerRef = useRef();
   const lastScrollY = useRef(0);
@@ -46,15 +45,12 @@ const Header = () => {
     });
   }, { scope: containerRef, dependencies: [isExpanded] });
 
-  const handleClose = () => setShowOffcanvas(false);
-  const handleShow = () => setShowOffcanvas(true);
-
-  const headerClass = `header-wrapper ${!isTop ? 'scrolled' : ''}`;
+  const headerClass = `header-wrapper ${(!isTop || location.pathname !== '/') ? 'scrolled' : ''}`;
 
   return (
     <header className={headerClass} ref={containerRef}>
       <Navbar expand={false} className="py-0">
-        <Container>
+        <Container fluid className="px-lg-5">
           <Navbar.Brand as={Link} to="/" className="d-flex align-items-center logo-container">
             <img 
               src={logo}
@@ -63,33 +59,18 @@ const Header = () => {
             />
           </Navbar.Brand>
 
-          <Nav className="ms-auto d-none d-lg-flex flex-row desktop-nav me-4">
+          <Nav className="ms-auto d-flex flex-row desktop-nav align-items-center">
             <Nav.Link as={Link} to="/about" className="nav-item-custom">About</Nav.Link>
             <Nav.Link as={Link} to="/business" className="nav-item-custom">Business</Nav.Link>
             <Nav.Link as={Link} to="/product" className="nav-item-custom">Product</Nav.Link>
             <Nav.Link as={Link} to="/recruit" className="nav-item-custom">Recruit</Nav.Link>
             <Nav.Link as={Link} to="/notice" className="nav-item-custom">Notice</Nav.Link>
+            
+            {/* CONTACT US 버튼 */}
+            <Link to="/contact" className="contact-btn">
+              CONTACT US
+            </Link>
           </Nav>
-
-          <div className="menu-trigger visible" onClick={handleShow}>
-            <FaBars size={24} color="#fff" />
-          </div>
-
-          <Offcanvas show={showOffcanvas} onHide={handleClose} placement="end" className="header-offcanvas">
-            <Offcanvas.Header closeButton>
-              <Offcanvas.Title>Menu</Offcanvas.Title>
-            </Offcanvas.Header>
-            <Offcanvas.Body>
-              <Nav className="flex-column">
-                <Nav.Link as={Link} to="/about" onClick={handleClose}>About</Nav.Link>
-                <Nav.Link as={Link} to="/business" onClick={handleClose}>Business</Nav.Link>
-                <Nav.Link as={Link} to="/product" onClick={handleClose}>Product</Nav.Link>
-                <Nav.Link as={Link} to="/recruit" onClick={handleClose}>Recruit</Nav.Link>
-                <Nav.Link as={Link} to="/notice" onClick={handleClose}>Notice</Nav.Link>
-              </Nav>
-            </Offcanvas.Body>
-          </Offcanvas>
-
         </Container>
       </Navbar>
     </header>
