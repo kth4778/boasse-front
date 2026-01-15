@@ -22,22 +22,22 @@ const BoardInquiry = () => {
 
     tl.from('.contact-dark-section', {
       clipPath: 'inset(100% 0% 0% 0%)', // 아래에서 위로 커튼 열리듯 등장
-      duration: 1.2,
+      duration: 0.8, // 1.2 -> 0.8로 단축
       ease: 'power4.inOut'
     })
     .from('.contact-bg-pattern', {
       scale: 1.2,
       rotation: 5,
       opacity: 0,
-      duration: 1.5,
+      duration: 1.0, // 1.5 -> 1.0으로 단축
       ease: 'power2.out'
     }, '<') // 섹션 등장과 동시에 배경 애니메이션 시작
     .from('.contact-content-animate', { // 내부 컨텐츠들
       y: 30,
       opacity: 0,
-      duration: 0.8,
-      stagger: 0.2
-    }, '-=0.5');
+      duration: 0.5, // 0.8 -> 0.5로 단축
+      stagger: 0.1 // 0.2 -> 0.1로 단축
+    }, '-=0.3'); // 시작 타이밍 미세 조정
 
   }, { scope: wrapperRef });
 
