@@ -1,0 +1,278 @@
+.product-detail-container {
+  padding-top: 100px;
+  min-height: 100vh;
+  background-color: #fff;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  color: #1d1d1f;
+}
+
+/* 히어로 섹션 */
+.detail-hero {
+  position: relative;
+  width: 100%;
+  height: 50vh;
+  min-height: 400px;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: flex-end;
+  margin-bottom: 2rem;
+}
+
+.detail-hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 100%);
+}
+
+.detail-hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem 3rem;
+  width: 100%;
+  color: #fff;
+}
+
+.detail-category {
+  display: inline-block;
+  padding: 0.4rem 0.8rem;
+  background-color: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50px;
+  font-weight: 600;
+  font-size: 0.85rem;
+  margin-bottom: 1rem;
+}
+
+.detail-title {
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  line-height: 1.1;
+  color: #fff;
+}
+
+.detail-short-desc {
+  font-size: 1.2rem;
+  opacity: 0.9;
+  font-weight: 400;
+  max-width: 700px;
+}
+
+/* 상세 내용 컨테이너 */
+.detail-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 4rem 2rem;
+}
+
+.detail-section-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+/* --- Bento Grid Layout --- */
+.bento-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3열 그리드 */
+  grid-template-rows: repeat(2, minmax(250px, auto));
+  gap: 1.5rem;
+  margin-bottom: 4rem;
+}
+
+.bento-card {
+  background-color: #f5f5f7;
+  border-radius: 30px;
+  padding: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  overflow: hidden;
+  position: relative;
+}
+
+.bento-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+}
+
+.card-wide { grid-column: span 2; }
+.card-tall { grid-row: span 2; }
+
+.card-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  color: #00D05E;
+}
+
+.card-label {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #86868b;
+  margin-bottom: 0.5rem;
+}
+
+.card-highlight {
+  font-size: 2.5rem;
+  font-weight: 700;
+  line-height: 1.1;
+  color: #1d1d1f;
+  margin-bottom: 0.5rem;
+}
+
+.card-desc {
+  font-size: 1.05rem;
+  font-weight: 500;
+  color: #424245;
+  line-height: 1.5;
+}
+
+.card-gradient {
+  background: linear-gradient(135deg, #e0f7fa 0%, #f1f8e9 100%);
+  position: relative;
+}
+
+.card-gradient::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(0, 208, 94, 0.1) 0%, transparent 70%);
+  animation: rotate 10s linear infinite;
+}
+
+@keyframes rotate {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* --- 상세 기능 리스트 섹션 (New) --- */
+.detail-features-section {
+  margin-top: 6rem;
+  background-color: #fbfbfd; /* 아주 연한 배경 */
+  border-radius: 30px;
+  padding: 4rem;
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,0.05); /* 테두리 대신 안쪽 그림자로 깔끔하게 */
+}
+
+.feature-list-title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 2.5rem;
+  text-align: left;
+}
+
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* 2단 리스트 */
+  gap: 2rem 4rem;
+}
+
+.feature-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.feature-icon {
+  color: #00D05E;
+  font-size: 1.5rem;
+  margin-top: 0.2rem;
+  flex-shrink: 0;
+}
+
+.feature-content h4 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: #1d1d1f;
+}
+
+.feature-content p {
+  font-size: 1rem;
+  color: #424245;
+  line-height: 1.6;
+}
+
+
+/* 버튼 그룹 */
+.detail-btn-group {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 5rem;
+}
+
+.btn-back {
+  padding: 1rem 2.5rem;
+  border-radius: 50px;
+  background-color: #f5f5f7;
+  color: #1d1d1f;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btn-back:hover {
+  background-color: #e8e8ed;
+}
+
+.btn-inquiry {
+  padding: 1rem 2.5rem;
+  border-radius: 50px;
+  background-color: #0071e3;
+  color: white;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btn-inquiry:hover {
+  background-color: #0077ed;
+}
+
+/* 반응형 */
+@media (max-width: 992px) {
+  .bento-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .card-wide, .card-tall {
+    grid-column: span 2;
+    grid-row: span 1;
+  }
+}
+
+@media (max-width: 768px) {
+  .bento-grid {
+    grid-template-columns: 1fr;
+  }
+  .card-wide, .card-tall {
+    grid-column: span 1;
+  }
+  .detail-title {
+    font-size: 2rem;
+  }
+  
+  .feature-grid {
+    grid-template-columns: 1fr; /* 모바일은 1단 */
+    gap: 2rem;
+  }
+  
+  .detail-features-section {
+    padding: 2rem;
+  }
+}
