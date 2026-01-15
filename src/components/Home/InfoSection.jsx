@@ -1,23 +1,19 @@
 import React, { useRef, useState } from 'react';
-import { Container, Row, Col } from 'react-bootstrap';
+import { Container } from 'react-bootstrap';
 import { FaArrowRight } from 'react-icons/fa';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, Pagination, EffectCreative, Controller } from 'swiper/modules';
-import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useGSAP } from '@gsap/react';
 
-import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/pagination';
-import 'swiper/css/effect-creative';
 import './InfoSection.css';
 
-const InfoSection = () => {
-  const containerRef = useRef(null);
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [swiperInstance, setSwiperInstance] = useState(null);
+gsap.registerPlugin(ScrollTrigger);
 
-  // 데이터 정의
+const InfoSection = () => {
+  const sectionRef = useRef(null);
+  const wrapperRef = useRef(null);
+  const [activeIndex, setActiveIndex] = useState(0);
+
   const solutions = [
     {
       id: 1,
@@ -53,130 +49,171 @@ const InfoSection = () => {
     }
   ];
 
-  const activeSolution = solutions[activeIndex];
-
-  // GSAP: 섹션 진입 시 텍스트 애니메이션
   useGSAP(() => {
-    gsap.fromTo('.info-text-content', 
-      { opacity: 0, y: 30 },
-      { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out', scrollTrigger: { trigger: containerRef.current, start: 'top 80%' } }
-    );
-  }, { scope: containerRef });
+    const totalSlides = solutions.length;
+    const cards = gsap.utils.toArray('.image-card');
+    const texts = gsap.utils.toArray('.info-text-group');
 
-  // 슬라이드 변경 핸들러
-  const handleSlideChange = (swiper) => {
-    setActiveIndex(swiper.activeIndex);
-    // 텍스트 변경 시 깜빡임 효과
-    gsap.fromTo('.info-text-anim',
-      { opacity: 0, y: 10 },
-      { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' }
-    );
-  };
+    // 1. 초기 상태 설정
+    // 모든 텍스트 숨김 (첫 번째만 보이게 처리할 예정이나, 타임라인에서 처리)
+    gsap.set(texts, { autoAlpha: 0, x: -50 });
+    // 첫 번째 텍스트 보이기
+    gsap.set(texts[0], { autoAlpha: 1, x: 0 });
 
-  const handleNavClick = (index) => {
-    if (swiperInstance) {
-      swiperInstance.slideTo(index);
+    // 카드 초기 위치 설정
+    // 카드 0: 중앙, 카드 1: 우측 뒤, 카드 2,3...: 더 뒤로 숨김
+    cards.forEach((card, i) => {
+      if (i === 0) {
+        gsap.set(card, { xPercent: 0, scale: 1, zIndex: 10, autoAlpha: 1 });
+      } else {
+        // 다음 카드들은 우측에 대기 (살짝 보이게)
+        gsap.set(card, { xPercent: 60 + (i * 10), scale: 0.8 - (i * 0.05), zIndex: 10 - i, autoAlpha: 1 });
+      }
+    });
+
+    // 2. ScrollTrigger 및 타임라인 생성
+    // 전체 섹션을 고정(Pin)하고, 스크롤 길이를 슬라이드 개수에 비례하게 설정
+    const scrollDuration = 3000; // 스크롤 길이
+    
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: sectionRef.current,
+        start: 'top top', // 섹션 상단이 뷰포트 상단에 닿을 때
+        end: `+=${scrollDuration}`, 
+        pin: true,
+        scrub: 1, // 부드러운 스크러빙
+        anticipatePin: 1,
+        onUpdate: (self) => {
+          // 현재 진행률에 따라 Active Index 계산 (네비게이션 용)
+          const progress = self.progress;
+          // progress 0~1 사이를 totalSlides 등분
+          // 약간의 오차 보정을 위해 Math.min 사용
+          const index = Math.min(
+            Math.floor(progress * totalSlides),
+            totalSlides - 1
+          );
+          setActiveIndex(index);
+        }
+      }
+    });
+
+    // 3. 슬라이드 전환 애니메이션 시퀀스 생성
+    // 0 -> 1 -> 2 -> 3 순서로 전환
+    for (let i = 0; i < totalSlides - 1; i++) {
+      const currentCard = cards[i];
+      const nextCard = cards[i + 1];
+      
+      const currentText = texts[i];
+      const nextText = texts[i + 1];
+
+      // 타임라인에 순차적으로 추가
+      // Step: 현재 슬라이드 퇴장 & 다음 슬라이드 등장
+      const stepTl = gsap.timeline();
+
+      // --- 이미지 전환 ---
+      // 현재 카드: 왼쪽으로 이동하며 사라짐 (혹은 뒤로 빠짐)
+      stepTl.to(currentCard, {
+        xPercent: -120, // 왼쪽으로 완전히 빠짐
+        scale: 0.8,
+        opacity: 0, 
+        duration: 1,
+        ease: 'power1.inOut'
+      }, 0);
+
+      // 다음 카드: 중앙으로 이동하며 확대
+      stepTl.to(nextCard, {
+        xPercent: 0,
+        scale: 1,
+        opacity: 1,
+        duration: 1,
+        ease: 'power1.inOut'
+      }, 0);
+
+      // 다다음 카드들(i+2 이상)도 앞으로 조금씩 당겨오기 (3D 효과)
+      for(let j = i + 2; j < totalSlides; j++) {
+        stepTl.to(cards[j], {
+          xPercent: 60 + ((j - (i + 1)) * 10), // 한 단계씩 앞으로
+          scale: 0.8 - ((j - (i + 1)) * 0.05),
+          duration: 1,
+          ease: 'power1.inOut'
+        }, 0);
+      }
+
+      // --- 텍스트 전환 ---
+      // 요청 사항: 
+      // 이전 텍스트: 오른쪽 -> 왼쪽으로 지워짐 (x: 0 -> -50, alpha: 1 -> 0)
+      stepTl.to(currentText, {
+        x: -50,
+        autoAlpha: 0,
+        duration: 0.5,
+        ease: 'power1.in'
+      }, 0);
+
+      // 다음 텍스트: 왼쪽 -> 오른쪽으로 나타남 (from x: -50, alpha: 0 -> x: 0, alpha: 1)
+      stepTl.fromTo(nextText, {
+        x: -50,
+        autoAlpha: 0
+      }, {
+        x: 0,
+        autoAlpha: 1,
+        duration: 0.5,
+        ease: 'power1.out'
+      }, 0.4); // 텍스트가 겹치지 않게 약간 늦게 시작
+
+      // 메인 타임라인에 추가 (각 단계 사이에 약간의 텀을 줄 수도 있음)
+      tl.add(stepTl);
     }
-  };
+
+  }, { scope: sectionRef });
 
   return (
-    <section className="info-section" ref={containerRef}>
-      <Container fluid className="px-lg-5">
-        <Row className="mb-5 align-items-end info-header-row">
-          <Col lg={4} className="mb-4 mb-lg-0">
-            <h4 className="info-top-label">Business Divisions</h4>
-            <h2 className="info-main-title">BOAS-SE<br />핵심 솔루션</h2>
-          </Col>
-          <Col lg={8} className="d-flex justify-content-lg-end align-items-center">
-             <div className="info-nav-list">
-               {solutions.map((sol, idx) => (
-                 <div 
-                  key={sol.id} 
-                  className={`info-nav-item ${activeIndex === idx ? 'active' : ''}`}
-                  onClick={() => handleNavClick(idx)}
-                 >
-                   {activeIndex === idx && <span className="arrow-indicator">→</span>}
-                   <span className="nav-text">{sol.category}</span>
-                 </div>
-               ))}
-             </div>
-          </Col>
-        </Row>
+    <section className="info-section" ref={sectionRef}>
+      <div className="info-container" ref={wrapperRef}>
+        
+        {/* 고정 헤더 영역 */}
+        <div className="info-header">
+          <h4 className="info-top-label">Business Divisions</h4>
+          <h2 className="info-main-title">BOAS-SE<br />핵심 솔루션</h2>
+        </div>
 
-        <Row className="align-items-stretch content-row">
-          {/* Left: Text Content */}
-          <Col lg={4} className="d-flex flex-column justify-content-center pe-lg-5 mb-5 mb-lg-0 info-text-col">
-            <div className="info-text-content info-text-anim">
-              <h3 className="solution-title mb-4">{activeSolution.title}</h3>
-              <p className="solution-desc mb-5">{activeSolution.desc}</p>
-              <a href={activeSolution.link} className="solution-link">
-                자세히 보기 <FaArrowRight className="ms-2" />
-              </a>
-            </div>
-          </Col>
-
-          {/* Right: Swiper Slider */}
-          <Col lg={8} className="ps-lg-0 info-slider-col">
-            <Swiper
-              onSwiper={setSwiperInstance}
-              onSlideChange={handleSlideChange}
-              modules={[Navigation, Pagination, EffectCreative, Controller]}
-              spaceBetween={30}
-              slidesPerView={1.5} // 중요: 다음/이전 슬라이드가 보이도록 설정
-              centeredSlides={true} // 활성 슬라이드를 가운데(혹은 왼쪽 정렬 제어)
-              grabCursor={true}
-              effect={'creative'}
-              creativeEffect={{
-                limitProgress: 2, // 렌더링 최적화
-                prev: {
-                  // 이전 슬라이드: 왼쪽으로 이동하면서 살짝 보임, 스케일 줄임, 어둡게
-                  translate: ['-55%', 0, -200], // [x, y, z]
-                  scale: 0.9,
-                  opacity: 0.6,
-                  origin: 'right center', // 오른쪽 기준 정렬
-                },
-                next: {
-                  // 다음 슬라이드: 오른쪽에서 대기, 약간 겹침
-                  translate: ['60%', 0, 0], 
-                  scale: 1,
-                  opacity: 1,
-                  origin: 'left center',
-                  shadow: true,
-                },
-              }}
-              className="info-swiper"
-              breakpoints={{
-                // 모바일에서는 하나씩
-                320: {
-                  slidesPerView: 1,
-                  effect: 'slide', // 모바일은 일반 슬라이드
-                  spaceBetween: 20
-                },
-                992: {
-                  slidesPerView: 1.6, // 데스크탑 비율
-                  spaceBetween: -50, // 겹침 효과를 위해 음수 마진 활용 가능 (creative effect와 조합)
-                }
-              }}
+        {/* 우측 상단 네비게이션 */}
+        <div className="info-nav-list">
+          {solutions.map((sol, idx) => (
+            <div 
+              key={sol.id} 
+              className={`info-nav-item ${activeIndex === idx ? 'active' : ''}`}
             >
-              {solutions.map((sol) => (
-                <SwiperSlide key={sol.id} className="info-slide">
-                  <div className="slide-img-wrapper">
-                    <img src={sol.image} alt={sol.title} className="slide-img" />
-                    <div className="slide-overlay"></div>
-                  </div>
-                </SwiperSlide>
-              ))}
-            </Swiper>
-            
-            {/* Custom Navigation Buttons (Optional) */}
-            <div className="swiper-custom-nav mt-4 d-flex gap-3 d-lg-none">
-                {/* 모바일용 간단 네비게이션 */}
-                <button onClick={() => swiperInstance?.slidePrev()} className="btn btn-outline-dark btn-sm">Prev</button>
-                <button onClick={() => swiperInstance?.slideNext()} className="btn btn-outline-dark btn-sm">Next</button>
+              {sol.category} {activeIndex === idx && '←'}
             </div>
-          </Col>
-        </Row>
-      </Container>
+          ))}
+        </div>
+
+        {/* 컨텐츠 영역 */}
+        <div className="info-content-wrapper">
+          {/* 좌측 텍스트 영역 */}
+          <div className="info-text-area">
+            {solutions.map((sol) => (
+              <div key={sol.id} className="info-text-group">
+                <h3 className="solution-title">{sol.title}</h3>
+                <p className="solution-desc">{sol.desc}</p>
+                <a href={sol.link} className="solution-link">
+                  자세히 보기 <FaArrowRight className="ms-2" />
+                </a>
+              </div>
+            ))}
+          </div>
+
+          {/* 우측 이미지 영역 (3D Carousel) */}
+          <div className="info-image-area">
+            {solutions.map((sol) => (
+              <div key={sol.id} className="image-card">
+                <img src={sol.image} alt={sol.title} className="card-img" />
+              </div>
+            ))}
+          </div>
+        </div>
+
+      </div>
     </section>
   );
 };

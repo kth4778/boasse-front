@@ -1,15 +1,33 @@
 .info-section {
-  padding: 120px 0;
+  position: relative;
+  width: 100%;
+  height: 100vh; /* 고정 섹션이므로 100vh 필수 */
   background-color: #fff;
   overflow: hidden;
-  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-/* Header Area */
-.info-header-row {
-  border-bottom: 1px solid #eee;
-  padding-bottom: 30px;
-  margin-bottom: 50px !important;
+/* 전체 컨테이너 */
+.info-container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  max-width: 1600px;
+  padding: 0 5vw;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 상단 헤더 (Business Divisions) - 고정 */
+.info-header {
+  position: absolute;
+  top: 50px; /* 헤더 높이 고려 */
+  left: 5vw;
+  z-index: 10;
+  width: 100%;
 }
 
 .info-top-label {
@@ -18,61 +36,79 @@
   color: #666;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  margin-bottom: 15px;
+  margin-bottom: 5px;
 }
 
 .info-main-title {
-  font-size: 2.5rem;
+  font-size: 2rem;
   font-weight: 800;
   color: #111;
   line-height: 1.2;
 }
 
-/* Nav List (Right Top) */
+/* 우측 상단 네비게이션 리스트 */
 .info-nav-list {
+  position: absolute;
+  top: 50px;
+  right: 5vw;
+  z-index: 10;
   display: flex;
   flex-direction: column;
   gap: 10px;
+  align-items: flex-end;
 }
 
 .info-nav-item {
-  font-size: 1.1rem;
+  font-size: 1rem;
   font-weight: 400;
-  color: #bbb;
+  color: #ccc;
   cursor: pointer;
   transition: all 0.3s ease;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end; /* 오른쪽 정렬 */
-}
-
-.info-nav-item:hover {
-  color: #666;
 }
 
 .info-nav-item.active {
   color: #111;
   font-weight: 700;
-  font-size: 1.3rem; /* 활성 항목 강조 */
+  font-size: 1.1rem;
 }
 
-.arrow-indicator {
-  margin-right: 15px;
-  font-weight: 300;
-  animation: slideRight 0.5s ease infinite alternate;
+/* 메인 컨텐츠 영역 (텍스트 + 이미지) */
+.info-content-wrapper {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  padding-top: 80px; /* 헤더 공간 확보 */
 }
 
-@keyframes slideRight {
-  from { transform: translateX(0); }
-  to { transform: translateX(5px); }
+/* --- 좌측 텍스트 영역 --- */
+.info-text-area {
+  flex: 0 0 40%;
+  height: 400px; /* 텍스트들이 겹쳐있을 공간 */
+  position: relative;
+  z-index: 5;
+  display: flex;
+  align-items: center;
 }
 
-/* Text Content (Left) */
+.info-text-group {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  width: 100%;
+  opacity: 0; /* GSAP로 제어 */
+  visibility: hidden;
+}
+
 .solution-title {
-  font-size: 2rem;
+  font-size: 2.8rem;
   font-weight: 800;
   color: #000;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
+  line-height: 1.3;
 }
 
 .solution-desc {
@@ -80,7 +116,8 @@
   color: #444;
   line-height: 1.7;
   word-break: keep-all;
-  max-width: 400px; /* 텍스트 너비 제한 */
+  margin-bottom: 40px;
+  max-width: 90%;
 }
 
 .solution-link {
@@ -100,91 +137,70 @@
   border-color: #0056b3;
 }
 
-/* Slider Area (Right) */
-.info-swiper {
-  width: 100%;
-  padding: 50px 0; /* 슬라이더 그림자 등 여백 확보 */
-  overflow: visible; /* 슬라이더가 컨테이너 밖으로 살짝 튀어나와도 보이도록 */
+/* --- 우측 이미지 영역 (3D Carousel) --- */
+.info-image-area {
+  flex: 1;
+  height: 60vh; /* 이미지 영역 높이 */
+  position: relative;
+  perspective: 1000px; /* 3D 원근감 */
+  display: flex;
+  align-items: center;
+  justify-content: center; /* 중앙 정렬 */
 }
 
-.info-slide {
-  width: 100%;
-  max-width: 600px; /* 슬라이드 최대 너비 */
-  height: 450px;
-  transition: all 0.5s ease;
-  border-radius: 20px;
-  /* overflow: hidden;  Shadow를 위해 overflow 제거 고려 */
-}
-
-.slide-img-wrapper {
-  width: 100%;
-  height: 100%;
+.image-card {
+  position: absolute;
+  width: 600px;
+  height: 400px;
   border-radius: 20px;
   overflow: hidden;
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
-  position: relative;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+  transform-style: preserve-3d;
+  will-change: transform, opacity;
+  background-color: #f0f0f0;
+  /* GSAP로 위치/크기 제어되므로 초기값은 중요치 않음 */
 }
 
-.slide-img {
+.card-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.6s ease;
 }
 
-/* 활성 슬라이드 효과 */
-.swiper-slide-active .slide-img {
-  transform: scale(1.05); /* 살짝 줌인 */
-}
-
-.swiper-slide-active .slide-img-wrapper {
-  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3); /* 그림자 강화 */
-}
-
-/* 오버레이 (비활성 슬라이드 어둡게 처리) */
-.slide-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0);
-  transition: background 0.4s;
-  pointer-events: none;
-}
-
-.swiper-slide-prev .slide-overlay,
-.swiper-slide-next .slide-overlay {
-  background: rgba(0,0,0,0.1); /* 주변 슬라이드 약간 어둡게 */
-}
-
-/* Responsive */
-@media (max-width: 991px) {
-  .info-header-row {
+/* 모바일 대응 */
+@media (max-width: 992px) {
+  .info-content-wrapper {
     flex-direction: column;
-    align-items: flex-start;
-  }
-  
-  .info-nav-list {
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 15px;
-    margin-top: 20px;
-  }
-  
-  .info-nav-item {
-    font-size: 0.9rem;
+    justify-content: center;
+    padding-top: 120px;
   }
 
-  .info-slider-col {
-    padding-left: 15px !important;
-  }
-  
-  .info-slide {
-    height: 350px;
+  .info-text-area {
+    width: 100%;
+    height: 250px; /* 텍스트 영역 높이 축소 */
+    margin-bottom: 30px;
+    flex: none;
   }
 
+  .solution-title {
+    font-size: 2rem;
+    margin-bottom: 15px;
+  }
+  
   .solution-desc {
-    max-width: 100%;
+    font-size: 1rem;
+    margin-bottom: 20px;
+  }
+
+  .info-image-area {
+    width: 100%;
+    height: 40vh;
+    flex: none;
+  }
+
+  .image-card {
+    width: 90%;
+    height: 100%;
+    max-width: 400px;
   }
 }
