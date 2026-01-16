@@ -5,7 +5,7 @@
 
 :root {
   --primary-color: #8CC63F; /* BOAS 로고와 유사한 밝은 연두/녹색 */
-  --secondary-color: #6AA42E; /* 약간 더 어두운 녹색 */
+  --secondary-color: #8CC63F; /* 약간 더 어두운 녹색 -> 메인 컬러로 통일 */
   --text-dark: #1d1d1f; /* 애플 스타일의 짙은 회색 */
   --text-gray: #86868b; /* 애플 스타일의 중간 회색 */
   --text-light: #ffffff;

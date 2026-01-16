@@ -108,7 +108,7 @@
 
 .submit-btn:hover {
   background-color: #fff;
-  color: #4caf50;
+  color: var(--primary-color);
   transform: translateY(-2px) scale(1.02); /* 즉각적이고 탄력적인 움직임 */
   box-shadow: 0 15px 30px rgba(0,0,0,0.3);
 }
@@ -121,7 +121,7 @@
 .info-label {
   font-size: 1.2rem;
   font-weight: 700;
-  color: #00D05E; /* 브랜드 컬러로 강조 (var(--primary-color) 대신 직접 지정) */
+  color: var(--primary-color); /* 브랜드 컬러로 강조 (var(--primary-color) 대신 직접 지정) */
   margin-bottom: 15px;
   display: block;
 }

@@ -89,9 +89,9 @@
 .pd-category {
   display: inline-block;
   padding: 0.5rem 1rem;
-  background: rgba(0, 208, 94, 0.2);
-  border: 1px solid rgba(0, 208, 94, 0.5);
-  color: #00D05E;
+  background: rgba(140, 198, 63, 0.2);
+  border: 1px solid rgba(140, 198, 63, 0.5);
+  color: var(--primary-color);
   border-radius: 50px;
   font-weight: 700;
   font-size: 1rem;
@@ -152,7 +152,7 @@
 
 .pd-bento-card .card-icon {
   font-size: 2.5rem;
-  color: #00D05E;
+  color: var(--primary-color);
   margin-bottom: 1rem;
 }
 
@@ -196,7 +196,7 @@
 }
 
 .pd-feature-icon {
-  color: #00D05E;
+  color: var(--primary-color);
   font-size: 1.5rem;
   margin-top: 0.2rem;
   flex-shrink: 0;
@@ -243,7 +243,7 @@
 .pd-btn-inquiry {
   padding: 1.2rem 3rem;
   border-radius: 50px;
-  background: #00D05E;
+  background: var(--primary-color);
   color: #fff;
   font-size: 1.1rem;
   font-weight: 600;
@@ -253,9 +253,9 @@
 }
 
 .pd-btn-inquiry:hover {
-  background: #00b351;
+  background: #76a832;
   transform: scale(1.05);
-  box-shadow: 0 0 20px rgba(0, 208, 94, 0.4);
+  box-shadow: 0 0 20px rgba(140, 198, 63, 0.4);
 }
 
 /* --- Pagination (Business Page Style) --- */
@@ -275,7 +275,7 @@
 }
 
 .pd-swiper .swiper-pagination-bullet-active {
-  background: #00D05E !important;
+  background: var(--primary-color) !important;
   opacity: 1;
   transform: scale(1.2);
 }

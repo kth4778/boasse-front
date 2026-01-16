@@ -120,9 +120,9 @@
 }
 
 .btn-primary-custom:hover {
-  background-color: #4caf50 !important;
+  background-color: var(--primary-color) !important;
   transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(76, 175, 80, 0.3);
+  box-shadow: 0 5px 15px rgba(140, 198, 63, 0.3);
 }
 
 /* 페이지네이션 */
@@ -218,7 +218,7 @@
 }
 
 .attachment-card:hover {
-  border-color: #4caf50;
+  border-color: var(--primary-color);
   box-shadow: 0 5px 15px rgba(0,0,0,0.05);
 }
 
@@ -233,7 +233,7 @@
 }
 
 .download-btn-sm {
-  color: #4caf50;
+  color: var(--primary-color);
   text-decoration: none;
   font-weight: 700;
   font-size: 0.85rem;

@@ -94,7 +94,7 @@
   font-weight: 700;
   letter-spacing: 1px;
   margin-bottom: 0.3rem;
-  color: #00D05E;
+  color: var(--primary-color);
   text-transform: uppercase;
 }
 
