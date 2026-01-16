@@ -1,8 +1,9 @@
 .info-section {
   position: relative;
   width: 100%;
-  height: 100vh;
-  background: linear-gradient(180deg, #f0f7f0 0%, #ffffff 100%); /* 연한 녹색빛 배경 */
+  min-height: 1000px; /* 기존 800px에서 확대 */
+  padding: 150px 0; /* 상하 여백 확대 */
+  background: linear-gradient(180deg, #f0f7f0 0%, #ffffff 100%);
   overflow: hidden;
   display: flex;
   align-items: center;
@@ -33,7 +34,7 @@
 
 .forest-layer-1 {
   background: linear-gradient(to top, #1e2f23 0%, transparent 100%);
-  clip-path: polygon(0% 100%, 15% 70%, 35% 85%, 55% 65%, 75% 80%, 100% 100%); /* 추상적인 산 모양 */
+  clip-path: polygon(0% 100%, 15% 70%, 35% 85%, 55% 65%, 75% 80%, 100% 100%);
   z-index: 1;
 }
 
@@ -60,12 +61,11 @@
   width: 20px;
   height: 20px;
   background: #4caf50;
-  border-radius: 50% 0 50% 0; /* 나뭇잎 모양 */
+  border-radius: 50% 0 50% 0;
   opacity: 0.3;
   z-index: 4;
 }
 
-/* 나뭇잎 위치 무작위 배치 */
 .leaf-1 { top: 20%; left: 10%; width: 15px; height: 15px; }
 .leaf-2 { top: 10%; left: 40%; width: 25px; height: 25px; transform: rotate(45deg); }
 .leaf-3 { top: 30%; right: 15%; width: 20px; height: 20px; }
@@ -82,7 +82,7 @@
   width: 100%;
   height: 100%;
   position: relative;
-  z-index: 10; /* 배경보다 위로 */
+  z-index: 10;
   max-width: 1600px;
   padding: 0 5vw;
   margin: 0 auto;
@@ -90,10 +90,10 @@
   flex-direction: column;
 }
 
-/* 상단 헤더 (Business Divisions) - 고정 */
+/* 상단 헤더 (Business Divisions) */
 .info-header {
   position: absolute;
-  top: 50px; /* 헤더 높이 고려 */
+  top: 80px; /* 상단 여백 확보 */
   left: 5vw;
   z-index: 10;
   width: 100%;
@@ -115,30 +115,48 @@
   line-height: 1.2;
 }
 
-/* 우측 상단 네비게이션 리스트 */
+/* 우측 상단 네비게이션 리스트 -> 좌측 상단 가로형으로 변경 */
 .info-nav-list {
   position: absolute;
-  top: 50px;
-  right: 5vw;
-  z-index: 10;
+  top: 240px; /* 헤더 아래쪽 */
+  left: 5vw;
+  right: auto;
+  z-index: 100;
   display: flex;
-  flex-direction: column;
-  gap: 10px;
-  align-items: flex-end;
+  flex-direction: row; /* 가로 배치 */
+  gap: 30px;
+  align-items: center;
 }
 
 .info-nav-item {
   font-size: 1rem;
-  font-weight: 400;
-  color: #ccc;
+  font-weight: 500;
+  color: #999;
   cursor: pointer;
   transition: all 0.3s ease;
+  user-select: none;
+  position: relative;
+  padding-bottom: 5px;
+}
+
+.info-nav-item:hover {
+  color: #666;
 }
 
 .info-nav-item.active {
-  color: #111;
+  color: #2e7d32;
   font-weight: 700;
-  font-size: 1.1rem;
+}
+
+/* 활성화된 탭 밑줄 효과 */
+.info-nav-item.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #2e7d32;
 }
 
 /* 메인 컨텐츠 영역 (텍스트 + 이미지) */
@@ -147,19 +165,21 @@
   display: flex;
   align-items: center;
   width: 100%;
-  height: 100%;
+  min-height: 700px;
   position: relative;
-  padding-top: 80px; /* 헤더 공간 확보 */
+  padding-top: 180px; /* 네비게이션 공간 확보를 위해 확대 */
 }
 
 /* --- 좌측 텍스트 영역 --- */
 .info-text-area {
-  flex: 0 0 40%;
-  height: 400px; /* 텍스트들이 겹쳐있을 공간 */
+  flex: 0 0 45%; /* 너비 약간 확대 */
+  height: 500px;
   position: relative;
-  z-index: 50; /* 이미지보다 높게 설정하여 겹침 방지 */
+  z-index: 50;
   display: flex;
   align-items: center;
+  margin-top: -20px;
+  padding-right: 40px; /* 이미지와의 간격 확보 */
 }
 
 .info-text-group {
@@ -168,66 +188,120 @@
   left: 0;
   transform: translateY(-50%);
   width: 100%;
-  opacity: 0; /* GSAP로 제어 */
-  visibility: hidden;
 }
 
 .solution-title {
-  font-size: 2.8rem;
+  font-size: 3.2rem; /* 폰트 크기 확대 */
   font-weight: 800;
-  color: #000;
-  margin-bottom: 30px;
-  line-height: 1.3;
+  color: #111;
+  margin-bottom: 25px;
+  line-height: 1.2;
+  letter-spacing: -1px; /* 자간 좁혀서 타이트하게 */
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.solution-title:hover {
+  color: #2e7d32;
 }
 
 .solution-desc {
-  font-size: 1.1rem;
-  color: #444;
-  line-height: 1.7;
+  font-size: 1.15rem;
+  color: #555;
+  line-height: 1.8; /* 줄간격 여유있게 */
   word-break: keep-all;
-  margin-bottom: 40px;
-  max-width: 90%;
+  margin-bottom: 50px;
+  max-width: 95%;
+  font-weight: 400;
 }
 
 .solution-link {
-  font-size: 1rem;
-  font-weight: 700;
-  color: #111;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #fff;
+  background-color: #111; /* 버튼 스타일로 변경 */
+  padding: 12px 30px;
+  border-radius: 50px;
   text-decoration: none;
   display: inline-flex;
   align-items: center;
-  border-bottom: 2px solid #111;
-  padding-bottom: 5px;
-  transition: all 0.3s;
+  transition: all 0.3s ease;
+  border: none;
 }
 
 .solution-link:hover {
-  color: #0056b3;
-  border-color: #0056b3;
+  background-color: #2e7d32;
+  color: #fff;
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(46, 125, 50, 0.3);
 }
 
 /* --- 우측 이미지 영역 (3D Carousel) --- */
 .info-image-area {
   flex: 1;
-  height: 60vh; /* 이미지 영역 높이 */
+  height: 600px;
   position: relative;
-  perspective: 1000px; /* 3D 원근감 */
+  perspective: 2000px;
   display: flex;
   align-items: center;
-  justify-content: center; /* 중앙 정렬 */
+  justify-content: center;
+  transform-style: preserve-3d;
+  /* 우측으로 더 이동시켜 텍스트 영역과 완전히 분리 */
+  margin-left: 100px; 
+  margin-top: -60px;
+  padding-left: 50px;
 }
 
 .image-card {
   position: absolute;
-  width: 600px;
-  height: 400px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 500px;
+  height: 350px;
   border-radius: 20px;
   overflow: hidden;
   box-shadow: 0 20px 50px rgba(0,0,0,0.2);
-  transform-style: preserve-3d;
   will-change: transform, opacity;
   background-color: #f0f0f0;
-  /* GSAP로 위치/크기 제어되므로 초기값은 중요치 않음 */
+  cursor: grab;
+  backface-visibility: hidden;
+}
+
+/* 네비게이션 컨트롤러 (외부 화살표) */
+.info-controls {
+  position: absolute;
+  bottom: -40px; /* 이미지 카드 아래쪽 */
+  right: 50px; /* 우측 정렬 */
+  display: flex;
+  gap: 20px;
+  z-index: 200;
+}
+
+.nav-arrow {
+  background: transparent;
+  border: 2px solid var(--primary-color, #4caf50); /* 테두리 추가하여 가시성 확보 */
+  color: var(--primary-color, #4caf50);
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.nav-arrow:hover {
+  background-color: var(--primary-color, #4caf50);
+  color: #fff;
+  transform: scale(1.1);
+}
+
+/* 기존 내부 화살표 스타일 제거 (덮어쓰기) */
+.card-arrow {
+  display: none;
 }
 
 .card-img {
@@ -238,18 +312,47 @@
 
 /* 모바일 대응 */
 @media (max-width: 992px) {
+  .info-section {
+    padding: 60px 0;
+    min-height: auto;
+  }
+  
   .info-content-wrapper {
     flex-direction: column;
     justify-content: center;
-    padding-top: 120px;
+    padding-top: 100px;
+    min-height: auto;
+  }
+
+  .info-header {
+    top: 0;
+  }
+
+  .info-nav-list {
+    top: 0;
   }
 
   .info-text-area {
     width: 100%;
-    height: 250px; /* 텍스트 영역 높이 축소 */
+    height: auto;
+    min-height: 250px;
     margin-bottom: 30px;
     flex: none;
   }
+  
+  .info-text-group {
+    position: relative;
+    top: auto;
+    left: auto;
+    transform: none;
+    margin-bottom: 30px;
+    display: none; /* 기본적으로 모두 숨기고 */
+  }
+  
+  /* 활성화된 텍스트 그룹만 표시 (JS 제어와 별개로 CSS로도 보완) */
+  /* 단, JS GSAP 애니메이션과 충돌할 수 있으므로 주의 필요. 
+     모바일에서는 단순히 겹쳐보이기보다 순차 배치가 나을 수 있음 
+     하지만 현재 구조상 JS 제어를 따름 */
 
   .solution-title {
     font-size: 2rem;
@@ -263,7 +366,7 @@
 
   .info-image-area {
     width: 100%;
-    height: 40vh;
+    height: 300px;
     flex: none;
   }
 

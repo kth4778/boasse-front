@@ -56,7 +56,7 @@
 
 
 
-/* 중앙 가로지르는 녹색 선 */
+/* 중앙 가로지르는 녹색 선 -> 텍스트 아래로 이동 */
 
 
 
@@ -76,7 +76,7 @@
 
 
 
-  top: 55%;
+  bottom: 5px;
 
 
 
@@ -96,11 +96,7 @@
 
 
 
-  z-index: 1; /* 텍스트 위 또는 뒤 (취향에 따라 선택 가능, 현재는 뒤쪽 느낌) */
-
-
-
-  transform: translateY(-50%);
+  z-index: 1; 
 
 
 
@@ -151,37 +147,34 @@
 
 
 /* CONTACT US 버튼 */
-
 .contact-btn {
-
   background-color: #ffffff;
-
   color: #000000 !important;
-
   padding: 8px 25px;
-
   border-radius: 50px;
-
   font-weight: 600;
-
   font-size: 1rem;
-
   text-decoration: none;
-
   margin-left: 20px;
-
   transition: all 0.3s ease;
-
   border: 1px solid #ffffff;
-
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  vertical-align: middle;
+  line-height: 1;
+  outline: none;
+  overflow: hidden; /* 둥근 모서리 밖으로 배경이 새지 않도록 차단 */
+  transform: translateZ(0); /* 렌더링 레이어 분리 */
 }
-
-
 
 .contact-btn:hover {
   background-color: #4caf50;
   color: #ffffff !important;
   border-color: #4caf50;
+  box-shadow: none;
+  text-decoration: none;
+  opacity: 1 !important; /* 전역 호버 투명도 효과 방지 */
 }
 
 
