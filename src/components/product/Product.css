@@ -97,7 +97,7 @@
 }
 
 .product-title {
-  font-size: 6.5rem;
+  font-size: var(--font-size-lg); /* 6.5rem -> lg */
   font-weight: 900;
   color: var(--primary-color);
   margin-bottom: 1.5rem;
@@ -106,7 +106,7 @@
 }
 
 .product-description {
-  font-size: 1.25rem;
+  font-size: var(--font-size-md); /* 1.25rem -> md */
   color: #333;
   line-height: 1.7;
   max-width: 900px;
@@ -126,7 +126,7 @@
 .product-tab {
   background: none;
   border: none;
-  font-size: 1.4rem;
+  font-size: var(--font-size-md); /* 1.4rem -> md */
   font-weight: 700;
   color: #bbb;
   cursor: pointer;
@@ -240,14 +240,14 @@
   border: 1px solid rgba(255, 255, 255, 0.4);
   padding: 0.4rem 1rem;
   border-radius: 50px;
-  font-size: 0.85rem;
+  font-size: var(--font-size-sm); /* 0.85rem -> sm */
   font-weight: 600;
   color: #fff;
   letter-spacing: 0.5px;
 }
 
 .product-card-title {
-  font-size: 2.5rem;
+  font-size: var(--font-size-lg); /* 2.5rem -> lg */
   font-weight: 800;
   margin-bottom: 1rem;
   line-height: 1.2;
@@ -257,7 +257,7 @@
 }
 
 .product-card-desc {
-  font-size: 1rem;
+  font-size: var(--font-size-sm); /* 1rem -> sm */
   line-height: 1.6;
   max-width: 80%;
   color: rgba(255, 255, 255, 0.9);
@@ -278,9 +278,9 @@
     grid-template-columns: 1fr;
   }
   .product-title {
-    font-size: 4rem;
+    font-size: var(--font-size-lg); /* 4rem -> lg */
   }
   .product-card-title {
-    font-size: 2rem;
+    font-size: var(--font-size-md); /* 2rem -> md */
   }
 }

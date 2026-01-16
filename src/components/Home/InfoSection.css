@@ -101,7 +101,7 @@
 }
 
 .info-top-label {
-  font-size: 1rem;
+  font-size: var(--font-size-sm); /* 1rem -> sm */
   font-weight: 500;
   color: #666;
   text-transform: uppercase;
@@ -110,7 +110,7 @@
 }
 
 .info-main-title {
-  font-size: 2rem;
+  font-size: var(--font-size-md); /* 2rem -> md */
   font-weight: 800;
   color: #111;
   line-height: 1.2;
@@ -130,7 +130,7 @@
 }
 
 .info-nav-item {
-  font-size: 1rem;
+  font-size: var(--font-size-sm); /* 1rem -> sm */
   font-weight: 500;
   color: #999;
   cursor: pointer;
@@ -192,7 +192,7 @@
 }
 
 .solution-title {
-  font-size: 3.2rem; /* 폰트 크기 확대 */
+  font-size: var(--font-size-lg); /* 3.2rem -> lg */
   font-weight: 800;
   color: #111;
   margin-bottom: 25px;
@@ -207,7 +207,7 @@
 }
 
 .solution-desc {
-  font-size: 1.15rem;
+  font-size: var(--font-size-sm); /* 1.15rem -> sm */
   color: #555;
   line-height: 1.8; /* 줄간격 여유있게 */
   word-break: keep-all;
@@ -217,7 +217,7 @@
 }
 
 .solution-link {
-  font-size: 1.1rem;
+  font-size: var(--font-size-sm); /* 1.1rem -> sm */
   font-weight: 600;
   color: #fff;
   background-color: #111; /* 버튼 스타일로 변경 */
@@ -289,7 +289,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.2rem;
+  font-size: var(--font-size-sm); /* 1.2rem -> sm */
   cursor: pointer;
   transition: all 0.3s ease;
 }
@@ -356,12 +356,12 @@
      하지만 현재 구조상 JS 제어를 따름 */
 
   .solution-title {
-    font-size: 2rem;
+    font-size: var(--font-size-md); /* 2rem -> md */
     margin-bottom: 15px;
   }
   
   .solution-desc {
-    font-size: 1rem;
+    font-size: var(--font-size-sm); /* 1rem -> sm */
     margin-bottom: 20px;
   }
 
