@@ -233,16 +233,19 @@
 .btn-inquiry {
   padding: 1rem 2.5rem;
   border-radius: 50px;
-  background-color: #0071e3;
+  background-color: #00D05E;
   color: white;
   font-weight: 600;
   border: none;
   cursor: pointer;
   transition: background-color 0.2s;
+  text-decoration: none;
+  display: inline-block;
 }
 
 .btn-inquiry:hover {
-  background-color: #0077ed;
+  background-color: #00b351;
+  color: white;
 }
 
 /* 반응형 */
