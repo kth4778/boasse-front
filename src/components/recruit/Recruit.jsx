@@ -33,15 +33,6 @@ const Recruit = () => {
     // 모든 애니메이션 대상 요소를 즉시 선명하게 강제 설정
     gsap.set('.animate-up', { opacity: 1, y: 0 });
 
-    // 1. Hero 섹션 (즉시 실행)
-    const heroElements = gsap.utils.toArray('.recruit-hero .animate-up');
-    if (heroElements.length > 0) {
-      gsap.fromTo(heroElements, 
-        { opacity: 0, y: 20 },
-        { opacity: 1, y: 0, duration: 0.8, stagger: 0.1, ease: 'power2.out' }
-      );
-    }
-
     // 2. 나머지 섹션들 (스크롤 감지 후 실행)
     const sections = gsap.utils.toArray('.recruit-section');
     sections.forEach((section) => {
