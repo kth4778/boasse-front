@@ -3,18 +3,25 @@ import { Routes, Route, useLocation } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 
-// User Layout & Pages
+// Layout & Common
 import Header from './components/Layout/Header';
 import Footer from './components/Layout/Footer';
+import ScrollToTop from './components/ScrollToTop';
+import ErrorBoundary from './components/ErrorBoundary';
+
+// User Pages
 import MainPage from './components/Home/MainPage';
-import NoticeList from './components/Notice/NoticeList';
-import NoticeDetail from './components/Notice/NoticeDetail';
-import NoticeWrite from './components/Notice/NoticeWrite';
 import About from './components/about/About';
+import Business from './components/business/Business';
 import Recruit from './components/recruit/Recruit';
 import Product from './components/product/Product';
 import ProductDetail from './components/product/ProductDetail';
-import ErrorBoundary from './components/ErrorBoundary';
+import Contact from './components/contact/Contact';
+
+// Notice Pages
+import NoticeList from './components/Notice/NoticeList';
+import NoticeDetail from './components/Notice/NoticeDetail';
+import NoticeWrite from './components/Notice/NoticeWrite';
 
 // Admin Components
 import AdminLayout from './components/admin/AdminLayout';
@@ -28,38 +35,48 @@ import AdminProductForm from './components/admin/Product/AdminProductForm';
 
 function App() {
   const location = useLocation();
-  const isAdminPage = location.pathname.startsWith('/admin');
-  const isHomePage = location.pathname === '/';
   
-  // 특정 페이지들 패딩 제외 처리
+  // 관리자 페이지 여부 확인
+  const isAdminPage = location.pathname.startsWith('/admin');
+  
+  // 헤더 패딩이 필요 없는 페이지들 정의
+  const isHomePage = location.pathname === '/';
+  const isContactPage = location.pathname === '/contact';
+  const isBusinessPage = location.pathname === '/business';
   const isBackgroundPage = location.pathname.startsWith('/notice') || 
                            location.pathname.startsWith('/recruit') || 
                            location.pathname.startsWith('/product');
 
   const mainStyle = {
-    paddingTop: (isHomePage || isBackgroundPage || isAdminPage) ? '0' : '120px',
+    // 위 조건들에 해당하면 패딩 0, 아니면 헤더 높이만큼(120px) 패딩 부여
+    paddingTop: (isHomePage || isBusinessPage || isContactPage || isBackgroundPage || isAdminPage) ? '0' : '120px',
     width: '100%',
   };
 
   return (
     <ErrorBoundary>
       <div className="App">
+        <ScrollToTop />
         {!isAdminPage && <Header />}
         
         <main style={mainStyle}>
           <Routes>
-            {/* User Routes */}
+            {/* --- User Routes --- */}
             <Route path="/" element={<MainPage />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/business" element={<Business />} />
+            <Route path="/recruit" element={<Recruit />} />
+            <Route path="/product" element={<Product />} />
+            <Route path="/product/:id" element={<ProductDetail />} />
+            <Route path="/contact" element={<Contact />} />
+            
+            {/* Notice Routes */}
             <Route path="/notice" element={<NoticeList />} />
             <Route path="/notice/:id" element={<NoticeDetail />} />
             <Route path="/notice/write" element={<NoticeWrite />} />
             <Route path="/notice/edit/:id" element={<NoticeWrite />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/recruit" element={<Recruit />} />
-            <Route path="/product" element={<Product />} />
-            <Route path="/product/:id" element={<ProductDetail />} />
 
-            {/* Admin Routes */}
+            {/* --- Admin Routes --- */}
             <Route path="/admin" element={<AdminLayout />}>
               <Route index element={<AdminDashboard />} />
               <Route path="notice" element={<AdminNoticeList />} />
