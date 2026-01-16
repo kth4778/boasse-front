@@ -13,7 +13,12 @@
               url('https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1920&q=80');
   background-size: cover;
   background-position: center;
-  padding: 220px 0 140px;
+  min-height: 650px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
   color: #fff;
 }
 
@@ -28,7 +33,7 @@
 .hero-sub-title {
   font-weight: 700;
   letter-spacing: 3px;
-  color: var(--primary-color);
+  color: #fff;
   margin-bottom: 20px;
 }
 

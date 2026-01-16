@@ -1,3 +1,66 @@
+/* Product.css */
+
+.animate-up {
+  opacity: 1 !important;
+  will-change: transform, opacity;
+}
+
+.product-page-full-wrapper {
+  width: 100%;
+}
+
+/* 1. Hero Section (Matched with Recruit Hero) */
+.product-hero {
+  background: linear-gradient(rgba(30, 47, 35, 0.8), rgba(30, 47, 35, 0.8)), 
+              url('https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1920&q=80');
+  background-size: cover;
+  background-position: center;
+  min-height: 650px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+  color: #fff;
+}
+
+.hero-content {
+  max-width: 1500px;
+  position: relative;
+  z-index: 10;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+.hero-sub-title {
+  font-weight: 700;
+  letter-spacing: 3px;
+  color: #fff;
+  margin-bottom: 20px;
+}
+
+.hero-main-title {
+  font-size: var(--font-size-lg); /* 6.5rem -> lg */
+  font-weight: 900;
+  color: #fff;
+  margin-bottom: 1.5rem;
+  letter-spacing: -2px;
+  line-height: 1;
+}
+
+.hero-main-title span {
+  color: #fff;
+}
+
+.hero-desc {
+  font-size: var(--font-size-md); /* 1.25rem -> md */
+  color: #fff;
+  line-height: 1.7;
+  max-width: 900px;
+  margin-bottom: 0;
+  font-weight: 500;
+}
+
 .product-container {
   max-width: 1400px;
   margin: 0 auto;
@@ -114,6 +177,7 @@
   font-weight: 500;
 }
 
+/* Tabs & Grid */
 .product-tabs {
   display: flex;
   gap: 3rem;
@@ -121,6 +185,7 @@
   margin-bottom: 3rem;
   border-bottom: 1px solid #eee;
   padding-bottom: 1.5rem;
+  justify-content: center;
 }
 
 .product-tab {
@@ -154,10 +219,10 @@
   grid-template-columns: repeat(2, 1fr);
   gap: 2.5rem;
   margin-top: 2rem;
-  grid-auto-rows: 320px; /* 모든 행의 높이를 고정 */
+  grid-auto-rows: 320px;
 }
 
-@media (min-width: 1200px) { /* 1600px -> 1200px로 완화하여 일반 데스크탑에서도 3열 적용 */
+@media (min-width: 1200px) {
   .product-grid {
     grid-template-columns: repeat(3, 1fr);
   }
@@ -169,13 +234,10 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   overflow: hidden;
   position: relative;
-  height: 320px !important; /* 높이 강제 고정 */
+  height: 320px !important;
   width: 100%;
-  /* aspect-ratio 제거 또는 height 우선 적용 */
   cursor: pointer;
   transition: transform 0.4s ease, box-shadow 0.4s ease;
-  
-  /* Link 스타일 리셋 */
   text-decoration: none;
   color: inherit;
   display: block;
@@ -187,7 +249,7 @@
 }
 
 .product-card-image {
-  position: absolute; /* 이미지를 절대 위치로 변경하여 문서 흐름에서 제거 */
+  position: absolute;
   top: 0;
   left: 0;
   width: 100%;
