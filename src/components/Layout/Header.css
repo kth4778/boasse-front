@@ -6,13 +6,13 @@
   top: 0;
   z-index: 1000;
   transition: background-color 0.4s ease, padding 0.4s ease, backdrop-filter 0.4s ease;
-  padding: 25px 0; /* 기본 패딩 */
+  padding: 15px 0; /* 25px -> 15px로 축소 */
 }
 
 .header-wrapper.scrolled {
-  background-color: rgba(0, 0, 0, 0.7); /* 반투명도를 살짝 높여 가독성 확보 */
-  backdrop-filter: blur(15px); /* 블러 효과 강화 */
-  padding: 15px 0; /* 스크롤 시 또는 서브페이지 패딩 */
+  background-color: rgba(0, 0, 0, 0.7); 
+  backdrop-filter: blur(15px); 
+  padding: 10px 0; /* 15px -> 10px로 축소 */
 }
 
 /* 로고 스타일 */
