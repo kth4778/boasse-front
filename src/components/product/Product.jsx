@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { products } from '../../api/productData';
 import { Link } from 'react-router-dom';
 import gsap from 'gsap';
@@ -12,6 +12,22 @@ const Product = () => {
   const [filter, setFilter] = useState('All');
   const containerRef = useRef();
   const headerBgRef = useRef();
+
+  // 페이지 진입 시 스크롤 최상단 이동 및 브라우저 기본 복원 방지
+  useEffect(() => {
+    // 브라우저가 스크롤 위치를 자동으로 복원하는 것을 방지
+    if ('scrollRestoration' in window.history) {
+      window.history.scrollRestoration = 'manual';
+    }
+    window.scrollTo(0, 0);
+
+    return () => {
+      // 컴포넌트를 벗어날 때 다시 기본 동작(auto)으로 복구
+      if ('scrollRestoration' in window.history) {
+        window.history.scrollRestoration = 'auto';
+      }
+    };
+  }, []);
 
   const categories = ['All', 'Smart Mobility', 'Smart Factory', 'Smart Farm', 'Smart Building'];
 
@@ -61,18 +77,27 @@ const Product = () => {
     // --- Product Grid Animation ---
     const cards = gsap.utils.toArray('.product-card');
     if (cards.length > 0) {
-      gsap.from(cards, {
-        y: 60,
-        opacity: 0,
-        duration: 0.8,
-        stagger: 0.1,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: '.product-grid',
-          start: 'top 85%',
-          toggleActions: 'play none none none'
+      gsap.fromTo(cards, 
+        { 
+          y: 50, 
+          opacity: 0 
+        },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.5, // 속도 향상 (0.8 -> 0.5)
+          stagger: 0.05, // 딜레이 단축 (0.1 -> 0.05)
+          ease: 'power2.out', // 좀 더 가벼운 이징으로 변경
+          scrollTrigger: {
+            trigger: '.product-grid',
+            start: 'top 95%', // 더 일찍 시작 (화면에 조금만 보여도 시작)
+            toggleActions: 'play none none none'
+          },
+          onComplete: () => {
+             gsap.set(cards, { clearProps: "all" });
+          }
         }
-      });
+      );
     }
 
   }, { scope: containerRef, dependencies: [filter] });
