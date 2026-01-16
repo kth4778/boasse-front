@@ -10,35 +10,78 @@ import './About.css';
 gsap.registerPlugin(ScrollTrigger);
 
 const About = () => {
+  const containerRef = useRef(null); // 전체 컨테이너 참조 (Scope용)
+  const aboutTopWrapperRef = useRef(null);
   const missionWrapperRef = useRef(null);
   const missionContentBoxRef = useRef(null);
   const missionTextGroupRef = useRef(null);
 
   useGSAP(() => {
     // ---------------------------------------------------------
-    // [Mission Section] 중앙에서 검은 원이 커지며 등장하는 효과
+    // 1. Top Section: Forest Background Animation
+    // ---------------------------------------------------------
+    
+    // Forest Layers Parallax
+    gsap.to('.forest-layer-1', {
+      y: -30,
+      ease: "none",
+      scrollTrigger: {
+        trigger: aboutTopWrapperRef.current,
+        start: "top top",
+        end: "bottom top",
+        scrub: 1.5
+      }
+    });
+
+    gsap.to('.forest-layer-2', {
+      y: -15,
+      ease: "none",
+      scrollTrigger: {
+        trigger: aboutTopWrapperRef.current,
+        start: "top top",
+        end: "bottom top",
+        scrub: 1
+      }
+    });
+
+    // Leaf Particles Animation
+    gsap.to('.leaf-particle', {
+      y: 'random(-50, 50)',
+      x: 'random(-30, 30)',
+      rotation: 'random(-180, 180)',
+      duration: 'random(3, 5)',
+      repeat: -1,
+      yoyo: true,
+      ease: 'sine.inOut',
+      stagger: {
+        each: 0.2,
+        from: 'random'
+      }
+    });
+
+
+    // ---------------------------------------------------------
+    // 2. Mission Section Animation
     // ---------------------------------------------------------
     const tl = gsap.timeline({
       scrollTrigger: {
-        trigger: missionWrapperRef.current, // Sticky Wrapper 기준
-        start: "top top",            // 화면 맨 위에 닿을 때 시작
-        end: "+=300%",               // 스크롤 1배 길이만큼만 진행 (매우 빠르게 화면 채움)
-        pin: true,                   // 화면 고정
-        scrub: 1,                    // 부드러운 되감기
-        pinSpacing: true,            // 공간 확보
+        trigger: missionWrapperRef.current,
+        start: "top top",
+        end: "+=300%",
+        pin: true,
+        scrub: 1,
+        pinSpacing: true,
       },
     });
 
-    // 1. 박스 확대 애니메이션 (둥근 사각형 -> 전체 화면)
+    // 박스 확대 애니메이션
     tl.fromTo(
       missionContentBoxRef.current, 
       { 
-        // 시작 상태: 타원이 아닌 '둥근 사각형'으로 시작하며 크기도 큼직하게 설정
         clipPath: "inset(20% 10% 20% 10% round 50px)", 
         scale: 0.95, 
       },
       { 
-        // 종료 상태: 여백 0% (화면 꽉 채움)
         clipPath: "inset(0% 0% 0% 0% round 0px)",     
         scale: 1,
         ease: "power2.inOut",
@@ -46,55 +89,66 @@ const About = () => {
       }
     );
     
-    // 2. 텍스트 등장 (박스가 어느 정도 커진 후 나타남)
+    // 텍스트 등장
     tl.from(missionTextGroupRef.current, {
       y: 50,
       opacity: 0,
       duration: 0.5,
       ease: "power2.out"
-    }, "-=0.3"); // 박스 애니메이션 끝나기 0.3초 전에 텍스트 시작
+    }, "-=0.3");
 
-  }, { scope: missionWrapperRef });
+  }, { scope: containerRef }); // 전체 컨테이너를 스코프로 지정하여 모든 ref 접근 가능하게 함
 
 
   return (
-    <div className="about-page">
-      {/* 1. Intro Section */}
-      <section className="about-section intro-section">
-        <div className="section-content">
-          <h1>Belong to BOAS-SE</h1>
-          <p>BOAS-SE 는 고객의 의견을 지속적으로 반영 및 개선하여 정확한 시스템을 개발해 높은 만족도를 제공합니다.<br />
-          프로젝트를 성공으로 이끌 BOAS-SE만의 3가지 가치와 <br />
-          팀 협업과 단계적 계획으로 오류를 최소화하고, 빠르고 안정적으로 프로젝트를 완수해 나가겠습니다.</p>
+    <div className="about-page" ref={containerRef}>
+      {/* Wrapper for Intro & Values with Forest Background */}
+      <div ref={aboutTopWrapperRef} className="about-top-wrapper">
+        <div className="forest-bg">
+          <div className="forest-layer forest-layer-1"></div>
+          <div className="forest-layer forest-layer-2"></div>
+          <div className="forest-light-rays"></div>
+          {/* Leaf Particles */}
+          {[...Array(10)].map((_, i) => (
+            <div key={i} className={`leaf-particle leaf-${i + 1}`}></div>
+          ))}
         </div>
-      </section>
 
-      {/* 2. Values Section */}
-      <section className="about-section values-section">
-        <div className="section-content">
-          <div className="values-container">
-            <div className="value-item">
-              <div className="circle">Respect</div>
-            </div>
-            <div className="connector"></div>
-            <div className="value-item">
-              <div className="circle">Balance</div>
-            </div>
-            <div className="connector"></div>
-            <div className="value-item">
-              <div className="circle">Synergy</div>
+        {/* 1. Intro Section */}
+        <section className="about-section intro-section">
+          <div className="section-content">
+            <h1>Belong to BOAS-SE</h1>
+            <p>BOAS-SE 는 고객의 의견을 지속적으로 반영 및 개선하여 정확한 시스템을 개발해 높은 만족도를 제공합니다.<br />
+            프로젝트를 성공으로 이끌 BOAS-SE만의 3가지 가치와 <br />
+            팀 협업과 단계적 계획으로 오류를 최소화하고, 빠르고 안정적으로 프로젝트를 완수해 나가겠습니다.</p>
+          </div>
+        </section>
+
+        {/* 2. Values Section */}
+        <section className="about-section values-section">
+          <div className="section-content">
+            <div className="values-container">
+              <div className="value-item">
+                <div className="circle">Respect</div>
+              </div>
+              <div className="connector"></div>
+              <div className="value-item">
+                <div className="circle">Balance</div>
+              </div>
+              <div className="connector"></div>
+              <div className="value-item">
+                <div className="circle">Synergy</div>
+              </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </div>
 
       {/* ======================================================= */}
-      {/* 3. Mission Section (★ 고급 스크롤 효과 적용 구간 ★) */}
+      {/* 3. Mission Section */}
       {/* ======================================================= */}
       <div ref={missionWrapperRef} className="mission-sticky-wrapper">
-        {/* clip-path로 크기가 변할 실제 박스 */}
         <section ref={missionContentBoxRef} className="mission-content-box about-section mission-section">
-          {/* 배경 애니메이션 (기어) */}
           <div className="mission-bg-overlay">
             <FaCog className="gear-icon gear-large" />
             <FaCogs className="gear-icon gear-small" />
