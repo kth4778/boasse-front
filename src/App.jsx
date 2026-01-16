@@ -9,46 +9,79 @@ import NoticeList from './components/Notice/NoticeList';
 import NoticeDetail from './components/Notice/NoticeDetail';
 import NoticeWrite from './components/Notice/NoticeWrite';
 import About from './components/about/About';
+import Business from './components/business/Business';
+import Recruit from './components/recruit/Recruit';
+import Product from './components/product/Product';
+import ProductDetail from './components/product/ProductDetail';
+import Contact from './components/contact/Contact';
+import ScrollToTop from './components/ScrollToTop';
+import ErrorBoundary from './components/ErrorBoundary';
 
-<ErrorBoundary>
-  <div className="App">
-    <ScrollToTop />
-    {!isAdminPage && <Header />}
+// Admin Components
+import AdminLayout from './components/admin/AdminLayout';
+import AdminDashboard from './components/admin/AdminDashboard';
+import AdminNoticeList from './components/admin/Notice/AdminNoticeList';
+import AdminNoticeForm from './components/admin/Notice/AdminNoticeForm';
+import AdminRecruitList from './components/admin/Recruit/AdminRecruitList';
+import AdminRecruitForm from './components/admin/Recruit/AdminRecruitForm';
+import AdminProductList from './components/admin/Product/AdminProductList';
+import AdminProductForm from './components/admin/Product/AdminProductForm';
 
-    <main style={mainStyle}>
-      <Routes>
-        {/* User Routes */}
-          <Route path="/" element={<MainPage />} />
-          <Route path="/notice" element={<NoticeList />} />
-          <Route path="/notice/:id" element={<NoticeDetail />} />
-          <Route path="/notice/write" element={<NoticeWrite />} />
-          <Route path="/notice/edit/:id" element={<NoticeWrite />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/business" element={<Business />} />
-          <Route path="/recruit" element={<Recruit />} />
-          <Route path="/product" element={<Product />} />
-          <Route path="/product/:id" element={<ProductDetail />} />
-          <Route path="/contact" element={<Contact />} />
-            
-          {/* Admin Routes */}
-          <Route path="/admin" element={<AdminLayout />}>
-            <Route index element={<AdminDashboard />} />
-            <Route path="notice" element={<AdminNoticeList />} />
-            <Route path="notice/write" element={<AdminNoticeForm />} />
-            <Route path="notice/edit/:id" element={<AdminNoticeForm />} />
-            <Route path="recruit" element={<AdminRecruitList />} />
-            <Route path="recruit/write" element={<AdminRecruitForm />} />
-            <Route path="recruit/edit/:id" element={<AdminRecruitForm />} />
-            <Route path="product" element={<AdminProductList />} />
-            <Route path="product/write" element={<AdminProductForm />} />
-            <Route path="product/edit/:id" element={<AdminProductForm />} />
-          </Route>
-        </Routes>
-      </main>
+function App() {
+  const location = useLocation();
+  const isAdminPage = location.pathname.startsWith('/admin');
+  const isHomePage = location.pathname === '/';
+  const isContactPage = location.pathname === '/contact';
+  const isBusinessPage = location.pathname === '/business';
+  
+  // 배경색이 있는 서브 페이지들(Notice, Recruit 등)은 헤더 패딩을 별도로 처리하거나 0으로 설정합니다.
+  const isBackgroundPage = location.pathname.startsWith('/notice') || location.pathname.startsWith('/recruit');
 
-      {!isAdminPage && <Footer />}
-    </div>
-  </ErrorBoundary>
+  const mainStyle = {
+    // 홈, 컨택, 비즈니스, 배경 있는 페이지, 관리자 페이지일 때는 전체 높이 등 레이아웃 제약을 풉니다.
+    // 그 외 서브 페이지일 때만 헤더 높이만큼 패딩을 줍니다.
+    paddingTop: (isHomePage || isContactPage || isBusinessPage || isBackgroundPage || isAdminPage) ? '0' : '120px',
+    width: '100%',
+  };
+
+  return (
+    <ErrorBoundary>
+      <div className="App">
+        <ScrollToTop />
+        {!isAdminPage && <Header />}
+        
+        {/* Main Content Area with Routing */}
+        <main style={mainStyle}>
+          <Routes>
+            {/* User Routes */}
+            <Route path="/" element={<MainPage />} />
+            <Route path="/notice" element={<NoticeList />} />
+            <Route path="/notice/:id" element={<NoticeDetail />} />
+            <Route path="/notice/write" element={<NoticeWrite />} />
+            <Route path="/notice/edit/:id" element={<NoticeWrite />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/business" element={<Business />} />
+            <Route path="/recruit" element={<Recruit />} />
+            <Route path="/product" element={<Product />} />
+            <Route path="/product/:id" element={<ProductDetail />} />
+            <Route path="/contact" element={<Contact />} />
+
+            {/* Admin Routes */}
+            <Route path="/admin" element={<AdminLayout />}>
+              <Route index element={<AdminDashboard />} />
+              <Route path="notice" element={<AdminNoticeList />} />
+              <Route path="notice/write" element={<AdminNoticeForm />} />
+              <Route path="notice/edit/:id" element={<AdminNoticeForm />} />
+              <Route path="recruit" element={<AdminRecruitList />} />
+              <Route path="recruit/write" element={<AdminRecruitForm />} />
+              <Route path="recruit/edit/:id" element={<AdminRecruitForm />} />
+              <Route path="product" element={<AdminProductList />} />
+              <Route path="product/write" element={<AdminProductForm />} />
+              <Route path="product/edit/:id" element={<AdminProductForm />} />
+            </Route>
+          </Routes>
+        </main>
+
         {!isAdminPage && <Footer />}
       </div>
     </ErrorBoundary>
