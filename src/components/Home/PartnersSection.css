@@ -88,7 +88,7 @@
 /* 모바일 대응 */
 @media (max-width: 768px) {
   .partners-main-title {
-    font-size: 1.8rem;
+    font-size: var(--font-size-md); /* 1.8rem -> md */
   }
   .partner-card {
     width: 160px;

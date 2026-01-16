@@ -36,7 +36,7 @@
 
   font-weight: 300;
 
-  font-size: 1.25rem;
+  font-size: var(--font-size-md); /* 1.25rem -> md */
 
   color: #fff !important;
 
@@ -153,7 +153,7 @@
   padding: 8px 25px;
   border-radius: 50px;
   font-weight: 600;
-  font-size: 1rem;
+  font-size: var(--font-size-sm); /* 1rem -> sm */
   text-decoration: none;
   margin-left: 20px;
   transition: all 0.3s ease;

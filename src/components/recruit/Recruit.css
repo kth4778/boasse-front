@@ -13,12 +13,7 @@
               url('https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1920&q=80');
   background-size: cover;
   background-position: center;
-  min-height: 450px; /* 고정 높이 축소 */
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding-top: 80px; /* 헤더 높이만큼 여백 */
+  padding: 220px 0 140px;
   color: #fff;
 }
 
@@ -38,7 +33,7 @@
 }
 
 .hero-main-title {
-  font-size: 3.5rem;
+  font-size: var(--font-size-lg);
   font-weight: 300;
   line-height: 1.3;
   margin-bottom: 30px;
@@ -49,12 +44,9 @@
   letter-spacing: -1.5px;
   text-transform: uppercase;
 }
-.hero-main-title span {
-  color: var(--primary-color);
-}
 
 .hero-desc {
-  font-size: 1.25rem;
+  font-size: var(--font-size-md);
   font-weight: 300;
   opacity: 0.9;
   max-width: 700px;
@@ -63,13 +55,13 @@
 
 /* 2. Process Section */
 .section-title {
-  font-size: 2.5rem;
+  font-size: var(--font-size-lg);
   font-weight: 800;
   margin-bottom: 15px;
 }
 
 .section-sub-title {
-  font-size: 0.9rem;
+  font-size: var(--font-size-sm);
   font-weight: 700;
   color: var(--primary-color);
   letter-spacing: 2px;
@@ -103,27 +95,27 @@
 }
 
 .process-icon {
-  font-size: 3rem;
+  font-size: var(--font-size-lg);
   color: var(--primary-color);
   margin-bottom: 20px;
 }
 
 .process-title {
-  font-size: 1.25rem;
+  font-size: var(--font-size-md);
   font-weight: 700;
   margin-bottom: 10px;
 }
 
 .process-desc {
   color: #777;
-  font-size: 0.95rem;
+  font-size: var(--font-size-sm);
 }
 
 .process-arrow {
   position: absolute;
   top: 40%;
   right: -20px;
-  font-size: 1.5rem;
+  font-size: var(--font-size-md);
   color: #ddd;
 }
 
@@ -203,25 +195,25 @@
 }
 
 .welfare-icon {
-  font-size: 2.5rem;
+  font-size: var(--font-size-lg); /* 2.5rem -> lg */
   color: var(--primary-color);
   margin-bottom: 20px;
 }
 
 .welfare-title {
-  font-size: 1.2rem;
+  font-size: var(--font-size-sm); /* 1.2rem -> sm */
   font-weight: 700;
   margin-bottom: 15px;
 }
 
 .welfare-desc {
-  font-size: 0.9rem;
+  font-size: var(--font-size-sm);
   color: #777;
   line-height: 1.6;
 }
 
 @media (max-width: 768px) {
   .hero-main-title {
-    font-size: 2.2rem;
+    font-size: var(--font-size-md); /* 2.2rem -> md */
   }
 }
