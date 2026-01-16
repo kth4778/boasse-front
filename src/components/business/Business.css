@@ -1,0 +1,155 @@
+/* Business.css - Apple Style & Cross-fading Backgrounds */
+
+.business-container {
+  height: 100vh;
+  width: 100%;
+  background-color: #000;
+  color: #fff;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  overflow: hidden;
+  position: relative; /* 배경 레이어 위치 기준 */
+}
+
+/* --- 배경 레이어 스타일 --- */
+.background-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+.bg-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  opacity: 0; /* 기본적으로 숨김 */
+  transition: opacity 1.5s ease-in-out; /* 매우 부드러운 전환 */
+  transform: scale(1.05); /* 약간 확대하여 깊이감 효과 */
+}
+
+.bg-image.active {
+  opacity: 1; /* 활성화된 이미지만 보임 */
+  transform: scale(); /* 활성화 시 원래 크기로 천천히 줌인 효과 (선택사항) */
+  transition: opacity 1.5s ease-in-out, transform 8s ease-out; /* 줌인 효과 추가 */
+}
+
+.bg-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7); /* 전체적으로 어둡게 (가독성 확보) */
+  z-index: 1; /* 이미지 위에 오버레이 */
+  pointer-events: none;
+}
+
+/* --- Swiper 및 슬라이드 스타일 --- */
+.business-swiper {
+  width: 100%;
+  height: 100%;
+  z-index: 10; /* 배경 위에 위치 */
+  background: transparent !important;
+}
+
+.business-slide {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  position: relative;
+  background: transparent !important; /* 슬라이드 자체 배경 제거 */
+}
+
+/* 슬라이드 내부 콘텐츠 */
+.slide-content {
+  max-width: 980px;
+  width: 100%;
+  padding: 0 40px;
+  text-align: center;
+  z-index: 20;
+  position: relative;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 1s ease-out, transform 1s ease-out;
+}
+
+/* 활성화된 슬라이드의 애니메이션 */
+.swiper-slide-active .slide-content {
+  opacity: 3;
+  transform: translateY(0);
+}
+
+.slide-eyebrow {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #86868b;
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.slide-title {
+  font-size: 4rem;
+  font-weight: 700;
+  line-height: 1.1;
+  margin-bottom: 1.5rem;
+  letter-spacing: -0.02em;
+  color: #fff;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+}
+
+.slide-description {
+  font-size: 1.5rem;
+  line-height: 1.4;
+  color: #d1d1d6;
+  max-width: 800px;
+  margin: 0 auto;
+  font-weight: 400;
+  text-shadow: 0 1px 5px rgba(0,0,0,0.5);
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+  .slide-title {
+    font-size: 2.5rem;
+  }
+  .slide-description {
+    font-size: 1.1rem;
+  }
+}
+
+/* Swiper Pagination 커스터마이징 (좌측 점) */
+.business-swiper .swiper-pagination-vertical.swiper-pagination-bullets,
+.business-swiper .swiper-vertical > .swiper-pagination-bullets {
+  right: auto !important;
+  left: 50px !important;
+  top: 50%;
+  transform: translateY(-50%);
+  width: auto;
+  z-index: 30;
+}
+
+.swiper-pagination-bullet {
+  background: #fff;
+  opacity: 0.3;
+  width: 12px;
+  height: 12px;
+  margin: 20px 0 !important;
+  display: block;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+}
+
+.swiper-pagination-bullet-active {
+  background: #4caf50 !important;
+  opacity: 1;
+  transform: scale(1.3);
+  box-shadow: 0 0 10px rgba(76, 175, 80, 0.6);
+}
