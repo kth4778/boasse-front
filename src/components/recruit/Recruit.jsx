@@ -18,9 +18,6 @@ const Recruit = () => {
     const fetchRecruits = async () => {
       try {
         const response = await recruitApi.getRecruits();
-        console.log('Recruit API Response Raw:', response); // 데이터 구조 확인용
-        
-        // 다양한 백엔드 응답 구조 대응
         const data = response.data?.data || response.data || [];
         setRecruits(Array.isArray(data) ? data : []);
       } catch (error) {
@@ -32,67 +29,35 @@ const Recruit = () => {
     fetchRecruits();
   }, []);
 
-  // 유연한 데이터 추출 함수
-  const getFieldData = (job, keys) => {
-    for (const key of keys) {
-      if (job[key]) return job[key];
-    }
-    return null;
-  };
-
-  // 리스트 렌더링 함수
-  const renderListItems = (data) => {
-    if (!data) return null;
-    let items = [];
-    
-    if (Array.isArray(data)) {
-      // 배열인데 요소가 객체인 경우 (예: {content: "..."}) 처리
-      items = data.map(item => {
-        if (typeof item === 'object' && item !== null) {
-          return item.content || item.description || item.name || JSON.stringify(item);
-        }
-        return item;
-      });
-    } else if (typeof data === 'string') {
-      items = data.includes('\n') ? data.split('\n') : data.split(',');
-    }
-    
-    const filteredItems = items
-      .map(item => item?.toString().trim())
-      .filter(item => item && item !== '');
-
-    if (filteredItems.length === 0) return null;
-
-    return filteredItems.map((item, i) => <li key={i}>{item}</li>);
-  };
-
-  const handleApplyClick = (e, job) => {
-    const link = getFieldData(job, ['applyLink', 'apply_link', 'applyUrl', 'link']);
-    if (!link) {
-      e.preventDefault();
-      alert('지원 링크가 설정되지 않았습니다.');
-      return;
-    }
-    const url = (link.startsWith('http://') || link.startsWith('https://')) ? link : `https://${link}`;
-    window.open(url, '_blank', 'noopener,noreferrer');
-  };
-
   useGSAP(() => {
-    const sections = gsap.utils.toArray('.recruit-section, .recruit-hero');
+    // 모든 애니메이션 대상 요소를 즉시 선명하게 강제 설정
+    gsap.set('.animate-up', { opacity: 1, y: 0 });
+
+    // 1. Hero 섹션 (즉시 실행)
+    const heroElements = gsap.utils.toArray('.recruit-hero .animate-up');
+    if (heroElements.length > 0) {
+      gsap.fromTo(heroElements, 
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 0.8, stagger: 0.1, ease: 'power2.out' }
+      );
+    }
+
+    // 2. 나머지 섹션들 (스크롤 감지 후 실행)
+    const sections = gsap.utils.toArray('.recruit-section');
     sections.forEach((section) => {
-      const anims = section.querySelectorAll('.animate-up');
-      if (anims.length > 0) {
-        gsap.fromTo(anims, 
+      const elements = section.querySelectorAll('.animate-up');
+      if (elements.length > 0) {
+        gsap.fromTo(elements, 
           { opacity: 0, y: 30 },
           {
-            opacity: 1, 
-            y: 0, 
-            duration: 0.8, 
-            stagger: 0.15, 
+            opacity: 1,
+            y: 0,
+            duration: 0.7,
+            stagger: 0.1,
             ease: 'power2.out',
             scrollTrigger: {
               trigger: section,
-              start: 'top 90%',
+              start: 'top 92%', // 훨씬 더 일찍 나타나도록 조정
               toggleActions: 'play none none none',
               once: true
             }
@@ -100,6 +65,7 @@ const Recruit = () => {
         );
       }
     });
+
     ScrollTrigger.refresh();
   }, { scope: containerRef, dependencies: [loading, recruits] });
 
@@ -117,14 +83,46 @@ const Recruit = () => {
     { icon: <FaHandsHelping />, title: '안정된 생활', desc: '퇴직연금 및 4대보험 가입' },
   ];
 
+  const getFieldData = (job, keys) => {
+    for (const key of keys) {
+      if (job[key]) return job[key];
+    }
+    return null;
+  };
+
+  const renderListItems = (data) => {
+    if (!data) return null;
+    let items = [];
+    if (Array.isArray(data)) {
+      items = data.map(item => (typeof item === 'object' && item !== null) ? (item.content || item.description || JSON.stringify(item)) : item);
+    } else if (typeof data === 'string') {
+      items = data.includes('\n') ? data.split('\n') : data.split(',');
+    }
+    const filtered = items.map(i => i?.toString().trim()).filter(i => i);
+    if (filtered.length === 0) return null;
+    return filtered.map((item, i) => <li key={i}>{item}</li>);
+  };
+
+  const handleApplyClick = (e, job) => {
+    const link = getFieldData(job, ['applyLink', 'apply_link', 'applyUrl', 'link']);
+    if (!link) {
+      e.preventDefault();
+      alert('지원 링크가 설정되지 않았습니다.');
+      return;
+    }
+    const url = (link.startsWith('http://') || link.startsWith('https://')) ? link : `https://${link}`;
+    window.open(url, '_blank', 'noopener,noreferrer');
+  };
+
   return (
     <div className="recruit-page" ref={containerRef}>
       <section className="recruit-hero">
         <Container>
           <div className="hero-content text-center">
-            <h4 className="hero-sub-title animate-up">CAREERS</h4>
-            <h1 className="hero-main-title animate-up">신의를 중시하며,<br />도전과 창의를 즐기는<br /><span>전문가</span>를 찾습니다.</h1>
-            <p className="hero-desc animate-up">보아스소프트와 함께 미래 농업의 디지털 전환을 이끌어갈 인재를 기다립니다.</p>
+            <h1 className="hero-main-title">신의를 중시하며, 도전과 창의를 즐기는<br /><span>전문가</span>를 찾습니다.</h1>
+            <p className="hero-desc">
+              보아스에스이와 함께 미래 농업의 디지털 전환을 이끌어갈 인재를 기다립니다.
+            </p>
           </div>
         </Container>
       </section>
@@ -177,20 +175,18 @@ const Recruit = () => {
           <div className="section-header text-center mb-5">
             <h4 className="section-sub-title animate-up">JOB OPENINGS</h4>
             <h2 className="section-title animate-up">진행 중인 채용 공고</h2>
-            <p className="text-muted animate-up mt-3">보아스소프트와 함께 성장할 인재를 기다립니다.</p>
+            <p className="text-muted animate-up mt-3">보아스에스이와 함께 성장할 인재를 기다립니다.</p>
           </div>
           <Row className="justify-content-center">
             <Col lg={10}>
-              {loading ? (
-                <div className="text-center py-5">로딩 중...</div>
-              ) : recruits.length > 0 ? (
+              {!loading && recruits.length > 0 ? (
                 recruits.map((job) => (
                   <div key={job.id} className="animate-up mb-4">
                     <Card className="job-card border-0 shadow-sm">
                       <Card.Body className="p-4 p-md-5">
                         <div className="d-md-flex justify-content-between align-items-start mb-4">
                           <div>
-                            <span className="badge bg-success mb-2">{job.status || '채용중'}</span>
+                            <span className="badge bg-success mb-2">{getFieldData(job, ['status', 'job_status']) || '채용중'}</span>
                             <h3 className="job-title">{job.title}</h3>
                             <p className="job-location text-muted">{job.location} | {job.type}</p>
                           </div>
@@ -201,13 +197,13 @@ const Recruit = () => {
                           <Col md={6} className="mb-4 mb-md-0">
                             <h5 className="info-label">주요 업무</h5>
                             <ul className="info-list">
-                              {renderListItems(getFieldData(job, ['recruit_duties', 'recruitDuties', 'duties', 'mainTask'])) || <li>공고 내용을 확인해 주세요.</li>}
+                              {renderListItems(getFieldData(job, ['recruit_duties', 'duties', 'recruitDuties'])) || <li>공고 내용을 확인해 주세요.</li>}
                             </ul>
                           </Col>
                           <Col md={6}>
                             <h5 className="info-label">자격 요건</h5>
                             <ul className="info-list">
-                              {renderListItems(getFieldData(job, ['recruit_requirements', 'recruitRequirements', 'requirements', 'qualification'])) || <li>공고 내용을 확인해 주세요.</li>}
+                              {renderListItems(getFieldData(job, ['recruit_requirements', 'requirements', 'recruitRequirements'])) || <li>공고 내용을 확인해 주세요.</li>}
                             </ul>
                           </Col>
                         </Row>
@@ -215,9 +211,10 @@ const Recruit = () => {
                     </Card>
                   </div>
                 ))
-              ) : (
+              ) : !loading && (
                 <div className="text-center py-5 text-muted animate-up">현재 진행 중인 채용 공고가 없습니다.</div>
               )}
+              {loading && <div className="text-center py-5">공고를 불러오는 중...</div>}
             </Col>
           </Row>
         </Container>
