@@ -179,13 +179,9 @@
 
 
 .contact-btn:hover {
-
-  background-color: transparent;
-
+  background-color: #4caf50;
   color: #ffffff !important;
-
-  border-color: #ffffff;
-
+  border-color: #4caf50;
 }
 
 

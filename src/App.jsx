@@ -2,20 +2,31 @@ import React from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
+
+// Layout & Common
 import Header from './components/Layout/Header';
 import Footer from './components/Layout/Footer';
+import ScrollToTop from './components/ScrollToTop';
+import ErrorBoundary from './components/ErrorBoundary';
+
+// User Pages
 import MainPage from './components/Home/MainPage';
-import NoticeList from './components/Notice/NoticeList';
-import NoticeDetail from './components/Notice/NoticeDetail';
-import NoticeWrite from './components/Notice/NoticeWrite';
 import About from './components/about/About';
 import Business from './components/business/Business';
 import Recruit from './components/recruit/Recruit';
 import Product from './components/product/Product';
 import ProductDetail from './components/product/ProductDetail';
 import Contact from './components/contact/Contact';
-import ScrollToTop from './components/ScrollToTop';
-import ErrorBoundary from './components/ErrorBoundary';
+
+// Legal Pages
+import PrivacyPolicy from './components/legal/PrivacyPolicy';
+import EmailPolicy from './components/legal/EmailPolicy';
+import TermsOfService from './components/legal/TermsOfService';
+
+// Notice Pages
+import NoticeList from './components/Notice/NoticeList';
+import NoticeDetail from './components/Notice/NoticeDetail';
+import NoticeWrite from './components/Notice/NoticeWrite';
 
 // Admin Components
 import AdminLayout from './components/admin/AdminLayout';
@@ -29,18 +40,21 @@ import AdminProductForm from './components/admin/Product/AdminProductForm';
 
 function App() {
   const location = useLocation();
+  
+  // 관리자 페이지 여부 확인
   const isAdminPage = location.pathname.startsWith('/admin');
+  
+  // 헤더 패딩이 필요 없는 페이지들 정의
   const isHomePage = location.pathname === '/';
   const isContactPage = location.pathname === '/contact';
   const isBusinessPage = location.pathname === '/business';
-  
-  // 배경색이 있는 서브 페이지들(Notice, Recruit 등)은 헤더 패딩을 별도로 처리하거나 0으로 설정합니다.
-  const isBackgroundPage = location.pathname.startsWith('/notice') || location.pathname.startsWith('/recruit');
+  const isBackgroundPage = location.pathname.startsWith('/notice') || 
+                           location.pathname.startsWith('/recruit') || 
+                           location.pathname.startsWith('/product');
 
   const mainStyle = {
-    // 홈, 컨택, 비즈니스, 배경 있는 페이지, 관리자 페이지일 때는 전체 높이 등 레이아웃 제약을 풉니다.
-    // 그 외 서브 페이지일 때만 헤더 높이만큼 패딩을 줍니다.
-    paddingTop: (isHomePage || isContactPage || isBusinessPage || isBackgroundPage || isAdminPage) ? '0' : '120px',
+    // 위 조건들에 해당하면 패딩 0, 아니면 헤더 높이만큼(120px) 패딩 부여
+    paddingTop: (isHomePage || isBusinessPage || isContactPage || isBackgroundPage || isAdminPage) ? '0' : '120px',
     width: '100%',
   };
 
@@ -50,23 +64,29 @@ function App() {
         <ScrollToTop />
         {!isAdminPage && <Header />}
         
-        {/* Main Content Area with Routing */}
         <main style={mainStyle}>
           <Routes>
-            {/* User Routes */}
+            {/* --- User Routes --- */}
             <Route path="/" element={<MainPage />} />
-            <Route path="/notice" element={<NoticeList />} />
-            <Route path="/notice/:id" element={<NoticeDetail />} />
-            <Route path="/notice/write" element={<NoticeWrite />} />
-            <Route path="/notice/edit/:id" element={<NoticeWrite />} />
             <Route path="/about" element={<About />} />
             <Route path="/business" element={<Business />} />
             <Route path="/recruit" element={<Recruit />} />
             <Route path="/product" element={<Product />} />
             <Route path="/product/:id" element={<ProductDetail />} />
             <Route path="/contact" element={<Contact />} />
+            
+            {/* Legal Routes */}
+            <Route path="/privacy" element={<PrivacyPolicy />} />
+            <Route path="/email-policy" element={<EmailPolicy />} />
+            <Route path="/terms" element={<TermsOfService />} />
+            
+            {/* Notice Routes */}
+            <Route path="/notice" element={<NoticeList />} />
+            <Route path="/notice/:id" element={<NoticeDetail />} />
+            <Route path="/notice/write" element={<NoticeWrite />} />
+            <Route path="/notice/edit/:id" element={<NoticeWrite />} />
 
-            {/* Admin Routes */}
+            {/* --- Admin Routes --- */}
             <Route path="/admin" element={<AdminLayout />}>
               <Route index element={<AdminDashboard />} />
               <Route path="notice" element={<AdminNoticeList />} />

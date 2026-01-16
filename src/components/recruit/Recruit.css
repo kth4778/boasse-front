@@ -1,3 +1,8 @@
+.animate-up {
+  opacity: 1 !important;
+  will-change: transform, opacity;
+}
+
 .recruit-page {
   background-color: #fff;
 }
@@ -12,6 +17,14 @@
   color: #fff;
 }
 
+.hero-content {
+  max-width: 1500px;
+  position: relative;
+  z-index: 10;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
 .hero-sub-title {
   font-weight: 700;
   letter-spacing: 3px;
@@ -21,13 +34,15 @@
 
 .hero-main-title {
   font-size: 3.5rem;
-  font-weight: 800;
+  font-weight: 300;
   line-height: 1.3;
   margin-bottom: 30px;
-}
-
-.hero-main-title span {
-  color: #4caf50;
+  max-width: 1000px;
+  margin-left: auto;
+  margin-right: auto;
+  word-break: keep-all;
+  letter-spacing: -1.5px;
+  text-transform: uppercase;
 }
 
 .hero-desc {
