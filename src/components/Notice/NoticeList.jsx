@@ -54,10 +54,12 @@ const NoticeList = () => {
 
   return (
     <div className="notice-page">
-      <section className="sub-header">
+      <section className="notice-hero">
         <Container>
-          <h2 className="sub-title-main">Notice</h2>
-          <p className="sub-title-sub">BOAS-SE의 새로운 소식을 전해드립니다.</p>
+          <div className="hero-content text-center">
+            <h1 className="hero-main-title">NOTICE</h1>
+            <p className="hero-desc">BOAS-SE의 새로운 소식을 전해드립니다.</p>
+          </div>
         </Container>
       </section>
 
