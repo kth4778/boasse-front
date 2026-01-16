@@ -88,7 +88,7 @@
 
 
 
-  background-color: #2e7d32; /* 더 진한 녹색 */
+  background-color: var(--primary-color); /* 더 진한 녹색 -> 메인 컬러 */
 
 
 
@@ -169,12 +169,13 @@
 }
 
 .contact-btn:hover {
-  background-color: #4caf50;
+  background-color: var(--primary-color);
   color: #ffffff !important;
   border-color: #4caf50;
   box-shadow: none;
   text-decoration: none;
   opacity: 1 !important; /* 전역 호버 투명도 효과 방지 */
+
 }
 
 

@@ -28,7 +28,7 @@
 .hero-sub-title {
   font-weight: 700;
   letter-spacing: 3px;
-  color: #4caf50;
+  color: var(--primary-color);
   margin-bottom: 20px;
 }
 
@@ -44,6 +44,8 @@
   letter-spacing: -1.5px;
   text-transform: uppercase;
 }
+.hero-main-title span {
+  color: var(--primary-color);
 
 .hero-desc {
   font-size: 1.25rem;
@@ -63,7 +65,7 @@
 .section-sub-title {
   font-size: 0.9rem;
   font-weight: 700;
-  color: #4caf50;
+  color: var(--primary-color);
   letter-spacing: 2px;
   margin-bottom: 10px;
   text-transform: uppercase;
@@ -72,7 +74,7 @@
 .title-line {
   width: 60px;
   height: 4px;
-  background: #4caf50;
+  background: var(--primary-color);
   margin: 0 auto;
 }
 
@@ -88,7 +90,7 @@
 }
 
 .process-card:hover {
-  border-color: #4caf50;
+  border-color: var(--primary-color);
   background: #fff;
   transform: translateY(-5px);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
@@ -96,7 +98,7 @@
 
 .process-icon {
   font-size: 3rem;
-  color: #4caf50;
+  color: var(--primary-color);
   margin-bottom: 20px;
 }
 
@@ -145,7 +147,7 @@
 }
 
 .btn-apply:hover {
-  background-color: #4caf50;
+  background-color: var(--primary-color);
   color: #fff;
   transform: scale(1.05);
 }
@@ -170,7 +172,7 @@
 
 .info-list li::before {
   content: '•';
-  color: #4caf50;
+  color: var(--primary-color);
   position: absolute;
   left: 0;
   font-weight: bold;
@@ -188,7 +190,7 @@
 }
 
 .welfare-card:hover {
-  border-color: #4caf50;
+  border-color: var(--primary-color);
   background: #fff;
   transform: translateY(-5px);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
@@ -196,7 +198,7 @@
 
 .welfare-icon {
   font-size: 2.5rem;
-  color: #4caf50;
+  color: var(--primary-color);
   margin-bottom: 20px;
 }
 
