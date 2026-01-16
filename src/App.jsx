@@ -11,20 +11,24 @@ import NoticeWrite from './components/Notice/NoticeWrite';
 import About from './components/about/About';
 import Product from './components/product/Product';
 import ProductDetail from './components/product/ProductDetail';
+import Contact from './components/contact/Contact';
+import ScrollToTop from './components/ScrollToTop';
 
 function App() {
   const location = useLocation();
   const isHomePage = location.pathname === '/';
+  const isContactPage = location.pathname === '/contact';
 
   const mainStyle = {
-    // 홈 페이지일 때는 전체 높이 등 레이아웃 제약을 풉니다.
-    // 서브 페이지일 때만 헤더 높이만큼 패딩을 줍니다.
-    paddingTop: isHomePage ? '0' : '120px',
+    // 홈 페이지와 컨택 페이지일 때는 전체 높이 등 레이아웃 제약을 풉니다.
+    // 그 외 서브 페이지일 때만 헤더 높이만큼 패딩을 줍니다.
+    paddingTop: (isHomePage || isContactPage) ? '0' : '120px',
     width: '100%',
   };
 
   return (
     <div className="App">
+      <ScrollToTop />
       <Header />
       
       {/* Main Content Area with Routing */}
@@ -38,6 +42,7 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/product" element={<Product />} />
           <Route path="/product/:id" element={<ProductDetail />} />
+          <Route path="/contact" element={<Contact />} />
         </Routes>
       </main>
 
