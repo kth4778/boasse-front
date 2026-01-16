@@ -13,7 +13,6 @@ const NoticeDetail = () => {
   
   // 삭제 모달 상태
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [deletePassword, setDeletePassword] = useState('');
   const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
@@ -25,7 +24,6 @@ const NoticeDetail = () => {
         }
       } catch (error) {
         console.error('Failed to fetch notice detail:', error);
-        // API call failed, no mock data fallback
         setNotice(null);
       } finally {
         setLoading(false);
@@ -36,25 +34,19 @@ const NoticeDetail = () => {
   }, [id]);
 
   const handleDelete = async () => {
-    if (!deletePassword) {
-      alert('비밀번호를 입력해 주세요.');
-      return;
-    }
-
     setDeleting(true);
     try {
-      const response = await noticeApi.deleteNotice(id, deletePassword);
+      const response = await noticeApi.deleteNotice(id);
       if (response.data.success) {
         alert('삭제되었습니다.');
         navigate('/notice');
       }
     } catch (error) {
       console.error('Failed to delete notice:', error);
-      alert('비밀번호가 틀렸거나 오류가 발생했습니다.');
+      alert('오류가 발생했습니다.');
     } finally {
       setDeleting(false);
       setShowDeleteModal(false);
-      setDeletePassword('');
     }
   };
 
@@ -126,48 +118,12 @@ const NoticeDetail = () => {
         </div>
 
         {/* 하단 버튼 영역 */}
-        <div className="d-flex justify-content-between align-items-center notice-footer-btns">
-          <Button variant="outline-secondary" className="btn-list" onClick={() => navigate('/notice')}>
+        <div className="d-flex justify-content-center align-items-center notice-footer-btns">
+          <Button variant="outline-secondary" className="btn-list px-5" onClick={() => navigate('/notice')}>
             <FaList className="me-2" /> 목록으로
           </Button>
-          <div className="admin-btns">
-            <Button 
-              variant="outline-dark" 
-              className="me-2 px-4"
-              onClick={() => navigate(`/notice/edit/${notice.id}`)}
-            >
-              <FaEdit className="me-2" /> 수정
-            </Button>
-            <Button variant="outline-danger" className="px-4" onClick={() => setShowDeleteModal(true)}>
-              <FaTrash className="me-2" /> 삭제
-            </Button>
-          </div>
         </div>
       </Container>
-
-      {/* 삭제 확인 모달 */}
-      <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)} centered>
-        <Modal.Header closeButton>
-          <Modal.Title>게시글 삭제</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <p>정말로 이 게시글을 삭제하시겠습니까?<br />삭제를 위해 관리자 비밀번호를 입력해 주세요.</p>
-          <Form.Group>
-            <Form.Control 
-              type="password" 
-              placeholder="비밀번호 입력" 
-              value={deletePassword}
-              onChange={(e) => setDeletePassword(e.target.value)}
-            />
-          </Form.Group>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowDeleteModal(false)}>취소</Button>
-          <Button variant="danger" onClick={handleDelete} disabled={deleting}>
-            {deleting ? '삭제 중...' : '삭제하기'}
-          </Button>
-        </Modal.Footer>
-      </Modal>
     </div>
   );
 };

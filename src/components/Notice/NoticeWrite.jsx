@@ -13,7 +13,6 @@ const NoticeWrite = () => {
   const [formData, setFormData] = useState({
     title: '',
     content: '',
-    password: '',
   });
   const [files, setFiles] = useState([]);
   const [existingFiles, setExistingFiles] = useState([]);
@@ -33,8 +32,6 @@ const NoticeWrite = () => {
         }
       } catch (error) {
         console.error('Failed to fetch notice detail for edit:', error);
-        // API call failed, no mock data fallback
-        // Optionally alert the user or redirect
       }
     };
 
@@ -51,7 +48,6 @@ const NoticeWrite = () => {
   const handleFileChange = (e) => {
     const selectedFiles = Array.from(e.target.files);
     setFiles((prev) => [...prev, ...selectedFiles]);
-    // 파일 선택 후 input 비우기 (같은 파일 다시 선택 가능하게)
     e.target.value = '';
   };
 
@@ -66,7 +62,7 @@ const NoticeWrite = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!formData.title || !formData.content || !formData.password) {
+    if (!formData.title || !formData.content) {
       alert('필수 항목(*)을 모두 입력해 주세요.');
       return;
     }
@@ -74,7 +70,6 @@ const NoticeWrite = () => {
     const data = new FormData();
     data.append('title', formData.title);
     data.append('content', formData.content);
-    data.append('password', formData.password);
     files.forEach((file) => data.append('files', file));
     
     if (removeFileIds.length > 0) {
@@ -96,11 +91,12 @@ const NoticeWrite = () => {
       }
     } catch (error) {
       console.error('Failed to save notice:', error);
-      alert('오류가 발생했습니다. 비밀번호를 확인하거나 잠시 후 다시 시도해 주세요.');
+      alert('오류가 발생했습니다. 잠시 후 다시 시도해 주세요.');
     } finally {
       setLoading(false);
     }
   };
+
 
   return (
     <div className="notice-page">
@@ -139,7 +135,7 @@ const NoticeWrite = () => {
           </Form.Group>
 
           <Row className="mb-4">
-            <Col md={6}>
+            <Col md={12}>
               <Form.Group>
                 <Form.Label className="fw-bold">첨부파일</Form.Label>
                 <Form.Control 
@@ -200,19 +196,6 @@ const NoticeWrite = () => {
                     </ul>
                   </div>
                 )}
-              </Form.Group>
-            </Col>
-            <Col md={6}>
-              <Form.Group>
-                <Form.Label className="fw-bold">관리자 비밀번호 *</Form.Label>
-                <Form.Control 
-                  type="password" 
-                  name="password"
-                  value={formData.password}
-                  onChange={handleInputChange}
-                  placeholder="수정/삭제 시 필요한 비밀번호입니다."
-                  required
-                />
               </Form.Group>
             </Col>
           </Row>

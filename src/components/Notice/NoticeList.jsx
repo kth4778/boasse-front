@@ -64,7 +64,7 @@ const NoticeList = () => {
       <Container className="notice-content py-5">
         <div className="notice-list-container">
           <div className="d-flex flex-wrap justify-content-between align-items-center mb-5 gap-3">
-            <p className="mb-0 text-muted">총 <strong>{pagination.totalCount || notices.length}</strong>건의 게시물이 있습니다.</p>
+            <p className="mb-0 text-muted">총 <strong>{pagination?.totalCount || notices.length || 0}</strong>건의 게시물이 있습니다.</p>
             
             {/* 검색창 영역 */}
             <div className="d-flex gap-2 notice-search-bar">
@@ -86,12 +86,6 @@ const NoticeList = () => {
                 value={searchKeyword}
                 onChange={(e) => setSearchKeyword(e.target.value)}
               />
-              <Button 
-                className="btn-primary-custom"
-                onClick={() => navigate('/notice/write')}
-              >
-                새 글 작성하기
-              </Button>
             </div>
           </div>
 
@@ -129,7 +123,7 @@ const NoticeList = () => {
           </Table>
         </div>
 
-        {pagination.totalPages > 1 && (
+        {pagination?.totalPages > 1 && (
           <div className="d-flex justify-content-center mt-5">
             <Pagination className="custom-pagination">
               <Pagination.Prev 

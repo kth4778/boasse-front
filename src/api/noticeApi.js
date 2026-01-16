@@ -33,8 +33,8 @@ export const noticeApi = {
     }),
 
   // 공지사항 삭제
-  deleteNotice: (id, password) => 
-    api.delete(`/notices/${id}`, { params: { password } }),
+  deleteNotice: (id) => 
+    api.delete(`/notices/${id}`),
 };
 
 export default noticeApi;
