@@ -5,6 +5,9 @@
   font-family: 'Pretendard', sans-serif;
   color: #333;
   background-color: #ffffff; /* Ensure white background for the reveal effect */
+  width: 100%;
+  overflow-x: hidden;
+  position: relative;
 }
 
 .about-section {
@@ -12,6 +15,8 @@
   position: relative;
   z-index: 2;
   background-color: #ffffff;
+  width: 100%;
+  overflow-x: hidden;
 }
 
 .section-content {

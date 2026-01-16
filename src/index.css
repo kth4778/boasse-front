@@ -23,6 +23,17 @@ body {
   color: var(--text-dark);
   -webkit-font-smoothing: antialiased; /* 폰트 렌더링 부드럽게 */
   background-color: #fff;
+  overflow-x: hidden; /* 가로 스크롤 방지 */
+  width: 100%;
+}
+
+html {
+  overflow-x: hidden;
+  width: 100%;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
 }
 
 a {

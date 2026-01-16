@@ -1,7 +1,7 @@
 import React from 'react';
 import { Nav } from 'react-bootstrap';
 import { Link, Outlet, useLocation } from 'react-router-dom';
-import { FaTachometerAlt, FaBullhorn, FaUserTie, FaBoxOpen, FaHome } from 'react-icons/fa';
+import { FaTachometerAlt, FaBullhorn, FaUserTie, FaBoxOpen, FaHome, FaEnvelope } from 'react-icons/fa';
 import './AdminLayout.css';
 
 const AdminLayout = () => {
@@ -12,6 +12,7 @@ const AdminLayout = () => {
     { path: '/admin/notice', icon: <FaBullhorn />, label: '공지사항 관리' },
     { path: '/admin/recruit', icon: <FaUserTie />, label: '채용공고 관리' },
     { path: '/admin/product', icon: <FaBoxOpen />, label: '제품 관리' },
+    { path: '/admin/inquiry', icon: <FaEnvelope />, label: '1:1 문의 관리' },
   ];
 
   return (

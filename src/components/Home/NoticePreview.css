@@ -1,0 +1,125 @@
+.notice-preview-section {
+  position: relative;
+  padding: 120px 0;
+  background-color: #f9fbf9; /* 아주 연한 녹색빛 회색 */
+  overflow: hidden;
+}
+
+/* 장식 요소: 둥근 네모 박스 반 잘린 상태 */
+.deco-box-half {
+  position: absolute;
+  top: -100px;
+  right: -100px; /* 화면 밖으로 반쯤 나가게 */
+  width: 400px;
+  height: 400px;
+  background-color: #e8f5e9; /* 연한 녹색 */
+  border-radius: 60px; /* 둥근 모서리 */
+  transform: rotate(15deg); /* 살짝 기울임 */
+  z-index: 1;
+}
+
+/* 하나 더 추가해서 레이어링 (선택 사항) */
+.deco-box-half::after {
+  content: '';
+  position: absolute;
+  bottom: -50px;
+  left: -50px;
+  width: 100%;
+  height: 100%;
+  border: 2px solid #4caf50; /* 진한 녹색 테두리 */
+  border-radius: 60px;
+  opacity: 0.3;
+  z-index: -1;
+}
+
+.notice-sub-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #4caf50;
+  letter-spacing: 2px;
+  margin-bottom: 10px;
+}
+
+.notice-main-title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #111;
+}
+
+.notice-more-btn {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #666;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.notice-more-btn:hover {
+  color: #4caf50;
+}
+
+/* 카드 스타일 */
+.notice-card {
+  display: block;
+  background: #fff;
+  border-radius: 20px;
+  padding: 40px 30px;
+  text-decoration: none;
+  color: #333;
+  height: 100%;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+  transition: transform 0.3s, box-shadow 0.3s;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid transparent;
+}
+
+.notice-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.08);
+  border-color: #4caf50;
+}
+
+.notice-badge {
+  display: inline-block;
+  background-color: #e8f5e9;
+  color: #2e7d32;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.notice-card-title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 15px;
+  line-height: 1.4;
+  height: 3.6em; /* 두 줄 제한 */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.notice-card-date {
+  font-size: 0.9rem;
+  color: #999;
+  margin-bottom: 0;
+}
+
+.notice-arrow {
+  position: absolute;
+  bottom: 30px;
+  right: 30px;
+  font-size: 1.5rem;
+  color: #ddd;
+  transition: color 0.3s, transform 0.3s;
+}
+
+.notice-card:hover .notice-arrow {
+  color: #4caf50;
+  transform: translateX(5px);
+}

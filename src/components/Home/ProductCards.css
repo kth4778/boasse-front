@@ -22,6 +22,7 @@
   position: relative;
   z-index: 5;
   will-change: width, border-radius;
+  overflow: visible !important; /* Sticky 동작을 위해 필수 */
 }
 
 /* --- Right: Masonry Grid (3 Columns) - 세로 길이 다양화 복구 --- */
@@ -107,16 +108,7 @@
 }
 
 
-/* Left: Sticky Title Card Wrapper */
-.sticky-wrapper {
-  height: 100%; 
-  width: 100%;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start; 
-}
-
+/* Left: Sticky Title Card */
 .title-card {
   background-color: #000000;
   border-radius: 30px;
@@ -128,21 +120,14 @@
   align-items: flex-start;
   width: 100%;
   
-  /* CSS Sticky: 가장 자연스럽고 심플한 고정 */
-  position: -webkit-sticky;
-  position: sticky;
-  top: 150px; /* 헤더 높이를 고려하여 여유 있게 설정 */
-  align-self: flex-start;
-  
+  /* GSAP Pinning으로 제어되므로 CSS sticky 제거 */
   height: auto; 
   min-height: 350px;
   
   box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
-  z-index: 10;
+  z-index: 100; /* 최상단 */
   
-  /* 하드웨어 가속 및 떨림 방지 */
   will-change: transform, top;
-  transform: translate3d(0, 0, 0);
   backface-visibility: hidden;
 }
 

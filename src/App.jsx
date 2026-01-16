@@ -37,6 +37,8 @@ import AdminRecruitList from './components/admin/Recruit/AdminRecruitList';
 import AdminRecruitForm from './components/admin/Recruit/AdminRecruitForm';
 import AdminProductList from './components/admin/Product/AdminProductList';
 import AdminProductForm from './components/admin/Product/AdminProductForm';
+import AdminInquiryList from './components/admin/Inquiry/AdminInquiryList';
+import AdminInquiryDetail from './components/admin/Inquiry/AdminInquiryDetail';
 
 function App() {
   const location = useLocation();
@@ -98,6 +100,8 @@ function App() {
               <Route path="product" element={<AdminProductList />} />
               <Route path="product/write" element={<AdminProductForm />} />
               <Route path="product/edit/:id" element={<AdminProductForm />} />
+              <Route path="inquiry" element={<AdminInquiryList />} />
+              <Route path="inquiry/:id" element={<AdminInquiryDetail />} />
             </Route>
           </Routes>
         </main>
