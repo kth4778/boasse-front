@@ -37,7 +37,11 @@ const AdminNoticeForm = () => {
       }
     } catch (error) {
       console.error('공지사항 상세 정보 불러오기 실패:', error);
-      alert('데이터를 불러오는 중 오류가 발생했습니다.');
+      if (error.code === 'ERR_NETWORK') {
+        alert('서버와 연결할 수 없습니다. 관리자에게 문의하세요.');
+      } else {
+        alert('데이터를 불러오는 중 오류가 발생했습니다.');
+      }
       navigate('/admin/notice');
     }
   };
@@ -94,7 +98,11 @@ const AdminNoticeForm = () => {
       }
     } catch (error) {
       console.error('공지사항 저장 실패:', error);
-      alert('저장 중 오류가 발생했습니다.');
+      if (error.code === 'ERR_NETWORK') {
+        alert('서버와 연결할 수 없습니다. 백엔드 서버가 켜져 있는지 확인해주세요.');
+      } else {
+        alert('저장 중 오류가 발생했습니다.');
+      }
     } finally {
       setLoading(false);
     }
