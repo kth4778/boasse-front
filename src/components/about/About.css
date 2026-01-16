@@ -105,7 +105,7 @@
   position: absolute;
   width: 20px;
   height: 20px;
-  background: #4caf50;
+  background: var(--primary-color);
   border-radius: 50% 0 50% 0; /* Leaf shape */
   opacity: 0.3;
   z-index: 4;
@@ -136,7 +136,7 @@
 .intro-section h1 {
   font-size: 5rem;
   font-weight: 800;
-  color: #2ecc71;
+  color: var(--primary-color);
   margin-bottom: 3rem;
 }
 .intro-section p {
@@ -167,7 +167,7 @@
   height: 360px;
   border-radius: 50%;
   border: 3px solid #333;
-  color: #2ecc71;
+  color: var(--primary-color);
   font-size: 2.6rem;
   font-weight: 800;
   display: flex;
@@ -263,7 +263,7 @@
 }
 
 .brand-green { 
-  color: #2ecc71; 
+  color: var(--primary-color); 
   font-size: 6rem; /* 사용자 요청 반영: 6rem */
   font-weight: 800; 
 }
@@ -343,7 +343,7 @@
   flex-shrink: 0;
   margin-top: 5px;
   font-size: 48px; /* 아이콘 크기 지정 */
-  color: #2ecc71;   /* 브랜드 색상 적용 */
+  color: var(--primary-color);   /* 브랜드 색상 적용 */
   display: flex;
   justify-content: center;
 }
@@ -394,7 +394,7 @@
   bottom: 0;
   left: 50%;
   width: 3px;
-  background-color: #2ecc71;
+  background-color: var(--primary-color);
   transform: translateX(-50%);
 }
 .timeline-item {
@@ -407,7 +407,7 @@
 .timeline-year {
   font-size: 2rem;
   font-weight: 700;
-  color: #2ecc71;
+  color: var(--primary-color);
   position: absolute;
   top: 50%;
   transform: translateY(-50%);

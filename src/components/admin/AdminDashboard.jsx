@@ -40,7 +40,7 @@ const AdminDashboard = () => {
   }, []);
 
   const stats = [
-    { title: '공지사항', count: counts.notice, icon: <FaBullhorn />, color: '#4caf50' },
+    { title: '공지사항', count: counts.notice, icon: <FaBullhorn />, color: '#8CC63F' },
     { title: '채용공고', count: counts.recruit, icon: <FaUserTie />, color: '#2196f3' },
     { title: '등록 제품', count: counts.product, icon: <FaBoxOpen />, color: '#ff9800' },
   ];

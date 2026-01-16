@@ -44,6 +44,7 @@ const CasesCarousel = () => {
             <Link to="/notice" className="view-all" style={{ color: '#666' }}> {/* 링크 색상 변경 */}
               전체보기 +
             </Link>
+
           </div>
 
           <div className="notice-grid">
