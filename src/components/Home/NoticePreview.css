@@ -33,7 +33,7 @@
 }
 
 .notice-sub-title {
-  font-size: 1rem;
+  font-size: var(--font-size-sm); /* 1rem -> sm */
   font-weight: 700;
   color: #4caf50;
   letter-spacing: 2px;
@@ -41,13 +41,13 @@
 }
 
 .notice-main-title {
-  font-size: 2.5rem;
+  font-size: var(--font-size-lg); /* 2.5rem -> lg */
   font-weight: 800;
   color: #111;
 }
 
 .notice-more-btn {
-  font-size: 1rem;
+  font-size: var(--font-size-sm); /* 1rem -> sm */
   font-weight: 600;
   color: #666;
   text-decoration: none;
@@ -86,13 +86,13 @@
   color: #2e7d32;
   padding: 5px 12px;
   border-radius: 20px;
-  font-size: 0.8rem;
+  font-size: var(--font-size-sm); /* 0.8rem -> sm */
   font-weight: 700;
   margin-bottom: 20px;
 }
 
 .notice-card-title {
-  font-size: 1.3rem;
+  font-size: var(--font-size-md); /* 1.3rem -> md */
   font-weight: 700;
   margin-bottom: 15px;
   line-height: 1.4;
@@ -105,7 +105,7 @@
 }
 
 .notice-card-date {
-  font-size: 0.9rem;
+  font-size: var(--font-size-sm); /* 0.9rem -> sm */
   color: #999;
   margin-bottom: 0;
 }
@@ -114,7 +114,7 @@
   position: absolute;
   bottom: 30px;
   right: 30px;
-  font-size: 1.5rem;
+  font-size: var(--font-size-md); /* 1.5rem -> md */
   color: #ddd;
   transition: color 0.3s, transform 0.3s;
 }

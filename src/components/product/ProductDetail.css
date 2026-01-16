@@ -94,14 +94,14 @@
   color: var(--primary-color);
   border-radius: 50px;
   font-weight: 700;
-  font-size: 1rem;
+  font-size: var(--font-size-sm);
   margin-bottom: 1.5rem;
   letter-spacing: 1px;
   text-transform: uppercase;
 }
 
 .pd-title {
-  font-size: 4.5rem; /* 타이틀 크기 확대 */
+  font-size: var(--font-size-lg); /* 4.5rem -> lg */
   font-weight: 800;
   margin-bottom: 1.5rem;
   line-height: 1.1;
@@ -110,7 +110,7 @@
 }
 
 .pd-desc {
-  font-size: 1.5rem;
+  font-size: var(--font-size-md); /* 1.5rem -> md */
   color: #e0e0e0;
   max-width: 800px;
   margin: 0 auto;
@@ -120,7 +120,7 @@
 
 /* --- Slide 2: Bento Grid (Dark Glassmorphism) --- */
 .pd-section-title {
-  font-size: 2.5rem;
+  font-size: var(--font-size-lg); /* 2.5rem -> lg */
   font-weight: 700;
   margin-bottom: 3rem;
   color: #fff;
@@ -151,27 +151,27 @@
 }
 
 .pd-bento-card .card-icon {
-  font-size: 2.5rem;
+  font-size: var(--font-size-lg); /* 2.5rem -> lg */
   color: var(--primary-color);
   margin-bottom: 1rem;
 }
 
 .pd-bento-card .card-label {
-  font-size: 0.9rem;
+  font-size: var(--font-size-sm); /* 0.9rem -> sm */
   color: #aaa;
   margin-bottom: 0.5rem;
   font-weight: 600;
 }
 
 .pd-bento-card .card-highlight {
-  font-size: 2rem;
+  font-size: var(--font-size-md); /* 2rem -> md */
   font-weight: 700;
   color: #fff;
   margin-bottom: 0.5rem;
 }
 
 .pd-bento-card .card-text {
-  font-size: 1rem;
+  font-size: var(--font-size-sm); /* 1rem -> sm */
   color: #ccc;
   line-height: 1.4;
 }
@@ -197,20 +197,20 @@
 
 .pd-feature-icon {
   color: var(--primary-color);
-  font-size: 1.5rem;
+  font-size: var(--font-size-md); /* 1.5rem -> md */
   margin-top: 0.2rem;
   flex-shrink: 0;
 }
 
 .pd-feature-content h4 {
-  font-size: 1.3rem;
+  font-size: var(--font-size-md); /* 1.3rem -> md */
   font-weight: 700;
   color: #fff;
   margin-bottom: 0.5rem;
 }
 
 .pd-feature-content p {
-  font-size: 1rem;
+  font-size: var(--font-size-sm); /* 1rem -> sm */
   color: #bbb;
   line-height: 1.6;
 }
@@ -229,7 +229,7 @@
   background: transparent;
   border: 1px solid rgba(255,255,255,0.3);
   color: #fff;
-  font-size: 1.1rem;
+  font-size: var(--font-size-sm); /* 1.1rem -> sm */
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s;
@@ -245,7 +245,7 @@
   border-radius: 50px;
   background: var(--primary-color);
   color: #fff;
-  font-size: 1.1rem;
+  font-size: var(--font-size-sm); /* 1.1rem -> sm */
   font-weight: 600;
   text-decoration: none;
   transition: all 0.3s;
@@ -282,14 +282,14 @@
 
 /* Responsive */
 @media (max-width: 1200px) {
-  .pd-title { font-size: 3.5rem; }
+  .pd-title { font-size: var(--font-size-lg); } /* 3.5rem -> lg */
   .pd-bento-grid { grid-template-columns: repeat(2, 1fr); }
   .card-wide { grid-column: span 1; }
 }
 
 @media (max-width: 768px) {
-  .pd-title { font-size: 2.5rem; }
-  .pd-desc { font-size: 1.1rem; }
+  .pd-title { font-size: var(--font-size-lg); } /* 2.5rem -> lg */
+  .pd-desc { font-size: var(--font-size-sm); } /* 1.1rem -> sm */
   .pd-feature-grid { grid-template-columns: 1fr; gap: 1.5rem; padding: 1.5rem; }
   .pd-swiper .swiper-pagination-vertical.swiper-pagination-bullets { left: 20px !important; }
 }

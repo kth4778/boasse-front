@@ -87,7 +87,7 @@
 }
 
 .slide-eyebrow {
-  font-size: 1.2rem;
+  font-size: var(--font-size-sm); /* 1.2rem -> sm */
   font-weight: 600;
   color: #86868b;
   margin-bottom: 1rem;
@@ -96,7 +96,7 @@
 }
 
 .slide-title {
-  font-size: 4rem;
+  font-size: var(--font-size-lg); /* 4rem -> lg */
   font-weight: 700;
   line-height: 1.1;
   margin-bottom: 1.5rem;
@@ -106,7 +106,7 @@
 }
 
 .slide-description {
-  font-size: 1.5rem;
+  font-size: var(--font-size-md); /* 1.5rem -> md */
   line-height: 1.4;
   color: #d1d1d6;
   max-width: 800px;
@@ -118,10 +118,10 @@
 /* 반응형 디자인 */
 @media (max-width: 768px) {
   .slide-title {
-    font-size: 2.5rem;
+    font-size: var(--font-size-lg); /* 2.5rem -> lg */
   }
   .slide-description {
-    font-size: 1.1rem;
+    font-size: var(--font-size-sm); /* 1.1rem -> sm */
   }
 }
 

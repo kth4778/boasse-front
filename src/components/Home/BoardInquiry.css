@@ -30,7 +30,7 @@
 }
 
 .dark-section-title {
-  font-size: 2.5rem;
+  font-size: var(--font-size-lg); /* 2.5rem -> lg */
   font-weight: 800;
   color: #fff;
   margin-bottom: 50px;
@@ -55,7 +55,7 @@
 .input-label {
   width: 100px;
   font-weight: 600;
-  font-size: 1rem;
+  font-size: var(--font-size-sm); /* 1rem -> sm */
   color: rgba(255,255,255,0.9);
   flex-shrink: 0;
 }
@@ -66,7 +66,7 @@
   color: #fff;
   width: 100%;
   padding: 5px 15px;
-  font-size: 1.05rem;
+  font-size: var(--font-size-sm); /* 1.05rem -> sm */
   transition: transform 0.15s ease-out;
 }
 
@@ -78,14 +78,14 @@
 
 .custom-input::placeholder {
   color: rgba(255,255,255,0.3);
-  font-size: 0.95rem;
+  font-size: var(--font-size-sm); /* 0.95rem -> sm */
 }
 
 .agree-check {
   display: flex;
   align-items: center;
   margin: 40px 0;
-  font-size: 0.95rem;
+  font-size: var(--font-size-sm); /* 0.95rem -> sm */
   color: rgba(255,255,255,0.8);
 }
 
@@ -94,7 +94,7 @@
   color: #1A2E1A;
   border: none;
   padding: 18px 50px;
-  font-size: 1.1rem;
+  font-size: var(--font-size-sm); /* 1.1rem -> sm */
   font-weight: 700;
   cursor: pointer;
   transition: all 0.15s cubic-bezier(0.23, 1, 0.32, 1); /* 트랜지션 단축 */
@@ -115,7 +115,7 @@
 
 /* 우측 정보 텍스트 */
 .info-label {
-  font-size: 1.2rem;
+  font-size: var(--font-size-sm); /* 1.2rem -> sm */
   font-weight: 700;
   color: #ffffff !important; /* 라벨 흰색 강제 */
   margin-bottom: 15px;
@@ -123,7 +123,7 @@
 }
 
 .info-phone {
-  font-size: 3.5rem;
+  font-size: var(--font-size-lg); /* 3.5rem -> lg */
   font-weight: 800;
   color: #fff; 
   margin-bottom: 50px;
@@ -133,13 +133,13 @@
 
 .info-text {
   color: #ffffff !important; /* 텍스트 흰색 강제 */
-  font-size: 1.05rem;
+  font-size: var(--font-size-sm); /* 1.05rem -> sm */
   margin-bottom: 35px;
   line-height: 1.7;
 }
 
 @media (max-width: 992px) {
   .info-phone {
-    font-size: 2.5rem;
+    font-size: var(--font-size-lg); /* 2.5rem -> lg */
   }
 }

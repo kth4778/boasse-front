@@ -27,7 +27,7 @@
 }
 
 .about-section h2 {
-  font-size: 2rem;
+  font-size: var(--font-size-md); /* 2rem -> md */
   font-weight: 700;
   margin-bottom: 3rem;
   color: #2c3e50;
@@ -134,13 +134,13 @@
   text-align: left;
 }
 .intro-section h1 {
-  font-size: 5rem;
+  font-size: var(--font-size-lg); /* 5rem -> lg */
   font-weight: 800;
   color: var(--primary-color);
   margin-bottom: 3rem;
 }
 .intro-section p {
-  font-size: 1.1rem;
+  font-size: var(--font-size-sm); /* 1.1rem -> sm */
   color: #555;
   max-width: 1000px;
   line-height: 2;
@@ -168,7 +168,7 @@
   border-radius: 50%;
   border: 3px solid #333;
   color: var(--primary-color);
-  font-size: 2.6rem;
+  font-size: var(--font-size-lg); /* 2.6rem -> lg */
   font-weight: 800;
   display: flex;
   justify-content: center;
@@ -228,14 +228,14 @@
 }
 
 .gear-large {
-  font-size: 50rem; /* 매우 큰 기어 */
+  font-size: 50rem; /* 매우 큰 기어 -> 유지 */
   right: -10%;
   bottom: -20%;
   animation: rotate-gear 60s linear infinite;
 }
 
 .gear-small {
-  font-size: 30rem; /* 중간 크기 기어 */
+  font-size: 30rem; /* 중간 크기 기어 -> 유지 */
   left: -5%;
   top: -10%;
   animation: rotate-gear-reverse 40s linear infinite;
@@ -259,12 +259,12 @@
 
 .mission-title { 
   margin: 0 0 2rem 0;
-  font-size: 2.4rem; /* 사용자 요청 반영: 2.4rem */
+  font-size: var(--font-size-md); /* 2.4rem -> md */
 }
 
 .brand-green { 
   color: var(--primary-color); 
-  font-size: 6rem; /* 사용자 요청 반영: 6rem */
+  font-size: var(--font-size-lg); /* 6rem -> lg */
   font-weight: 800; 
 }
 
@@ -273,7 +273,7 @@
 }
 
 .mission-desc p {
-  font-size: 2.0rem; /* 사용자 요청 반영: 2.0rem */
+  font-size: var(--font-size-md); /* 2.0rem -> md */
   font-weight: 700;
   color: #ffffff;
   margin: 0.5rem 0;
@@ -314,7 +314,7 @@
 }
 .portfolio-title {
   flex: 0 0 30%;
-  font-size: 3.5rem;
+  font-size: var(--font-size-lg); /* 3.5rem -> lg */
   font-weight: 800;
   line-height: 1.3;
   position: sticky;
@@ -342,20 +342,20 @@
   width: 56px;
   flex-shrink: 0;
   margin-top: 5px;
-  font-size: 48px; /* 아이콘 크기 지정 */
+  font-size: 48px; /* 아이콘 크기 지정 -> 유지 */
   color: var(--primary-color);   /* 브랜드 색상 적용 */
   display: flex;
   justify-content: center;
 }
 .portfolio-item-content h3 {
   margin: 0 0 0.75rem 0;
-  font-size: 1.6rem;
+  font-size: var(--font-size-md); /* 1.6rem -> md */
   font-weight: 700;
 }
 .portfolio-item-content p {
   margin: 0;
   color: #555;
-  font-size: 1rem;
+  font-size: var(--font-size-sm); /* 1rem -> sm */
   line-height: 1.6;
   word-break: keep-all;
 }
@@ -374,7 +374,7 @@
 .history-flex-container { display: flex; gap: 4rem; }
 .history-title-column { flex: 0 0 30%; }
 .history-title-column h2 {
-  font-size: 2rem;
+  font-size: var(--font-size-md); /* 2rem -> md */
   font-weight: 700;
   line-height: 1.3;
   position: sticky;
@@ -405,7 +405,7 @@
 .timeline-item:nth-child(odd) { left: 0; padding-right: 3rem; text-align: right; }
 .timeline-item:nth-child(even) { left: 50%; padding-left: 3rem; text-align: left; }
 .timeline-year {
-  font-size: 2rem;
+  font-size: var(--font-size-md); /* 2rem -> md */
   font-weight: 700;
   color: var(--primary-color);
   position: absolute;
@@ -424,7 +424,7 @@
   box-shadow: 0 4px 30px rgba(0,0,0,0.07);
   word-break: keep-all;
 }
-.timeline-content p { font-size: 1.1rem; margin: 0; font-weight: 500; }
+.timeline-content p { font-size: var(--font-size-sm); /* 1.1rem -> sm */ margin: 0; font-weight: 500; }
 .timeline-item:last-child { margin-bottom: 0; }
 
 /* --- 6. Location Section --- */
