@@ -1,18 +1,14 @@
-import React, { useRef, useState } from 'react';
-import { Container } from 'react-bootstrap';
-import { FaArrowRight } from 'react-icons/fa';
+import React, { useRef, useState, useEffect } from 'react';
+import { FaArrowRight, FaArrowLeft } from 'react-icons/fa';
 import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
 
 import './InfoSection.css';
 
-gsap.registerPlugin(ScrollTrigger);
-
 const InfoSection = () => {
   const sectionRef = useRef(null);
-  const wrapperRef = useRef(null);
   const [activeIndex, setActiveIndex] = useState(0);
+  const previousIndex = useRef(0);
 
   const solutions = [
     {
@@ -50,35 +46,10 @@ const InfoSection = () => {
   ];
 
   useGSAP(() => {
-    const totalSlides = solutions.length;
-    const cards = gsap.utils.toArray('.image-card');
-    const texts = gsap.utils.toArray('.info-text-group');
-
-    // --- 배경 파랄락스 애니메이션 추가 ---
-    gsap.to('.forest-layer-1', {
-      y: -100,
-      scrollTrigger: {
-        trigger: sectionRef.current,
-        start: 'top bottom',
-        end: 'bottom top',
-        scrub: 1.5
-      }
-    });
-
-    gsap.to('.forest-layer-2', {
-      y: -50,
-      scrollTrigger: {
-        trigger: sectionRef.current,
-        start: 'top bottom',
-        end: 'bottom top',
-        scrub: 1
-      }
-    });
-
-    // 나뭇잎 파티클 애니메이션
+    // 배경 파티클 애니메이션 (계속 움직임)
     gsap.to('.leaf-particle', {
-      y: 'random(-100, 100)',
-      x: 'random(-50, 50)',
+      y: 'random(-50, 50)',
+      x: 'random(-30, 30)',
       rotation: 'random(-180, 180)',
       duration: 'random(3, 5)',
       repeat: -1,
@@ -89,159 +60,163 @@ const InfoSection = () => {
         from: 'random'
       }
     });
-    // ---------------------------------
-
-    // 1. 초기 상태 설정
-    gsap.set(texts, { autoAlpha: 0, x: -50 });
-    // 첫 번째 텍스트 보이기
-    gsap.set(texts[0], { autoAlpha: 1, x: 0 });
-
-    // 카드 초기 위치 설정
-    // 카드 0: 중앙, 카드 1: 우측 뒤, 카드 2,3...: 더 뒤로 숨김
-    cards.forEach((card, i) => {
-      if (i === 0) {
-        gsap.set(card, { xPercent: 0, scale: 1, zIndex: 10, autoAlpha: 1 });
-      } else {
-        // 다음 카드들은 우측에 대기 (살짝 보이게)
-        gsap.set(card, { xPercent: 60 + (i * 10), scale: 0.8 - (i * 0.05), zIndex: 10 - i, autoAlpha: 1 });
-      }
-    });
-
-    // 2. ScrollTrigger 및 타임라인 생성
-    // 전체 섹션을 고정(Pin)하고, 스크롤 길이를 슬라이드 개수에 비례하게 설정
-    const scrollDuration = 3000; // 스크롤 길이
-    
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: sectionRef.current,
-        start: 'top top', // 섹션 상단이 뷰포트 상단에 닿을 때
-        end: `+=${scrollDuration}`, 
-        pin: true,
-        scrub: 1, // 부드러운 스크러빙
-        anticipatePin: 1,
-        onUpdate: (self) => {
-          // 현재 진행률에 따라 Active Index 계산 (네비게이션 용)
-          const progress = self.progress;
-          // progress 0~1 사이를 totalSlides 등분
-          // 약간의 오차 보정을 위해 Math.min 사용
-          const index = Math.min(
-            Math.floor(progress * totalSlides),
-            totalSlides - 1
-          );
-          setActiveIndex(index);
-        }
-      }
-    });
-
-    // 3. 슬라이드 전환 애니메이션 시퀀스 생성
-    // 0 -> 1 -> 2 -> 3 순서로 전환
-    for (let i = 0; i < totalSlides - 1; i++) {
-      const currentCard = cards[i];
-      const nextCard = cards[i + 1];
-      
-      const currentText = texts[i];
-      const nextText = texts[i + 1];
-
-      // 타임라인에 순차적으로 추가
-      // Step: 현재 슬라이드 퇴장 & 다음 슬라이드 등장
-      const stepTl = gsap.timeline();
-
-      // --- 이미지 전환 ---
-      // 현재 카드: 왼쪽으로 살짝 빠지며 뒤로 숨음 (텍스트 영역 침범 최소화)
-      stepTl.to(currentCard, {
-        xPercent: -40, // 너무 멀리 가지 않도록 조정
-        scale: 0.5,    // 작아지면서 뒤로 가는 느낌 강화
-        opacity: 0, 
-        duration: 0.8,
-        ease: 'power1.in'
-      }, 0);
-
-      // 다음 카드: 중앙으로 이동하며 확대
-      stepTl.to(nextCard, {
-        xPercent: 0,
-        scale: 1,
-        opacity: 1,
-        duration: 1,
-        ease: 'power1.inOut'
-      }, 0);
-
-      // 다다음 카드들(i+2 이상)도 앞으로 조금씩 당겨오기 (3D 효과)
-      for(let j = i + 2; j < totalSlides; j++) {
-        stepTl.to(cards[j], {
-          xPercent: 60 + ((j - (i + 1)) * 10), // 한 단계씩 앞으로
-          scale: 0.8 - ((j - (i + 1)) * 0.05),
-          duration: 1,
-          ease: 'power1.inOut'
-        }, 0);
-      }
-
-      // --- 텍스트 전환 ---
-      // 이전 텍스트: 왼쪽으로 사라짐
-      stepTl.to(currentText, {
-        x: -30,
-        autoAlpha: 0,
-        duration: 0.4,
-        ease: 'power1.in'
-      }, 0);
-
-      // 다음 텍스트: 왼쪽에서 등장 (이전 텍스트가 사라진 후 등장하도록 딜레이 조정)
-      stepTl.fromTo(nextText, {
-        x: -30,
-        autoAlpha: 0
-      }, {
-        x: 0,
-        autoAlpha: 1,
-        duration: 0.5,
-        ease: 'power1.out'
-      }, 0.5); // 0.5초 딜레이
-
-      // 메인 타임라인에 추가 (각 단계 사이에 약간의 텀을 줄 수도 있음)
-      tl.add(stepTl);
-    }
-
   }, { scope: sectionRef });
+
+  // 스와이프/드래그 상태 관리
+  const touchStartX = useRef(0);
+  const touchEndX = useRef(0);
+
+  const handleNext = () => {
+    if (activeIndex < solutions.length - 1) {
+      setActiveIndex(activeIndex + 1);
+    } else {
+      setActiveIndex(0); // Loop back to start
+    }
+  };
+
+  const handlePrev = () => {
+    if (activeIndex > 0) {
+      setActiveIndex(activeIndex - 1);
+    } else {
+      setActiveIndex(solutions.length - 1); // Loop to end
+    }
+  };
+
+  // 스와이프 처리 함수
+  const handleSwipe = () => {
+    const threshold = 50; 
+    const diff = touchStartX.current - touchEndX.current;
+
+    if (Math.abs(diff) > threshold) {
+      if (diff > 0) {
+        handleNext();
+      } else {
+        handlePrev();
+      }
+    }
+  };
+
+  const onTouchStart = (e) => { touchStartX.current = e.touches[0].clientX; };
+  const onTouchEnd = (e) => { touchEndX.current = e.changedTouches[0].clientX; handleSwipe(); };
+  const onMouseDown = (e) => { e.preventDefault(); touchStartX.current = e.clientX; };
+  const onMouseUp = (e) => { touchEndX.current = e.clientX; handleSwipe(); };
+
+  useEffect(() => {
+    // 탭 전환 애니메이션
+    const texts = gsap.utils.toArray('.info-text-group');
+    const cards = gsap.utils.toArray('.image-card');
+    
+    const prevIdx = previousIndex.current;
+    const currentIdx = activeIndex;
+
+    // 1. 텍스트 전환
+    if (prevIdx !== currentIdx) {
+      gsap.to(texts[prevIdx], {
+        autoAlpha: 0,
+        x: -20,
+        duration: 0.3,
+        ease: 'power2.in'
+      });
+    }
+    
+    gsap.fromTo(texts[currentIdx],
+      { autoAlpha: 0, x: 20 },
+      { autoAlpha: 1, x: 0, duration: 0.5, delay: 0.2, ease: 'power2.out' }
+    );
+
+    // 2. 이미지 전환 (3D 원형 회전 Carousel)
+    const radius = 350; 
+    const theta = 50;   
+
+    cards.forEach((card, i) => {
+      const offset = i - currentIdx;
+      const angle = offset * theta;
+      const distFactor = Math.abs(offset);
+      
+      const scale = i === currentIdx ? 1 : 0.8; 
+      const opacity = i === currentIdx ? 1 : 0; 
+      const zIndex = i === currentIdx ? 100 : 0;
+
+      gsap.to(card, {
+        rotateY: angle,
+        translateZ: radius - (distFactor * 50), 
+        x: offset < 0 ? offset * 10 : offset * 30, 
+        scale: scale,
+        autoAlpha: opacity, 
+        zIndex: zIndex,
+        duration: 0.8,
+        ease: 'power3.out',
+        transformOrigin: "50% 50% -400px" 
+      });
+
+      if (i === currentIdx) {
+        gsap.to(card, { filter: 'brightness(1) blur(0px)', duration: 0.8 });
+      } else {
+        gsap.to(card, { filter: 'brightness(0.5) blur(1px)', duration: 0.8 });
+      }
+    });
+
+    previousIndex.current = activeIndex;
+  }, [activeIndex]);
+
+  const handleTabClick = (index) => {
+    setActiveIndex(index);
+  };
 
   return (
     <section className="info-section" ref={sectionRef}>
-      {/* 숲 배경 레이어 추가 */}
       <div className="forest-bg">
         <div className="forest-layer forest-layer-1"></div>
         <div className="forest-layer forest-layer-2"></div>
         <div className="forest-light-rays"></div>
-        
-        {/* 나뭇잎 파티클 10개 생성 */}
         {[...Array(10)].map((_, i) => (
           <div key={i} className={`leaf-particle leaf-${i + 1}`}></div>
         ))}
       </div>
 
-      <div className="info-container" ref={wrapperRef}>
+      <div className="info-container">
         
-        {/* 고정 헤더 영역 */}
         <div className="info-header">
           <h4 className="info-top-label">Business Divisions</h4>
           <h2 className="info-main-title">BOAS-SE<br />핵심 솔루션</h2>
         </div>
 
-        {/* 우측 상단 네비게이션 */}
         <div className="info-nav-list">
           {solutions.map((sol, idx) => (
             <div 
               key={sol.id} 
               className={`info-nav-item ${activeIndex === idx ? 'active' : ''}`}
+              onClick={() => handleTabClick(idx)}
+              role="button"
+              tabIndex={0}
             >
-              {sol.category} {activeIndex === idx && '←'}
+              {sol.category}
             </div>
           ))}
         </div>
 
-        {/* 컨텐츠 영역 */}
-        <div className="info-content-wrapper">
-          {/* 좌측 텍스트 영역 */}
+        <div 
+          className="info-content-wrapper"
+          onTouchStart={onTouchStart}
+          onTouchEnd={onTouchEnd}
+          onMouseDown={onMouseDown}
+          onMouseUp={onMouseUp}
+          style={{ userSelect: 'none' }} 
+        >
           <div className="info-text-area">
-            {solutions.map((sol) => (
-              <div key={sol.id} className="info-text-group">
-                <h3 className="solution-title">{sol.title}</h3>
+            {solutions.map((sol, idx) => (
+              <div 
+                key={sol.id} 
+                className="info-text-group"
+                style={{ visibility: idx === 0 ? 'visible' : 'hidden', opacity: idx === 0 ? 1 : 0 }}
+              >
+                <h3 
+                  className="solution-title"
+                  onClick={() => handleTabClick(idx)}
+                  style={{ cursor: 'pointer' }}
+                >
+                  {sol.title}
+                </h3>
                 <p className="solution-desc">{sol.desc}</p>
                 <a href={sol.link} className="solution-link">
                   자세히 보기 <FaArrowRight className="ms-2" />
@@ -250,13 +225,26 @@ const InfoSection = () => {
             ))}
           </div>
 
-          {/* 우측 이미지 영역 (3D Carousel) */}
           <div className="info-image-area">
-            {solutions.map((sol) => (
-              <div key={sol.id} className="image-card">
+            {solutions.map((sol, idx) => (
+              <div 
+                key={sol.id} 
+                className="image-card"
+                style={{ cursor: 'grab' }} 
+              >
                 <img src={sol.image} alt={sol.title} className="card-img" />
               </div>
             ))}
+            
+            {/* 네비게이션 화살표 추가 */}
+            <div className="info-controls">
+              <button className="nav-arrow prev-arrow" onClick={(e) => { e.stopPropagation(); handlePrev(); }}>
+                <FaArrowLeft />
+              </button>
+              <button className="nav-arrow next-arrow" onClick={(e) => { e.stopPropagation(); handleNext(); }}>
+                <FaArrowRight />
+              </button>
+            </div>
           </div>
         </div>
 

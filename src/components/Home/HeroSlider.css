@@ -122,23 +122,52 @@
   border-color: #fff;
 }
 
-/* Swiper Pagination 커스텀 (숨김 처리하거나 필요 시 하단 바로 변경) */
+/* 기존 Swiper Pagination 숨김 (커스텀 사용) */
 .hero-slider .swiper-pagination {
-  bottom: 30px !important;
+  display: none !important;
 }
 
-.hero-slider .swiper-pagination-bullet {
-  background: #fff;
+/* 커스텀 페이지네이션 컨테이너 */
+.custom-pagination-container {
+  position: absolute;
+  bottom: 30px;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  z-index: 10;
+}
+
+.pagination-track {
+  position: relative;
+  display: flex;
+  gap: 10px;
+}
+
+/* 고정된 회색 불렛 (배경 역할) */
+.pagination-dot {
+  width: 40px;
+  height: 4px;
+  background-color: #fff;
   opacity: 0.3;
-  width: 40px; /* 길쭉한 바 형태 */
-  height: 3px;
-  border-radius: 0;
-  margin: 0 5px !important;
+  cursor: pointer;
+  transition: opacity 0.3s;
 }
 
-.hero-slider .swiper-pagination-bullet-active {
-  opacity: 1;
-  background: var(--primary-color);
+.pagination-dot:hover {
+  opacity: 0.5;
+}
+
+/* 이동하는 녹색 인디케이터 */
+.active-indicator {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 40px;
+  height: 4px;
+  background-color: var(--primary-color);
+  transition: transform 0.4s cubic-bezier(0.25, 0.1, 0.25, 1.0);
+  pointer-events: none; /* 클릭 통과 */
 }
 
 @media (max-width: 768px) {

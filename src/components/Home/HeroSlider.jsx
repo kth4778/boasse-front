@@ -1,14 +1,13 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Pagination, Autoplay } from 'swiper/modules';
+import { Autoplay } from 'swiper/modules';
 import { Container } from 'react-bootstrap';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
 
 import 'swiper/css';
-import 'swiper/css/pagination';
-/* import 'swiper/css/effect-fade'; 제거 */
+/* import 'swiper/css/pagination'; 제거 - 커스텀 구현 */
 
 import './HeroSlider.css';
 
@@ -17,39 +16,28 @@ gsap.registerPlugin(ScrollTrigger);
 const HeroSlider = () => {
   const sectionRef = useRef(null);
   const swiperRef = useRef(null);
+  const [activeIndex, setActiveIndex] = useState(0);
 
   // 컨텐츠 애니메이션 함수
   const animateContent = (swiper) => {
-    // 활성 슬라이드 찾기 (Loop 모드일 경우 duplicate 슬라이드 처리 주의)
+    setActiveIndex(swiper.realIndex); // 실제 인덱스 업데이트 (Loop 모드 대응)
+
+    // ... 기존 애니메이션 로직 ...
     const activeSlide = swiper.slides[swiper.activeIndex];
     const content = activeSlide.querySelector('.hero-content');
     
     if (!content) return;
 
-    // 1. 부모 컨테이너 보이게 설정
     gsap.set(content, { autoAlpha: 1 });
-    
-    // 2. 자식 요소들 애니메이션
     const elements = content.querySelectorAll('.hero-subtitle, .hero-title, .hero-highlight, .btn-wrapper');
     
-    // 이전 애니메이션 제거 후 새로 시작
     gsap.fromTo(elements, 
-      { 
-        y: 40, 
-        autoAlpha: 0 
-      }, 
-      { 
-        y: 0, 
-        autoAlpha: 1, 
-        duration: 1, 
-        stagger: 0.15, 
-        ease: 'power3.out',
-        overwrite: true 
-      }
+      { y: 40, autoAlpha: 0 }, 
+      { y: 0, autoAlpha: 1, duration: 1, stagger: 0.15, ease: 'power3.out', overwrite: true }
     );
   };
 
-  // TODO: [DATA] 메인 슬라이더 데이터 수정 (이미지, 텍스트, 링크)
+  // ... (slides 데이터는 동일) ...
   const slides = [
     {
       id: 1,
@@ -78,7 +66,6 @@ const HeroSlider = () => {
   ];
 
   useGSAP(() => {
-    // 스크롤 시 데코 요소 패럴랙스만 유지
     gsap.to('.hero-circle-deco', {
       y: 100,
       ease: 'none',
@@ -91,16 +78,21 @@ const HeroSlider = () => {
     });
   }, { scope: sectionRef });
 
+  const handleDotClick = (index) => {
+    if (swiperRef.current) {
+      swiperRef.current.slideToLoop(index);
+    }
+  };
+
   return (
     <section className="hero-slider-section" ref={sectionRef}>
       <Swiper
-        modules={[Pagination, Autoplay]}
+        modules={[Autoplay]}
         speed={1000}
         autoplay={{
           delay: 6000,
           disableOnInteraction: false,
         }}
-        pagination={{ clickable: true }}
         loop={true}
         className="hero-slider"
         onInit={(swiper) => {
@@ -119,17 +111,12 @@ const HeroSlider = () => {
               <div className="hero-circle-deco"></div>
 
               <Container>
-                <div className="hero-content" style={{ opacity: 0 }}> {/* 초기 겹침 방지 위해 컨테이너 opacity 0 시작 (GSAP가 1로 만듦) */}
+                <div className="hero-content" style={{ opacity: 0 }}>
                   <span className="hero-subtitle">{slide.subtitle}</span>
-                  <h2 className="hero-title">
-                    {slide.title}
-                  </h2>
+                  <h2 className="hero-title">{slide.title}</h2>
                   <span className="hero-highlight">{slide.highlight}</span>
-
                   <div className="btn-wrapper">
-                    <a href={slide.link} className="hero-btn">
-                      더 보기
-                    </a>
+                    <a href={slide.link} className="hero-btn">더 보기</a>
                   </div>
                 </div>
               </Container>
@@ -137,6 +124,26 @@ const HeroSlider = () => {
           </SwiperSlide>
         ))}
       </Swiper>
+
+      {/* 커스텀 페이지네이션 (슬라이딩 바) */}
+      <div className="custom-pagination-container">
+        <div className="pagination-track">
+          {/* 이동하는 녹색 바 */}
+          <div 
+            className="active-indicator" 
+            style={{ transform: `translateX(${activeIndex * 50}px)` }} // 40px(width) + 10px(gap)
+          ></div>
+          
+          {/* 고정된 회색 불렛들 */}
+          {slides.map((_, idx) => (
+            <div 
+              key={idx} 
+              className="pagination-dot"
+              onClick={() => handleDotClick(idx)}
+            ></div>
+          ))}
+        </div>
+      </div>
     </section>
   );
 };

@@ -1,15 +1,22 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
+import inquiryApi from '../../api/inquiryApi';
 import './BoardInquiry.css';
 
 gsap.registerPlugin(ScrollTrigger);
 
 const BoardInquiry = () => {
   const wrapperRef = useRef(null);
-  const [submitting, setSubmitting] = React.useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    message: '',
+    isAgreed: false
+  });
 
   useGSAP(() => {
     // 문의하기 섹션 애니메이션 (등장은 빠르게, 텍스트는 우아하게)
@@ -36,16 +43,54 @@ const BoardInquiry = () => {
 
   }, { scope: wrapperRef });
 
-  const handleSubmit = (e) => {
+  const handleChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: type === 'checkbox' ? checked : value
+    }));
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log('Form submission started', formData); // Debug log
+    
+    if (!formData.name || !formData.message || !formData.isAgreed) {
+      alert('이름, 내용, 개인정보 동의는 필수입니다.');
+      return;
+    }
+
     setSubmitting(true);
     
-    // 즉각적인 피드백을 위해 0.8초 후 알림 표시 (실제 API 연동 시 이 부분을 수정)
-    setTimeout(() => {
-      alert('문의가 접수되었습니다. 빠르게 확인 후 답변드리겠습니다.');
+    try {
+      const response = await inquiryApi.createInquiry(formData);
+      console.log('API Response:', response); // Debug log
+
+      // 백엔드 응답 구조에 따라 성공 여부 판단 (status code 200/201 또는 data.success)
+      if (response.status === 200 || response.status === 201 || response.data?.success) {
+        alert('문의가 성공적으로 접수되었습니다.\n담당자가 확인 후 연락드리겠습니다.');
+        setFormData({
+          name: '',
+          email: '',
+          message: '',
+          isAgreed: false
+        });
+      } else {
+        // 성공 코드가 아닌 경우
+        console.warn('Unexpected response status:', response.status);
+        alert('문의 접수에 실패했습니다. 관리자에게 문의해주세요.');
+      }
+    } catch (error) {
+      console.error('문의 접수 실패 (Detailed):', error);
+      // 서버 응답이 있는 에러인 경우 메시지 표시
+      if (error.response) {
+        alert(`문의 접수 오류: ${error.response.status} ${error.response.statusText}`);
+      } else {
+        alert('서버와 통신할 수 없습니다. 잠시 후 다시 시도해 주세요.');
+      }
+    } finally {
       setSubmitting(false);
-      e.target.reset();
-    }, 800);
+    }
   };
 
   return (
@@ -60,28 +105,54 @@ const BoardInquiry = () => {
               <form onSubmit={handleSubmit}>
                 <div className="custom-input-group">
                   <label className="input-label">Name *</label>
-                  <input type="text" className="custom-input" placeholder="이름을 입력해 주세요." />
+                  <input 
+                    type="text" 
+                    name="name"
+                    className="custom-input" 
+                    placeholder="이름을 입력해 주세요." 
+                    value={formData.name}
+                    onChange={handleChange}
+                  />
                 </div>
                 <div className="custom-input-group">
                   <label className="input-label">Email</label>
-                  <input type="email" className="custom-input" placeholder="E-mail을 입력해 주세요." />
+                  <input 
+                    type="email" 
+                    name="email"
+                    className="custom-input" 
+                    placeholder="E-mail을 입력해 주세요." 
+                    value={formData.email}
+                    onChange={handleChange}
+                  />
                 </div>
                 <div className="custom-input-group" style={{ alignItems: 'flex-start' }}>
                   <label className="input-label" style={{ marginTop: '5px' }}>Message *</label>
                   <textarea 
+                    name="message"
                     className="custom-input" 
-                    rows="3" 
+                    rows="8" 
                     placeholder="문의 내용을 입력해 주세요."
                     style={{ resize: 'none' }}
+                    value={formData.message}
+                    onChange={handleChange}
                   ></textarea>
                 </div>
                 
                 <div className="agree-check">
-                  <input type="checkbox" id="agree" className="me-2" />
+                  <input 
+                    type="checkbox" 
+                    id="agree" 
+                    name="isAgreed"
+                    className="me-2" 
+                    checked={formData.isAgreed}
+                    onChange={handleChange}
+                  />
                   <label htmlFor="agree">개인정보 수집이용에 대한동의 *</label>
                 </div>
 
-                <button type="submit" className="submit-btn">신청하기</button>
+                <button type="submit" className="submit-btn" disabled={submitting}>
+                  {submitting ? '전송 중...' : '신청하기'}
+                </button>
               </form>
             </Col>
 
