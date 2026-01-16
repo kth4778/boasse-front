@@ -9,33 +9,15 @@ import NoticeList from './components/Notice/NoticeList';
 import NoticeDetail from './components/Notice/NoticeDetail';
 import NoticeWrite from './components/Notice/NoticeWrite';
 import About from './components/about/About';
-import Business from './components/business/Business';
-import Product from './components/product/Product';
-import ProductDetail from './components/product/ProductDetail';
-import Contact from './components/contact/Contact';
-import ScrollToTop from './components/ScrollToTop';
 
-function App() {
-  const location = useLocation();
-  const isHomePage = location.pathname === '/';
-  const isContactPage = location.pathname === '/contact';
-  const isBusinessPage = location.pathname === '/business';
+<ErrorBoundary>
+  <div className="App">
+    <ScrollToTop />
+    {!isAdminPage && <Header />}
 
-  const mainStyle = {
-    // 홈 페이지, 컨택 페이지, 비즈니스 페이지일 때는 전체 높이 등 레이아웃 제약을 풉니다.
-    // 그 외 서브 페이지일 때만 헤더 높이만큼 패딩을 줍니다.
-    paddingTop: (isHomePage || isContactPage || isBusinessPage) ? '0' : '120px',
-    width: '100%',
-  };
-
-  return (
-    <div className="App">
-      <ScrollToTop />
-      <Header />
-      
-      {/* Main Content Area with Routing */}
-      <main style={mainStyle}>
-        <Routes>
+    <main style={mainStyle}>
+      <Routes>
+        {/* User Routes */}
           <Route path="/" element={<MainPage />} />
           <Route path="/notice" element={<NoticeList />} />
           <Route path="/notice/:id" element={<NoticeDetail />} />
@@ -43,14 +25,33 @@ function App() {
           <Route path="/notice/edit/:id" element={<NoticeWrite />} />
           <Route path="/about" element={<About />} />
           <Route path="/business" element={<Business />} />
+          <Route path="/recruit" element={<Recruit />} />
           <Route path="/product" element={<Product />} />
           <Route path="/product/:id" element={<ProductDetail />} />
           <Route path="/contact" element={<Contact />} />
+            
+          {/* Admin Routes */}
+          <Route path="/admin" element={<AdminLayout />}>
+            <Route index element={<AdminDashboard />} />
+            <Route path="notice" element={<AdminNoticeList />} />
+            <Route path="notice/write" element={<AdminNoticeForm />} />
+            <Route path="notice/edit/:id" element={<AdminNoticeForm />} />
+            <Route path="recruit" element={<AdminRecruitList />} />
+            <Route path="recruit/write" element={<AdminRecruitForm />} />
+            <Route path="recruit/edit/:id" element={<AdminRecruitForm />} />
+            <Route path="product" element={<AdminProductList />} />
+            <Route path="product/write" element={<AdminProductForm />} />
+            <Route path="product/edit/:id" element={<AdminProductForm />} />
+          </Route>
         </Routes>
       </main>
 
-      <Footer />
+      {!isAdminPage && <Footer />}
     </div>
+  </ErrorBoundary>
+        {!isAdminPage && <Footer />}
+      </div>
+    </ErrorBoundary>
   );
 }
 

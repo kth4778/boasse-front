@@ -1,14 +1,10 @@
-import React, { useState, useRef } from 'react';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { useGSAP } from '@gsap/react';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
 import { products } from '../../api/productData';
+import { Link } from 'react-router-dom';
 import './Product.css';
 
-gsap.registerPlugin(ScrollTrigger);
-
 const Product = () => {
+
   const [activeCategory, setActiveCategory] = useState('전체');
   const containerRef = useRef();
   const headerBgRef = useRef();
@@ -17,7 +13,7 @@ const Product = () => {
     ? products 
     : products.filter(product => product.category === activeCategory);
 
-  const categories = ['전체', 'Smart Factory', 'Smart Mobility', 'Smart Farm', 'Smart Building'];
+  const categories = ['All', 'Smart Mobility', 'Smart Factory', 'Smart Farm', 'Smart Building'];
 
   useGSAP(() => {
     // --- Product Grid Animation ---
@@ -108,18 +104,19 @@ const Product = () => {
       {/* 2. Main Content Section (Tabs & Grid) */}
       <div className="product-container">
         <div className="product-tabs">
-          {categories.map(category => (
-            <button
-              key={category}
-              className={`product-tab ${activeCategory === category ? 'active' : ''}`}
-              onClick={() => setActiveCategory(category)}
+          {categories.map((cat) => (
+            <button 
+              key={cat} 
+              className={`product-tab ${filter === cat ? 'active' : ''}`}
+              onClick={() => setFilter(cat)}
             >
-              {category}
+              {cat}
             </button>
           ))}
         </div>
 
         <div className="product-grid">
+
           {filteredProducts.map(product => (
             <Link key={product.id} to={`/product/${product.id}`} className="product-card">
               <img src={product.image} alt={product.title} className="product-card-image" />

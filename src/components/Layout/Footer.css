@@ -1,23 +1,23 @@
 .footer-wrapper {
   background-color: #333;
   color: #bbb;
-  padding: 60px 0;
+  padding: 40px 0; /* 60px -> 40px 축소 */
   font-size: 0.9rem;
   border-top: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-/* 푸터 로고 박스 및 이미지 크기 대폭 확대 */
+/* 푸터 로고 박스 및 이미지 크기 최적화 */
 .footer-logo-box {
-  margin-bottom: 25px;
+  margin-bottom: 15px; /* 25px -> 15px 축소 */
 }
 
 .footer-logo-img {
-  height: 120px; /* 90px -> 120px */
+  height: 80px; /* 120px -> 80px 축소 */
   width: auto;
 }
 
 .footer-logo-text {
-  height: 96px; /* 48px -> 96px (2배 확대) */
+  height: 60px; /* 96px -> 60px 축소 */
   width: auto;
 }
 

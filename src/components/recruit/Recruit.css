@@ -1,0 +1,204 @@
+.recruit-page {
+  background-color: #fff;
+}
+
+/* 1. Hero Section */
+.recruit-hero {
+  background: linear-gradient(rgba(30, 47, 35, 0.8), rgba(30, 47, 35, 0.8)), 
+              url('https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1920&q=80');
+  background-size: cover;
+  background-position: center;
+  padding: 220px 0 140px;
+  color: #fff;
+}
+
+.hero-sub-title {
+  font-weight: 700;
+  letter-spacing: 3px;
+  color: #4caf50;
+  margin-bottom: 20px;
+}
+
+.hero-main-title {
+  font-size: 3.5rem;
+  font-weight: 800;
+  line-height: 1.3;
+  margin-bottom: 30px;
+}
+
+.hero-main-title span {
+  color: #4caf50;
+}
+
+.hero-desc {
+  font-size: 1.25rem;
+  font-weight: 300;
+  opacity: 0.9;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+/* 2. Process Section */
+.section-title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin-bottom: 15px;
+}
+
+.section-sub-title {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #4caf50;
+  letter-spacing: 2px;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+
+.title-line {
+  width: 60px;
+  height: 4px;
+  background: #4caf50;
+  margin: 0 auto;
+}
+
+.process-card {
+  text-align: center;
+  padding: 40px 20px;
+  position: relative;
+  background: #fdfdfd;
+  border-radius: 20px;
+  border: 1px solid #f0f0f0;
+  height: 100%;
+  transition: all 0.3s ease;
+}
+
+.process-card:hover {
+  border-color: #4caf50;
+  background: #fff;
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+}
+
+.process-icon {
+  font-size: 3rem;
+  color: #4caf50;
+  margin-bottom: 20px;
+}
+
+.process-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.process-desc {
+  color: #777;
+  font-size: 0.95rem;
+}
+
+.process-arrow {
+  position: absolute;
+  top: 40%;
+  right: -20px;
+  font-size: 1.5rem;
+  color: #ddd;
+}
+
+/* 3. Job Card */
+.job-card {
+  border-radius: 20px;
+  transition: all 0.3s;
+}
+
+.job-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 40px rgba(0,0,0,0.1) !important;
+}
+
+.job-title {
+  font-weight: 800;
+  margin-top: 10px;
+}
+
+.btn-apply {
+  background-color: #1e2f23;
+  color: #fff;
+  padding: 12px 40px;
+  border-radius: 50px;
+  font-weight: 700;
+  transition: all 0.3s;
+}
+
+.btn-apply:hover {
+  background-color: #4caf50;
+  color: #fff;
+  transform: scale(1.05);
+}
+
+.info-label {
+  font-weight: 800;
+  margin-bottom: 15px;
+  color: #1e2f23;
+}
+
+.info-list {
+  list-style: none;
+  padding-left: 0;
+}
+
+.info-list li {
+  position: relative;
+  padding-left: 20px;
+  margin-bottom: 10px;
+  color: #555;
+}
+
+.info-list li::before {
+  content: '•';
+  color: #4caf50;
+  position: absolute;
+  left: 0;
+  font-weight: bold;
+}
+
+/* 4. Welfare Section */
+.welfare-card {
+  background: #fdfdfd;
+  padding: 40px 30px;
+  border-radius: 20px;
+  text-align: center;
+  height: 100%;
+  border: 1px solid #f0f0f0;
+  transition: background-color 0.3s, border-color 0.3s, box-shadow 0.3s, transform 0.3s;
+}
+
+.welfare-card:hover {
+  border-color: #4caf50;
+  background: #fff;
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+}
+
+.welfare-icon {
+  font-size: 2.5rem;
+  color: #4caf50;
+  margin-bottom: 20px;
+}
+
+.welfare-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 15px;
+}
+
+.welfare-desc {
+  font-size: 0.9rem;
+  color: #777;
+  line-height: 1.6;
+}
+
+@media (max-width: 768px) {
+  .hero-main-title {
+    font-size: 2.2rem;
+  }
+}

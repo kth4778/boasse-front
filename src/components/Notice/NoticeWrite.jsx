@@ -13,7 +13,6 @@ const NoticeWrite = () => {
   const [formData, setFormData] = useState({
     title: '',
     content: '',
-    password: '',
   });
   const [files, setFiles] = useState([]);
   const [existingFiles, setExistingFiles] = useState([]);
@@ -33,8 +32,6 @@ const NoticeWrite = () => {
         }
       } catch (error) {
         console.error('Failed to fetch notice detail for edit:', error);
-        // API call failed, no mock data fallback
-        // Optionally alert the user or redirect
       }
     };
 
@@ -49,7 +46,13 @@ const NoticeWrite = () => {
   };
 
   const handleFileChange = (e) => {
-    setFiles(Array.from(e.target.files));
+    const selectedFiles = Array.from(e.target.files);
+    setFiles((prev) => [...prev, ...selectedFiles]);
+    e.target.value = '';
+  };
+
+  const handleRemoveNewFile = (index) => {
+    setFiles((prev) => prev.filter((_, i) => i !== index));
   };
 
   const handleRemoveExistingFile = (fileId) => {
@@ -59,7 +62,7 @@ const NoticeWrite = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!formData.title || !formData.content || !formData.password) {
+    if (!formData.title || !formData.content) {
       alert('필수 항목(*)을 모두 입력해 주세요.');
       return;
     }
@@ -67,7 +70,6 @@ const NoticeWrite = () => {
     const data = new FormData();
     data.append('title', formData.title);
     data.append('content', formData.content);
-    data.append('password', formData.password);
     files.forEach((file) => data.append('files', file));
     
     if (removeFileIds.length > 0) {
@@ -89,11 +91,12 @@ const NoticeWrite = () => {
       }
     } catch (error) {
       console.error('Failed to save notice:', error);
-      alert('오류가 발생했습니다. 비밀번호를 확인하거나 잠시 후 다시 시도해 주세요.');
+      alert('오류가 발생했습니다. 잠시 후 다시 시도해 주세요.');
     } finally {
       setLoading(false);
     }
   };
+
 
   return (
     <div className="notice-page">
@@ -132,7 +135,7 @@ const NoticeWrite = () => {
           </Form.Group>
 
           <Row className="mb-4">
-            <Col md={6}>
+            <Col md={12}>
               <Form.Group>
                 <Form.Label className="fw-bold">첨부파일</Form.Label>
                 <Form.Control 
@@ -144,10 +147,35 @@ const NoticeWrite = () => {
                   여러 파일을 선택할 수 있습니다.
                 </Form.Text>
 
+                {/* 새로 선택한 파일 목록 표시 */}
+                {files.length > 0 && (
+                  <div className="mt-3">
+                    <p className="fw-bold mb-2 small text-primary">새로 선택한 파일</p>
+                    <ul className="list-unstyled">
+                      {files.map((file, idx) => (
+                        <li key={`new-${idx}`} className="d-flex align-items-center mb-2 p-2 border rounded bg-light">
+                          <span className="text-truncate me-auto" style={{ maxWidth: '80%' }}>
+                            {file.name}
+                          </span>
+                          <Button 
+                            variant="outline-danger" 
+                            size="sm" 
+                            className="ms-2 py-0 px-2"
+                            onClick={() => handleRemoveNewFile(idx)}
+                            title="삭제"
+                          >
+                            <FaTrash size={12} />
+                          </Button>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
                 {/* 기존 첨부파일 목록 표시 */}
                 {isEdit && existingFiles.length > 0 && (
                   <div className="mt-3">
-                    <p className="fw-bold mb-2 small text-secondary">기존 첨부파일</p>
+                    <p className="fw-bold mb-2 small text-secondary">기존 첨부파일 (수정 시 삭제 가능)</p>
                     <ul className="list-unstyled">
                       {existingFiles.map((file) => (
                         <li key={file.id} className="d-flex align-items-center mb-2 p-2 border rounded bg-light">
@@ -168,19 +196,6 @@ const NoticeWrite = () => {
                     </ul>
                   </div>
                 )}
-              </Form.Group>
-            </Col>
-            <Col md={6}>
-              <Form.Group>
-                <Form.Label className="fw-bold">관리자 비밀번호 *</Form.Label>
-                <Form.Control 
-                  type="password" 
-                  name="password"
-                  value={formData.password}
-                  onChange={handleInputChange}
-                  placeholder="수정/삭제 시 필요한 비밀번호입니다."
-                  required
-                />
               </Form.Group>
             </Col>
           </Row>
