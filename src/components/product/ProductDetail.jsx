@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import { products } from '../../api/productData';
 import { FaBrain, FaChartLine, FaShieldAlt, FaLeaf, FaBolt, FaMobileAlt, FaCheckCircle } from 'react-icons/fa';
 import './ProductDetail.css';
@@ -169,9 +169,9 @@ const ProductDetail = () => {
           <button onClick={() => navigate(-1)} className="btn-back">
             뒤로 가기
           </button>
-          <button className="btn-inquiry">
+          <Link to="/contact" className="btn-inquiry">
             도입 문의하기
-          </button>
+          </Link>
         </div>
       </div>
     </div>
