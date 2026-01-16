@@ -47,7 +47,11 @@ const AdminNoticeList = () => {
       }
     } catch (error) {
       console.error('삭제 실패:', error);
-      alert('삭제 중 오류가 발생했습니다.');
+      if (error.code === 'ERR_NETWORK') {
+        alert('서버와 연결할 수 없습니다. 백엔드 서버가 켜져 있는지 확인해주세요.');
+      } else {
+        alert('삭제 중 오류가 발생했습니다.');
+      }
     } finally {
       setShowDeleteModal(false);
     }
