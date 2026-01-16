@@ -59,7 +59,7 @@
   position: absolute;
   width: 20px;
   height: 20px;
-  background: #4caf50;
+  background: var(--primary-color);
   border-radius: 50% 0 50% 0; /* 나뭇잎 모양 */
   opacity: 0.3;
   z-index: 4;

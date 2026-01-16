@@ -247,39 +247,39 @@ const About = () => {
           <div className="history-timeline-column">
             <div className="history-timeline">
               <div className="timeline-item">
-                <div className="timeline-year">2010</div>
+                <div className="timeline-year">2025</div>
                 <div className="timeline-content">
-                  <p>BOAS-SE 법인 설립</p>
-                </div>
-              </div>
-              <div className="timeline-item">
-                <div className="timeline-year">2013</div>
-                <div className="timeline-content">
-                  <p>IoT 기반 스마트 팜 HW/SW 시스템 구축<br /> 및 솔루션 사업 개시</p>
-                </div>
-              </div>
-              <div className="timeline-item">
-                <div className="timeline-year">2017</div>
-                <div className="timeline-content">
-                  <p>건축물 에너지 분석 및 LS산전<br /> 전력 진단 시스템 공급 등 사업 다각화</p>
-                </div>
-              </div>
-              <div className="timeline-item">
-                <div className="timeline-year">2020</div>
-                <div className="timeline-content">
-                  <p>AI/빅데이터 기반 산업별 DX(디지털 전환) 솔루션 사업 확장</p>
+                  <p>스마프 팩토리,스마트팜,스마트빌딩 등<br />차세대 산업 AI 솔루션 고도화</p>
                 </div>
               </div>
               <div className="timeline-item">
                 <div className="timeline-year">2022</div>
                 <div className="timeline-content">
-                  <p>제로에너지빌딩(ZEB) 모니터링<br /> 및 스마트 모빌리티(DTG) 사업 본격화</p>
+                  <p>제로에너지빌딩(ZEB) 모니터링<br />및 스마트 모빌리티(DTG) 사업 본격화</p>
                 </div>
               </div>
               <div className="timeline-item">
-                <div className="timeline-year">2025</div>
+                <div className="timeline-year">2020</div>
                 <div className="timeline-content">
-                  <p>스마트 팩토리, 스마트팜, 스마트빌딩 등<br /> 차세대 산업 AI 솔루션 고도화</p>
+                  <p>AI/빅데이터 기반 산업별 DX(디지털전환) 솔루션 사업 확장</p>
+                </div>
+              </div>
+              <div className="timeline-item">
+                <div className="timeline-year">2017</div>
+                <div className="timeline-content">
+                  <p>건축물 에너지 분석 및 LS산전<br />전력 진단 시스템 공급 등 사업 다각화</p>
+                </div>
+              </div>
+              <div className="timeline-item">
+                <div className="timeline-year">2013</div>
+                <div className="timeline-content">
+                  <p>IoT 기반 스마트 팜 HW/SW 시스템 구축<br />및 솔루션 사업 개시</p>
+                </div>
+              </div>
+              <div className="timeline-item">
+                <div className="timeline-year">2010</div>
+                <div className="timeline-content">
+                  <p>BOAS-SE 법인 설립</p>
                 </div>
               </div>
             </div>

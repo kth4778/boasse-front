@@ -37,7 +37,7 @@ const CasesCarousel = () => {
       <div className="notice-container">
         <div className="notice-header">
           <div>
-            <p style={{ color: '#4caf50', fontWeight: '600', marginBottom: '10px', letterSpacing: '1px' }}>NEWS</p>
+            <p style={{ color: '#8CC63F', fontWeight: '600', marginBottom: '10px', letterSpacing: '1px' }}>NEWS</p>
             <h2>공지사항</h2>
           </div>
           <Link to="/notice" className="view-all">
