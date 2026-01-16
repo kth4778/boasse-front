@@ -34,21 +34,6 @@ const Product = () => {
     : products.filter(p => p.category === filter);
 
   useGSAP(() => {
-    // --- Hero Animation ---
-    // 초기 상태 설정
-    gsap.set('.animate-up', { opacity: 0, y: 20 });
-    
-    const heroElements = gsap.utils.toArray('.product-hero .animate-up');
-    if (heroElements.length > 0) {
-      gsap.to(heroElements, {
-        opacity: 1,
-        y: 0,
-        duration: 0.8,
-        stagger: 0.1,
-        ease: 'power2.out'
-      });
-    }
-
     // --- Product Grid Animation ---
     const cards = gsap.utils.toArray('.product-card');
     if (cards.length > 0) {
@@ -83,11 +68,9 @@ const Product = () => {
       <section className="product-hero">
         <Container>
           <div className="hero-content text-center">
-            <h1 className="hero-main-title animate-up">
-              농가와 산업 현장의<br /><span>스마트 솔루션</span>을 경험하세요.
-            </h1>
+            <h1 className="hero-main-title animate-up">PRODUCTS</h1>
             <p className="hero-desc animate-up">
-              보아스소프트의 제품은 효율을 극대화하고 지속 가능한 미래를 만듭니다.
+              농가와 산업 현장의 스마트 솔루션을 경험하세요. 보아스소프트의 제품은 효율을 극대화하고 지속 가능한 미래를 만듭니다.
             </p>
           </div>
         </Container>

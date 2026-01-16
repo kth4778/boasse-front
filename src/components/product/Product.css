@@ -15,7 +15,12 @@
               url('https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1920&q=80');
   background-size: cover;
   background-position: center;
-  padding: 220px 0 140px;
+  min-height: 450px; /* 고정 높이 축소 */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-top: 80px; /* 헤더 높이만큼 여백 */
   color: #fff;
 }
 
