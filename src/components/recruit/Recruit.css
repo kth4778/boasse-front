@@ -44,10 +44,8 @@
   letter-spacing: -1.5px;
   text-transform: uppercase;
 }
-
 .hero-main-title span {
   color: var(--primary-color);
-}
 
 .hero-desc {
   font-size: 1.25rem;

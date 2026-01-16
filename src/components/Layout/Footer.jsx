@@ -1,5 +1,6 @@
 import React from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 import logoImg from '../../assets/Logo_image.png';
 import logoText from '../../assets/Logo_text_white.png';
 import './Footer.css';
@@ -19,11 +20,11 @@ const Footer = () => {
 
           <Col lg={8} className="footer-info-col">
             <div className="footer-links mb-3">
-              <a href="/#">개인정보 처리방침</a>
+              <Link to="/privacy">개인정보 처리방침</Link>
               <span className="divider">|</span>
-              <a href="/#">이메일무단수집거부</a>
+              <Link to="/email-policy">이메일무단수집거부</Link>
               <span className="divider">|</span>
-              <a href="/#">이용약관</a>
+              <Link to="/terms">이용약관</Link>
             </div>
 
             <div className="footer-details">
