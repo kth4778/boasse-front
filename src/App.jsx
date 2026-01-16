@@ -18,6 +18,11 @@ import Product from './components/product/Product';
 import ProductDetail from './components/product/ProductDetail';
 import Contact from './components/contact/Contact';
 
+// Legal Pages
+import PrivacyPolicy from './components/legal/PrivacyPolicy';
+import EmailPolicy from './components/legal/EmailPolicy';
+import TermsOfService from './components/legal/TermsOfService';
+
 // Notice Pages
 import NoticeList from './components/Notice/NoticeList';
 import NoticeDetail from './components/Notice/NoticeDetail';
@@ -69,6 +74,11 @@ function App() {
             <Route path="/product" element={<Product />} />
             <Route path="/product/:id" element={<ProductDetail />} />
             <Route path="/contact" element={<Contact />} />
+            
+            {/* Legal Routes */}
+            <Route path="/privacy" element={<PrivacyPolicy />} />
+            <Route path="/email-policy" element={<EmailPolicy />} />
+            <Route path="/terms" element={<TermsOfService />} />
             
             {/* Notice Routes */}
             <Route path="/notice" element={<NoticeList />} />

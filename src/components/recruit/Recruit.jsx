@@ -119,7 +119,7 @@ const Recruit = () => {
       <section className="recruit-hero">
         <Container>
           <div className="hero-content text-center">
-            <h1 className="hero-main-title">신의를 중시하며, 도전과 창의를 즐기는<br /><span>전문가</span>를 찾습니다.</h1>
+            <h1 className="hero-main-title">RECRUIT</h1>
             <p className="hero-desc">
               보아스에스이와 함께 미래 농업의 디지털 전환을 이끌어갈 인재를 기다립니다.
             </p>
