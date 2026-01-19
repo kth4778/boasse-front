@@ -4,7 +4,7 @@
 .about-page {
   font-family: 'Pretendard', sans-serif;
   color: #333;
-  background-color: #ffffff; /* Ensure white background for the reveal effect */
+  background-color: #ffffff;
   width: 100%;
   overflow-x: hidden;
   position: relative;
@@ -27,7 +27,7 @@
 }
 
 .about-section h2 {
-  font-size: var(--font-size-md); /* 2rem -> md */
+  font-size: var(--font-size-md);
   font-weight: 700;
   margin-bottom: 3rem;
   color: #2c3e50;
@@ -52,10 +52,9 @@
   position: relative;
   width: 100%;
   overflow: hidden;
-  /* background: linear-gradient(180deg, #f0f7f0 0%, #ffffff 100%); */ /* Optional: base gradient */
 }
 
-/* --- Forest Background Styles (Imported & Adapted) --- */
+/* --- Forest Background Styles --- */
 .forest-bg {
   position: absolute;
   top: 0;
@@ -63,7 +62,7 @@
   width: 100%;
   height: 100%;
   pointer-events: none;
-  z-index: 0; /* Behind content */
+  z-index: 0;
 }
 
 .forest-layer {
@@ -71,7 +70,7 @@
   bottom: -10%;
   left: -10%;
   width: 120%;
-  height: 60%; /* Adjust as needed */
+  height: 60%;
   background-size: cover;
   background-position: bottom;
   opacity: 0.15;
@@ -106,12 +105,11 @@
   width: 20px;
   height: 20px;
   background: var(--primary-color);
-  border-radius: 50% 0 50% 0; /* Leaf shape */
+  border-radius: 50% 0 50% 0;
   opacity: 0.3;
   z-index: 4;
 }
 
-/* Random positioning for leaves */
 .leaf-1 { top: 20%; left: 10%; width: 15px; height: 15px; }
 .leaf-2 { top: 10%; left: 40%; width: 25px; height: 25px; transform: rotate(45deg); }
 .leaf-3 { top: 30%; right: 15%; width: 20px; height: 20px; }
@@ -123,24 +121,19 @@
 .leaf-9 { top: 5%; right: 40%; }
 .leaf-10 { bottom: 5%; left: 80%; }
 
-/* The mission section will manage its own background */
-.mission-section {
-  background-color: #f9f9f9;
-}
-
 
 /* --- 1. Intro Section --- */
 .intro-section .section-content {
   text-align: left;
 }
 .intro-section h1 {
-  font-size: var(--font-size-lg); /* 5rem -> lg */
+  font-size: var(--font-size-lg);
   font-weight: 800;
   color: var(--primary-color);
   margin-bottom: 3rem;
 }
 .intro-section p {
-  font-size: var(--font-size-sm); /* 1.1rem -> sm */
+  font-size: var(--font-size-sm);
   color: #555;
   max-width: 1000px;
   line-height: 2;
@@ -148,7 +141,7 @@
 
 /* --- 2. Values Section --- */
 .values-section {
-  padding-bottom: 0.5rem; /* Space before sticky animation */
+  padding-bottom: 5rem;
 }
 .values-section .section-content {
   text-align: center;
@@ -158,6 +151,7 @@
   justify-content: center;
   align-items: center;
   margin-bottom: 2rem;
+  /* 모바일 대응: flex-wrap 대신 스케일링으로 처리 고려 */
 }
 .value-item { position: relative; }
 .value-item:nth-of-type(1) { margin-right: -30px; z-index: 0; }
@@ -168,164 +162,104 @@
   border-radius: 50%;
   border: 3px solid #333;
   color: var(--primary-color);
-  font-size: var(--font-size-lg); /* 2.6rem -> lg */
+  font-size: var(--font-size-lg);
   font-weight: 800;
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(5px);
 }
 
 
-/* --- 3. Mission Section (GSAP Style - Updated) --- */
-
-/* 고정(Pin)될 래퍼: 스크롤 영역 확보용 */
-.mission-sticky-wrapper {
-  width: 100%;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #fff;
-  overflow: hidden; 
-  /* 래퍼 자체는 스크롤을 따라가며, 실제 애니메이션은 내부에서 발생 */
-}
-
-/* 애니메이션 될 박스: 실제 clip-path 변형 대상 */
-.mission-content-box {
-  width: 100%;
-  height: 100%;
-  background-color: #111; /* 박스 내부 색상 */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
-  position: relative; /* 배경 요소 배치를 위해 필요 */
-  overflow: hidden;   /* 배경 요소가 박스 밖으로 나가는 것 방지 */
-  
-  /* GSAP가 이 초기 상태에서 애니메이션을 시작합니다. */
-  /* 초기 상태: 상하좌우 50% 여백 = 중앙 0px (완전 숨김) */
-  clip-path: inset(50% 50% 50% 50% round 50%);
-}
-
-/* 배경 기어 애니메이션 오버레이 */
-.mission-bg-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 1; /* 텍스트(z-index: 2)보다 뒤에 위치 */
-  pointer-events: none; /* 마우스 이벤트 통과 */
-  opacity: 0.15; /* 은은하게 보이도록 투명도 조절 */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.gear-icon {
-  position: absolute;
+/* --- 3. Mission Section (Static Style - Updated) --- */
+.mission-section-static {
+  background-color: #111;
   color: #fff;
+  padding: 10rem 0;
 }
 
-.gear-large {
-  font-size: 50rem; /* 매우 큰 기어 -> 유지 */
-  right: -10%;
-  bottom: -20%;
-  animation: rotate-gear 60s linear infinite;
+.mission-grid {
+  display: flex;
+  gap: 4rem;
+  align-items: flex-start;
+  flex-wrap: nowrap; /* 화면이 줄어도 2단 유지 시도 */
 }
 
-.gear-small {
-  font-size: 30rem; /* 중간 크기 기어 -> 유지 */
-  left: -5%;
-  top: -10%;
-  animation: rotate-gear-reverse 40s linear infinite;
+.mission-title-col {
+  flex: 0 0 30%;
+  min-width: 250px; /* 최소 너비 확보 */
 }
 
-@keyframes rotate-gear {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
-@keyframes rotate-gear-reverse {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(-360deg); }
-}
-
-.mission-text-group {
-  text-align: center;
-  z-index: 2; /* 배경 위에 텍스트 표시 */
-  /* GSAP의 from() 애니메이션이 투명도를 제어하므로 CSS에서 opacity를 제거합니다. */
-}
-
-.mission-title { 
-  margin: 0 0 2rem 0;
-  font-size: var(--font-size-md); /* 2.4rem -> md */
-}
-
-.brand-green { 
-  color: var(--primary-color); 
-  font-size: var(--font-size-lg); /* 6rem -> lg */
-  font-weight: 800; 
-}
-
-.mission-title-suffix {
+.mission-title-col h2 {
   color: #fff;
+  font-size: 3rem;
+  margin: 0;
+  position: sticky;
+  top: 140px;
+  line-height: 1;
 }
 
-.mission-desc p {
-  font-size: var(--font-size-md); /* 2.0rem -> md */
+.mission-desc-col {
+  flex: 1;
+  padding-top: 0.5rem;
+}
+
+.mission-main-text {
+  font-size: 2.4rem;
   font-weight: 700;
-  color: #ffffff;
-  margin: 0.5rem 0;
+  line-height: 1.5;
+  margin-bottom: 3rem;
+  word-break: keep-all;
+  color: #fff;
+}
+
+.mission-sub-text {
+  font-size: 1.2rem;
+  color: #aaa;
   line-height: 1.8;
+  max-width: 800px;
+  font-weight: 400;
 }
 
-.mission-graphic {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 5rem; /* 여백 증가 */
+.text-highlight {
+  color: var(--primary-color);
 }
-
-.mission-graphic .line { 
-  width: 3px; 
-  height: 100px; 
-  background-color: #ffffff; 
-}
-
-.mission-graphic .dot { 
-  width: 15px; 
-  height: 15px; 
-  background-color: #ffffff; 
-  border-radius: 50%; 
-  margin-top: -3px; 
-}
-
 
 
 /* --- 4. Portfolio Section --- */
 .portfolio-section {
   padding-top: 10rem;
 }
+
 .portfolio-container {
   display: flex;
   gap: 4rem;
   align-items: flex-start;
+  flex-wrap: nowrap; /* 2단 구조 유지 */
 }
+
 .portfolio-title {
   flex: 0 0 30%;
-  font-size: var(--font-size-lg); /* 3.5rem -> lg */
+  min-width: 250px; /* 최소 너비 확보 */
+  font-size: var(--font-size-lg);
   font-weight: 800;
   line-height: 1.3;
   position: sticky;
   top: 140px;
+  
+  /* [수정] 우측 리스트 아이템의 첫 번째 줄과 시각적 높이 맞춤 */
+  margin-top: 0; 
+  padding-top: 5px; /* 아이콘/제목 위치 미세 조정 */
 }
+
 .portfolio-list {
   flex: 1;
   list-style: none;
   padding: 0;
   margin: 0;
 }
+
 .portfolio-list li {
   display: flex;
   align-items: flex-start;
@@ -334,28 +268,45 @@
   margin-bottom: 3rem;
   border-bottom: 1px solid #e9ecef;
 }
+
+/* 첫 번째 리스트 아이템의 상단 여백 제거하여 타이틀과 높이 맞춤 */
+.portfolio-list li:first-child {
+  padding-top: 0;
+}
+
 .portfolio-list li:last-child {
   border-bottom: none;
   margin-bottom: 0;
 }
+
 .portfolio-icon-wrapper {
   width: 56px;
   flex-shrink: 0;
-  margin-top: 5px;
-  font-size: 48px; /* 아이콘 크기 지정 -> 유지 */
-  color: var(--primary-color);   /* 브랜드 색상 적용 */
+  /* margin-top: 5px; 제거 또는 조정하여 텍스트와 정렬 맞춤 */
+  margin-top: 0; 
+  font-size: 48px;
+  color: var(--primary-color);
   display: flex;
   justify-content: center;
+  align-items: flex-start; /* 아이콘 상단 정렬 */
+  line-height: 1; /* 아이콘 높이 영향 최소화 */
 }
+
+.portfolio-item-content {
+  /* 추가적인 정렬 보정 */
+}
+
 .portfolio-item-content h3 {
   margin: 0 0 0.75rem 0;
-  font-size: var(--font-size-md); /* 1.6rem -> md */
+  font-size: var(--font-size-md);
   font-weight: 700;
+  line-height: 1.2; /* 제목 라인 높이 조정 */
 }
+
 .portfolio-item-content p {
   margin: 0;
   color: #555;
-  font-size: var(--font-size-sm); /* 1rem -> sm */
+  font-size: var(--font-size-sm);
   line-height: 1.6;
   word-break: keep-all;
 }
@@ -371,15 +322,25 @@
   margin-bottom: 5rem;
 }
 
-.history-flex-container { display: flex; gap: 4rem; }
-.history-title-column { flex: 0 0 30%; }
+.history-flex-container { 
+  display: flex; 
+  gap: 4rem; 
+  flex-wrap: nowrap; /* 2단 유지 */
+}
+
+.history-title-column { 
+  flex: 0 0 30%; 
+  min-width: 250px;
+}
+
 .history-title-column h2 {
-  font-size: var(--font-size-md); /* 2rem -> md */
+  font-size: var(--font-size-md);
   font-weight: 700;
   line-height: 1.3;
   position: sticky;
   top: 140px;
 }
+
 .history-timeline-column { flex: 1; }
 .history-timeline {
   position: relative;
@@ -405,7 +366,7 @@
 .timeline-item:nth-child(odd) { left: 0; padding-right: 3rem; text-align: right; }
 .timeline-item:nth-child(even) { left: 50%; padding-left: 3rem; text-align: left; }
 .timeline-year {
-  font-size: var(--font-size-md); /* 2rem -> md */
+  font-size: var(--font-size-md);
   font-weight: 700;
   color: var(--primary-color);
   position: absolute;
@@ -424,23 +385,142 @@
   box-shadow: 0 4px 30px rgba(0,0,0,0.07);
   word-break: keep-all;
 }
-.timeline-content p { font-size: var(--font-size-sm); /* 1.1rem -> sm */ margin: 0; font-weight: 500; }
+.timeline-content p { font-size: var(--font-size-sm); margin: 0; font-weight: 500; }
 .timeline-item:last-child { margin-bottom: 0; }
+
 
 /* --- 6. Location Section --- */
 .location-section .section-content {
   text-align: center;
   margin-top: 5rem;
 }
-.map-placeholder {
-  width: 100%;
-  height: 800px;
-  background-color: #e9ecef;
-  margin-top: 2rem;
-  margin-bottom: 5rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 8px;
+
+
+/* --- 7. CTA Section --- */
+.cta-section {
+  background-color: #f0f2f5;
+  text-align: center;
+  padding: 8rem 0;
 }
-.map-placeholder p { color: #6c757d; font-weight: 500; }
+
+.cta-container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.cta-title {
+  font-size: 2.5rem !important;
+  margin-bottom: 1.5rem !important;
+  color: #1d1d1f !important;
+}
+
+.cta-desc {
+  font-size: 1.2rem;
+  color: #666;
+  margin-bottom: 3rem;
+  line-height: 1.6;
+}
+
+.cta-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  background-color: var(--primary-color);
+  color: #fff;
+  padding: 1.2rem 3rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.25, 0.1, 0.25, 1.0);
+  box-shadow: 0 4px 15px rgba(140, 198, 63, 0.3);
+}
+
+.cta-button:hover {
+  background-color: #7ab332;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(140, 198, 63, 0.5);
+}
+
+.cta-icon {
+  font-size: 1rem;
+}
+
+/* Responsive adjustments (Updated for better tablet/small desktop view) */
+@media (max-width: 1024px) { /* 태블릿, 작은 노트북 */
+  .section-content {
+    padding: 0 2rem; /* 좌우 여백 확보 */
+  }
+
+  .mission-title-col h2, 
+  .portfolio-title {
+    font-size: 2.2rem; /* 타이틀 크기 약간 줄임 */
+  }
+  
+  .mission-main-text {
+    font-size: 2rem;
+  }
+  
+  .value-item .circle {
+    width: 280px;
+    height: 280px;
+    font-size: 2.2rem;
+  }
+}
+
+@media (max-width: 768px) { /* 모바일 (기존대로 1단 변경) */
+  .mission-grid, .portfolio-container, .history-flex-container {
+    flex-direction: column;
+    gap: 2rem;
+  }
+  
+  .mission-title-col, .portfolio-title, .history-title-column {
+    flex: auto;
+    width: 100%;
+    min-width: 0;
+    position: static;
+    margin-bottom: 2rem;
+  }
+  
+  .portfolio-title {
+    margin-top: 0;
+    padding-top: 0;
+  }
+  
+  .mission-title-col h2 {
+    font-size: 2.5rem;
+  }
+
+  .mission-main-text {
+    font-size: 1.8rem;
+  }
+
+  /* Values Section Mobile Optimization */
+  .values-container {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .value-item:nth-of-type(1), 
+  .value-item:nth-of-type(5) { 
+    margin: 0; 
+  }
+  
+  .connector {
+    display: none; /* 모바일에서는 연결선 숨김 */
+  }
+
+  .value-item .circle {
+    width: 200px;
+    height: 200px;
+    font-size: 1.8rem;
+    margin: 0 auto;
+  }
+  
+  /* History Timeline Mobile */
+  .history-timeline::before { left: 20px; }
+  .timeline-item { width: 100%; padding-left: 50px !important; padding-right: 0 !important; text-align: left !important; }
+  .timeline-item:nth-child(odd), .timeline-item:nth-child(even) { left: 0; }
+  .timeline-year { left: 0 !important; right: auto !important; width: 40px; text-align: center; font-size: 1.2rem; }
+}
