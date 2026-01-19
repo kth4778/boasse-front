@@ -6,10 +6,13 @@ export default defineConfig({
   plugins: [react()],
   server: {
     proxy: {
-      '/api': {
+      // '/api'로 시작하는 모든 요청을 백엔드로 전달
+      '/api/v1': {
         target: 'https://boasse-backend.onrender.com',
         changeOrigin: true,
-        secure: false, // HTTPS 인증서 문제 방지
+        secure: false,
+        // 필요하다면 rewrite를 사용할 수 있지만, 
+        // 현재 백엔드 API 명세가 /api/v1을 포함하므로 경로는 유지합니다.
       }
     }
   }
