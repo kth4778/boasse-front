@@ -14,17 +14,16 @@ const PartnersSection = () => {
         console.log('Partners API Response:', res);
 
         if (res.success) {
-          if (Array.isArray(res.data)) {
+          if (res.data && Array.isArray(res.data.items)) {
+            setPartners(res.data.items);
+          } else if (Array.isArray(res.data)) {
             setPartners(res.data);
           } else if (res.data && Array.isArray(res.data.partners)) {
             setPartners(res.data.partners);
           } else {
             setPartners([]);
           }
-        } else if (Array.isArray(res)) {
-          setPartners(res);
         } else {
-          console.warn('파트너 데이터를 찾을 수 없습니다. 구조를 확인하세요:', res);
           setPartners([]);
         }
       } catch (error) {
