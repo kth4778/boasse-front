@@ -20,18 +20,15 @@ const AdminPartnerList = () => {
     setLoading(true);
     try {
       const response = await partnerApi.getPartners();
-      const resData = response.data;
-      console.log('Admin Partners API Response:', resData); // 디버깅용 로그
+      console.log('Admin Partners API Response:', response.data);
 
-      if (Array.isArray(resData)) {
-        setPartners(resData);
-      } else if (resData.data && Array.isArray(resData.data)) {
-        setPartners(resData.data);
-      } else if (resData.partners && Array.isArray(resData.partners)) {
-        setPartners(resData.partners);
-      } else if (resData.data && resData.data.partners && Array.isArray(resData.data.partners)) {
-        setPartners(resData.data.partners);
+      if (response.data.success && Array.isArray(response.data.data)) {
+        setPartners(response.data.data);
+      } else if (Array.isArray(response.data)) {
+        // 백엔드가 success 없이 배열만 바로 보낼 경우 대비
+        setPartners(response.data);
       } else {
+        console.warn('예상치 못한 데이터 구조:', response.data);
         setPartners([]);
       }
     } catch (error) {
