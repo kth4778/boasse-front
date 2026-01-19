@@ -10,9 +10,11 @@ const PartnersSection = () => {
     const fetchPartners = async () => {
       try {
         const response = await partnerApi.getPartners();
-        if (response.data.success) {
-          // 서버에서 받은 데이터만 사용
-          setPartners(response.data.data || []);
+        // 배열인지 확인 후 설정 (안전 장치)
+        if (response.data.success && Array.isArray(response.data.data)) {
+          setPartners(response.data.data);
+        } else {
+          setPartners([]);
         }
       } catch (error) {
         console.error('Failed to load partners:', error);
