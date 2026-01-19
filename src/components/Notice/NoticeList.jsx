@@ -21,9 +21,12 @@ const NoticeList = () => {
     setLoading(true);
     try {
       const response = await noticeApi.getNotices(page, 10);
-      if (response.data.success) {
+      if (response.data.success && Array.isArray(response.data.data?.notices)) {
         setNotices(response.data.data.notices);
         setPagination(response.data.data.pagination);
+      } else {
+        setNotices([]);
+        setPagination({ totalPages: 0, currentPage: 1 });
       }
     } catch (error) {
       console.error('Failed to fetch notices:', error);
