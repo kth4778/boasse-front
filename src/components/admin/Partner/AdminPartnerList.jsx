@@ -21,27 +21,20 @@ const AdminPartnerList = () => {
     try {
       const response = await partnerApi.getPartners();
       const res = response.data;
-      console.log('Admin Partners API Response:', res);
+      console.log('Final Partner Data Check:', res); // 로그 메시지 변경으로 반영 확인
 
-      if (res.success) {
-        // 1. 실제 응답 구조인 res.data.items 확인
-        if (res.data && Array.isArray(res.data.items)) {
-          setPartners(res.data.items);
-        } 
-        // 2. 명세서 구조인 res.data가 배열인 경우 확인
-        else if (Array.isArray(res.data)) {
-          setPartners(res.data);
-        } 
-        // 3. 기타 예외 케이스 (partners 필드 등)
-        else if (res.data && Array.isArray(res.data.partners)) {
-          setPartners(res.data.partners);
-        } else {
-          console.warn('데이터 구조를 파악할 수 없음:', res.data);
-          setPartners([]);
+      let partnerList = [];
+      if (res.success && res.data) {
+        if (Array.isArray(res.data.items)) {
+          partnerList = res.data.items;
+        } else if (Array.isArray(res.data)) {
+          partnerList = res.data;
+        } else if (Array.isArray(res.data.partners)) {
+          partnerList = res.data.partners;
         }
-      } else {
-        setPartners([]);
       }
+
+      setPartners(partnerList);
     } catch (error) {
       console.error('파트너 목록 로딩 실패:', error);
       setPartners([]);

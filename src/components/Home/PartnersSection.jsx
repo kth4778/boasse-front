@@ -11,21 +11,19 @@ const PartnersSection = () => {
       try {
         const response = await partnerApi.getPartners();
         const res = response.data;
-        console.log('Partners API Response:', res);
+        console.log('Final Home Partners Check:', res);
 
-        if (res.success) {
-          if (res.data && Array.isArray(res.data.items)) {
-            setPartners(res.data.items);
+        let partnerList = [];
+        if (res.success && res.data) {
+          if (Array.isArray(res.data.items)) {
+            partnerList = res.data.items;
           } else if (Array.isArray(res.data)) {
-            setPartners(res.data);
-          } else if (res.data && Array.isArray(res.data.partners)) {
-            setPartners(res.data.partners);
-          } else {
-            setPartners([]);
+            partnerList = res.data;
+          } else if (Array.isArray(res.data.partners)) {
+            partnerList = res.data.partners;
           }
-        } else {
-          setPartners([]);
         }
+        setPartners(partnerList);
       } catch (error) {
         console.error('Failed to load partners:', error);
         setPartners([]);
