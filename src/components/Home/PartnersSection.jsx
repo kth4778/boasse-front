@@ -10,14 +10,21 @@ const PartnersSection = () => {
     const fetchPartners = async () => {
       try {
         const response = await partnerApi.getPartners();
-        console.log('Partners API Response:', response.data);
+        const res = response.data;
+        console.log('Partners API Response:', res);
 
-        if (response.data.success && Array.isArray(response.data.data)) {
-          setPartners(response.data.data);
-        } else if (Array.isArray(response.data)) {
-          setPartners(response.data);
+        if (res.success) {
+          if (Array.isArray(res.data)) {
+            setPartners(res.data);
+          } else if (res.data && Array.isArray(res.data.partners)) {
+            setPartners(res.data.partners);
+          } else {
+            setPartners([]);
+          }
+        } else if (Array.isArray(res)) {
+          setPartners(res);
         } else {
-          console.warn('파트너 데이터를 찾을 수 없습니다. 구조를 확인하세요:', response.data);
+          console.warn('파트너 데이터를 찾을 수 없습니다. 구조를 확인하세요:', res);
           setPartners([]);
         }
       } catch (error) {

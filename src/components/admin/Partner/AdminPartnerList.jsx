@@ -20,15 +20,23 @@ const AdminPartnerList = () => {
     setLoading(true);
     try {
       const response = await partnerApi.getPartners();
-      console.log('Admin Partners API Response:', response.data);
+      const res = response.data;
+      console.log('Admin Partners API Response:', res);
 
-      if (response.data.success && Array.isArray(response.data.data)) {
-        setPartners(response.data.data);
-      } else if (Array.isArray(response.data)) {
-        // 백엔드가 success 없이 배열만 바로 보낼 경우 대비
-        setPartners(response.data);
+      if (res.success) {
+        if (Array.isArray(res.data)) {
+          setPartners(res.data);
+        } else if (res.data && Array.isArray(res.data.partners)) {
+          // data가 객체이고 그 안에 partners 배열이 있는 경우 (현재 상황)
+          setPartners(res.data.partners);
+        } else {
+          console.warn('success는 true이나 배열을 찾을 수 없음:', res.data);
+          setPartners([]);
+        }
+      } else if (Array.isArray(res)) {
+        setPartners(res);
       } else {
-        console.warn('예상치 못한 데이터 구조:', response.data);
+        console.warn('예상치 못한 데이터 구조:', res);
         setPartners([]);
       }
     } catch (error) {
