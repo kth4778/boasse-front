@@ -180,12 +180,38 @@
 
 
 
-/* 햄버거 버튼 및 Offcanvas 스타일 제거 */
-
-.menu-trigger, 
+/* 햄버거 버튼 및 Offcanvas 스타일 */
+.menu-trigger {
+  background: none;
+  border: none;
+  padding: 5px;
+  cursor: pointer;
+  z-index: 1050;
+  display: block; /* 기본 표시 (JSX에서 d-lg-none으로 제어) */
+}
 
 .header-offcanvas {
+  background-color: rgba(0, 0, 0, 0.9) !important;
+  backdrop-filter: blur(10px);
+  color: white;
+}
 
-  display: none !important;
+.mobile-nav-item {
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.8) !important;
+  padding: 15px 0 !important;
+  transition: all 0.3s ease;
+}
 
+.mobile-nav-item:hover,
+.mobile-nav-item:focus {
+  color: var(--primary-color) !important;
+  transform: translateX(5px);
+}
+
+.mobile-nav .contact-btn {
+  font-size: 1.1rem;
+  padding: 10px 35px;
+  margin-left: 0; /* 모바일에서는 중앙 정렬이므로 margin-left 제거 */
 }

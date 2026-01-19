@@ -170,12 +170,4 @@
   pointer-events: none; /* 클릭 통과 */
 }
 
-@media (max-width: 768px) {
-  .hero-title, .hero-highlight {
-    font-size: var(--font-size-md); /* 2.2rem -> md */
-  }
-  .hero-circle-deco {
-    width: 250px;
-    height: 250px;
-  }
-}
+/* 모바일 미디어 쿼리 제거 (PC와 동일한 규격 유지) */

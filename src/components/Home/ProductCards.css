@@ -166,18 +166,4 @@
   color: #111;
 }
 
-/* 모바일 대응 */
-@media (max-width: 992px) {
-  .masonry-grid {
-    column-count: 2; /* 태블릿 2열 */
-  }
-}
-
-@media (max-width: 576px) {
-  .masonry-grid {
-    column-count: 1; /* 모바일 1열 */
-  }
-  .title-card {
-    margin-bottom: 30px;
-  }
-}
+/* 모바일 미디어 쿼리 제거 (PC와 동일한 3단 그리드 규격 유지) */
