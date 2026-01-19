@@ -20,6 +20,19 @@
   --ease-apple: cubic-bezier(0.25, 0.1, 0.25, 1.0);
 }
 
+html, body {
+  overflow-x: hidden !important;
+  width: 100%;
+  position: relative; /* 넘치는 요소 차단 기준점 */
+  max-width: 100%;
+}
+
+#root {
+  overflow-x: hidden !important;
+  width: 100%;
+  position: relative;
+}
+
 body {
   font-family: 'SF Pro Text', 'SF Pro Icons', 'Helvetica Neue', 'Helvetica', 'Arial', 'Noto Sans KR', sans-serif;
   margin: 0;
@@ -28,13 +41,6 @@ body {
   color: var(--text-dark);
   -webkit-font-smoothing: antialiased; /* 폰트 렌더링 부드럽게 */
   background-color: #fff;
-  overflow-x: hidden; /* 가로 스크롤 방지 */
-  width: 100%;
-}
-
-html {
-  overflow-x: hidden;
-  width: 100%;
 }
 
 *, *::before, *::after {

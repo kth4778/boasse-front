@@ -50,7 +50,7 @@ const Header = () => {
   return (
     <header className={headerClass} ref={containerRef}>
       <Navbar expand={false} className="py-0">
-        <Container fluid className="px-lg-5">
+        <Container fluid className="px-lg-5 px-3">
           <Navbar.Brand as={Link} to="/" className="d-flex align-items-center logo-container">
             <img 
               src={logo}
