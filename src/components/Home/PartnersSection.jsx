@@ -2,36 +2,21 @@ import React, { useState, useEffect } from 'react';
 import partnerApi from '../../api/partnerApi';
 import './PartnersSection.css';
 
-// assets/Companies 폴더의 모든 이미지를 자동으로 가져오기 (Fallback용)
-const companyLogos = import.meta.glob('../../assets/Companies/*.{png,jpg,jpeg,svg}', { eager: true });
-
 const PartnersSection = () => {
   const [partners, setPartners] = useState([]);
   const [loading, setLoading] = useState(true);
-
-  // 기본 파트너 데이터 (로컬 파일)
-  const defaultPartners = Object.entries(companyLogos).map(([path, module], index) => {
-    const fileName = path.split('/').pop().split('.')[0];
-    return {
-      id: `default-${index}`,
-      name: fileName,
-      logo: module.default
-    };
-  });
 
   useEffect(() => {
     const fetchPartners = async () => {
       try {
         const response = await partnerApi.getPartners();
-        if (response.data.success && response.data.data.length > 0) {
-          setPartners(response.data.data);
-        } else {
-          // 등록된 파트너가 없으면 기본 로컬 파일 사용
-          setPartners(defaultPartners);
+        if (response.data.success) {
+          // 서버에서 받은 데이터만 사용
+          setPartners(response.data.data || []);
         }
       } catch (error) {
         console.error('Failed to load partners:', error);
-        setPartners(defaultPartners);
+        setPartners([]);
       } finally {
         setLoading(false);
       }
@@ -40,13 +25,12 @@ const PartnersSection = () => {
     fetchPartners();
   }, []);
 
-  // 무한 스크롤 끊김 방지를 위해 데이터 충분히 복제
-  // 데이터 개수가 적으면 스크롤이 끊겨 보일 수 있으므로 최소 개수 확보
-  const displayPartners = partners.length > 0 
-    ? [...partners, ...partners, ...partners, ...partners] // 충분히 길게 복제
-    : [];
+  // 데이터가 로딩 중이거나 아예 없을 경우 섹션을 표시하지 않음
+  if (loading) return null;
+  if (partners.length === 0) return null;
 
-  if (loading) return null; // 또는 로딩 스피너
+  // 무한 스크롤 끊김 방지를 위해 데이터 복제
+  const displayPartners = [...partners, ...partners, ...partners, ...partners];
 
   return (
     <section className="partners-section">
