@@ -10,12 +10,21 @@ const PartnersSection = () => {
     const fetchPartners = async () => {
       try {
         const response = await partnerApi.getPartners();
-        // 배열인지 확인 후 설정 (안전 장치)
-        if (response.data.success && Array.isArray(response.data.data)) {
-          setPartners(response.data.data);
-        } else {
-          setPartners([]);
+        const resData = response.data;
+        let data = [];
+
+        // 다양한 응답 구조에 유연하게 대응
+        if (resData.success && Array.isArray(resData.data)) {
+          data = resData.data; // 표준 Spec: { success: true, data: [...] }
+        } else if (Array.isArray(resData)) {
+          data = resData; // 배열 직접 반환: [...]
+        } else if (resData.partners && Array.isArray(resData.partners)) {
+          data = resData.partners; // 변형: { partners: [...] }
+        } else if (resData.data && Array.isArray(resData.data.partners)) {
+          data = resData.data.partners; // 중첩 변형: { data: { partners: [...] } }
         }
+
+        setPartners(data);
       } catch (error) {
         console.error('Failed to load partners:', error);
         setPartners([]);

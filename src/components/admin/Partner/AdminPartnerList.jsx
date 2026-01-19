@@ -20,11 +20,21 @@ const AdminPartnerList = () => {
     setLoading(true);
     try {
       const response = await partnerApi.getPartners();
-      if (response.data.success && Array.isArray(response.data.data)) {
-        setPartners(response.data.data);
-      } else {
-        setPartners([]);
+      const resData = response.data;
+      let data = [];
+
+      // 다양한 응답 구조 처리
+      if (resData.success && Array.isArray(resData.data)) {
+        data = resData.data;
+      } else if (Array.isArray(resData)) {
+        data = resData;
+      } else if (resData.partners && Array.isArray(resData.partners)) {
+        data = resData.partners;
+      } else if (resData.data && Array.isArray(resData.data.partners)) {
+        data = resData.data.partners;
       }
+
+      setPartners(data);
     } catch (error) {
       console.error('파트너 목록 로딩 실패:', error);
       setPartners([]);
