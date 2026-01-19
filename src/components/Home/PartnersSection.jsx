@@ -10,22 +10,14 @@ const PartnersSection = () => {
     const fetchPartners = async () => {
       try {
         const response = await partnerApi.getPartners();
-        const resData = response.data;
-        
-        // [디버깅] 실제 들어오는 데이터 구조 확인용
-        console.log('Partners API Response:', resData);
+        console.log('Partners API Response:', response.data);
 
-        // 성공 플래그(success) 상관없이 배열 위치를 강제로 탐색
-        if (Array.isArray(resData)) {
-          setPartners(resData);
-        } else if (resData.data && Array.isArray(resData.data)) {
-          setPartners(resData.data);
-        } else if (resData.partners && Array.isArray(resData.partners)) {
-          setPartners(resData.partners);
-        } else if (resData.data && resData.data.partners && Array.isArray(resData.data.partners)) {
-          setPartners(resData.data.partners);
+        if (response.data.success && Array.isArray(response.data.data)) {
+          setPartners(response.data.data);
+        } else if (Array.isArray(response.data)) {
+          setPartners(response.data);
         } else {
-          console.warn('파트너 데이터를 찾을 수 없습니다. 구조를 확인하세요:', resData);
+          console.warn('파트너 데이터를 찾을 수 없습니다. 구조를 확인하세요:', response.data);
           setPartners([]);
         }
       } catch (error) {
