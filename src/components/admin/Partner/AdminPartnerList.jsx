@@ -24,19 +24,22 @@ const AdminPartnerList = () => {
       console.log('Admin Partners API Response:', res);
 
       if (res.success) {
-        if (Array.isArray(res.data)) {
+        // 1. 실제 응답 구조인 res.data.items 확인
+        if (res.data && Array.isArray(res.data.items)) {
+          setPartners(res.data.items);
+        } 
+        // 2. 명세서 구조인 res.data가 배열인 경우 확인
+        else if (Array.isArray(res.data)) {
           setPartners(res.data);
-        } else if (res.data && Array.isArray(res.data.partners)) {
-          // data가 객체이고 그 안에 partners 배열이 있는 경우 (현재 상황)
+        } 
+        // 3. 기타 예외 케이스 (partners 필드 등)
+        else if (res.data && Array.isArray(res.data.partners)) {
           setPartners(res.data.partners);
         } else {
-          console.warn('success는 true이나 배열을 찾을 수 없음:', res.data);
+          console.warn('데이터 구조를 파악할 수 없음:', res.data);
           setPartners([]);
         }
-      } else if (Array.isArray(res)) {
-        setPartners(res);
       } else {
-        console.warn('예상치 못한 데이터 구조:', res);
         setPartners([]);
       }
     } catch (error) {
