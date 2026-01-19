@@ -7,9 +7,9 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        // TODO: 배포 시 운영 백엔드 서버 주소로 변경 필요
-        target: 'http://localhost:8080',
+        target: 'https://boasse-backend.onrender.com',
         changeOrigin: true,
+        secure: false, // HTTPS 인증서 문제 방지
       }
     }
   }

@@ -3,42 +3,60 @@ import { useParams, useNavigate, Link } from 'react-router-dom';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Mousewheel, Pagination, EffectFade } from 'swiper/modules';
 import { products } from '../../api/productData';
-import { FaBrain, FaChartLine, FaShieldAlt, FaLeaf, FaBolt, FaMobileAlt, FaCheckCircle, FaArrowLeft, FaPaperPlane } from 'react-icons/fa';
+import { 
+  FaBrain, FaChartLine, FaShieldAlt, FaLeaf, FaBolt, FaMobileAlt, FaCheckCircle, FaArrowLeft, FaPaperPlane,
+  FaCog, FaDatabase, FaServer, FaCloud
+} from 'react-icons/fa';
 
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/effect-fade';
 import './ProductDetail.css';
 
+// 아이콘 매핑 객체 (AdminProductForm과 동일)
+const ICON_MAP = {
+  'FaChartLine': <FaChartLine />,
+  'FaBrain': <FaBrain />,
+  'FaShieldAlt': <FaShieldAlt />,
+  'FaLeaf': <FaLeaf />,
+  'FaBolt': <FaBolt />,
+  'FaMobileAlt': <FaMobileAlt />,
+  'FaCheckCircle': <FaCheckCircle />,
+  'FaCog': <FaCog />,
+  'FaDatabase': <FaDatabase />,
+  'FaServer': <FaServer />,
+  'FaCloud': <FaCloud />
+};
+
 // [데이터] Bento Grid Specs
 const getSpecs = (category) => {
   switch (category) {
     case 'Smart Mobility':
       return [
-        { icon: <FaChartLine />, label: 'Accuracy', highlight: '99.9%', text: '운행 기록 정확도', className: '' },
-        { icon: <FaBrain />, label: 'AI Engine', highlight: 'Real-time', text: '위험 운전 실시간 감지', className: 'card-wide' },
-        { icon: <FaShieldAlt />, label: 'Safety', highlight: 'Prevention', text: '사고 예방 솔루션', className: '' },
-        { icon: <FaMobileAlt />, label: 'Network', highlight: '5G/LTE', text: '초고속 데이터 전송', className: '' },
+        { icon: 'FaChartLine', label: 'Accuracy', highlight: '99.9%', text: '운행 기록 정확도', className: '' },
+        { icon: 'FaBrain', label: 'AI Engine', highlight: 'Real-time', text: '위험 운전 실시간 감지', className: 'card-wide' },
+        { icon: 'FaShieldAlt', label: 'Safety', highlight: 'Prevention', text: '사고 예방 솔루션', className: '' },
+        { icon: 'FaMobileAlt', label: 'Network', highlight: '5G/LTE', text: '초고속 데이터 전송', className: '' },
       ];
     case 'Smart Factory':
       return [
-        { icon: <FaBolt />, label: 'Efficiency', highlight: '30% UP', text: '생산 효율성 증대', className: 'card-wide' },
-        { icon: <FaBrain />, label: 'Predictive', highlight: 'AI Analysis', text: '설비 고장 사전 예측', className: '' },
-        { icon: <FaShieldAlt />, label: 'Security', highlight: 'ISO 27001', text: '국제 표준 보안', className: '' },
-        { icon: <FaChartLine />, label: 'Monitoring', highlight: '24/7', text: '중단 없는 관제', className: '' },
+        { icon: 'FaBolt', label: 'Efficiency', highlight: '30% UP', text: '생산 효율성 증대', className: 'card-wide' },
+        { icon: 'FaBrain', label: 'Predictive', highlight: 'AI Analysis', text: '설비 고장 사전 예측', className: '' },
+        { icon: 'FaShieldAlt', label: 'Security', highlight: 'ISO 27001', text: '국제 표준 보안', className: '' },
+        { icon: 'FaChartLine', label: 'Monitoring', highlight: '24/7', text: '중단 없는 관제', className: '' },
       ];
     case 'Smart Farm':
       return [
-        { icon: <FaLeaf />, label: 'Environment', highlight: 'Optimal', text: '작물별 맞춤 제어', className: '' },
-        { icon: <FaChartLine />, label: 'Yield', highlight: '+20%', text: '평균 수확량 증가', className: '' },
-        { icon: <FaMobileAlt />, label: 'Control', highlight: 'Remote', text: '언제 어디서나 제어', className: '' },
-        { icon: <FaBrain />, label: 'Big Data', highlight: 'Analysis', text: '생육 정밀 분석', className: 'card-wide' },
+        { icon: 'FaLeaf', label: 'Environment', highlight: 'Optimal', text: '작물별 맞춤 제어', className: '' },
+        { icon: 'FaChartLine', label: 'Yield', highlight: '+20%', text: '평균 수확량 증가', className: '' },
+        { icon: 'FaMobileAlt', label: 'Control', highlight: 'Remote', text: '언제 어디서나 제어', className: '' },
+        { icon: 'FaBrain', label: 'Big Data', highlight: 'Analysis', text: '생육 정밀 분석', className: 'card-wide' },
       ];
     default:
       return [
-        { icon: <FaBrain />, label: 'Tech', highlight: 'Advanced', text: '최신 기술 적용', className: 'card-wide' },
-        { icon: <FaChartLine />, label: 'Perf', highlight: 'High', text: '고성능 처리 엔진', className: '' },
-        { icon: <FaShieldAlt />, label: 'Stable', highlight: 'Reliable', text: '안정적인 운영', className: '' },
+        { icon: 'FaBrain', label: 'Tech', highlight: 'Advanced', text: '최신 기술 적용', className: 'card-wide' },
+        { icon: 'FaChartLine', label: 'Perf', highlight: 'High', text: '고성능 처리 엔진', className: '' },
+        { icon: 'FaShieldAlt', label: 'Stable', highlight: 'Reliable', text: '안정적인 운영', className: '' },
       ];
   }
 };
@@ -99,30 +117,31 @@ const ProductDetail = () => {
 
   if (!product) return <div className="pd-container">Not Found</div>;
 
-  const specs = getSpecs(product.category);
-  const features = getDetailFeatures(product.category);
+  // 동적 데이터(specs, features)가 있으면 사용하고, 없으면 카테고리별 기본 데이터 사용
+  const specs = product.specs && product.specs.length > 0 
+    ? product.specs 
+    : getSpecs(product.category);
+    
+  const features = product.features && product.features.length > 0 
+    ? product.features 
+    : getDetailFeatures(product.category);
 
-  // 배경 이미지 처리: 실제로는 슬라이드마다 다른 이미지를 쓸 수 있지만, 
-  // 여기서는 제품 이미지를 기반으로 효과(Blur/Darken)를 다르게 줌.
+  // 배경 이미지 처리
   const bgStyle = { backgroundImage: `url(${product.image})` };
 
   return (
     <div className="pd-container">
       {/* Background Layer */}
       <div className="pd-bg-container">
-        {/* Slide 1 Background (Clear) */}
         <div className={`pd-bg-image ${activeIndex === 0 ? 'active' : ''}`} style={bgStyle}>
           <div className="pd-bg-overlay"></div>
         </div>
-        {/* Slide 2 Background (Darker) */}
         <div className={`pd-bg-image darker ${activeIndex === 1 ? 'active' : ''}`} style={bgStyle}>
           <div className="pd-bg-overlay"></div>
         </div>
-        {/* Slide 3 Background (Even Darker) */}
         <div className={`pd-bg-image darker ${activeIndex === 2 ? 'active' : ''}`} style={bgStyle}>
           <div className="pd-bg-overlay" style={{ backgroundColor: 'rgba(0,0,0,0.9)' }}></div>
         </div>
-        {/* Slide 4 Background (Solid Dark) */}
         <div className={`pd-bg-image ${activeIndex === 3 ? 'active' : ''}`} style={bgStyle}>
            <div className="pd-bg-overlay" style={{ backgroundColor: '#000' }}></div>
         </div>
@@ -156,8 +175,11 @@ const ProductDetail = () => {
             <h2 className="pd-section-title">Key Performance</h2>
             <div className="pd-bento-grid">
               {specs.map((spec, idx) => (
-                <div key={idx} className={`pd-bento-card ${spec.className}`}>
-                  <div className="card-icon">{spec.icon}</div>
+                <div key={idx} className={`pd-bento-card ${spec.className || ''}`}>
+                  <div className="card-icon">
+                    {/* 문자열 아이콘 이름을 컴포넌트로 변환 */}
+                    {typeof spec.icon === 'string' ? (ICON_MAP[spec.icon] || <FaCheckCircle />) : spec.icon}
+                  </div>
                   <div className="card-label">{spec.label}</div>
                   <div className="card-highlight">{spec.highlight}</div>
                   <div className="card-text">{spec.text}</div>

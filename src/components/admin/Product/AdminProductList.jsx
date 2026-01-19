@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Table, Badge, Modal } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-import { FaPlus, FaEdit, FaTrash } from 'react-icons/fa';
+import { FaPlus, FaEdit, FaTrash, FaStar, FaRegStar } from 'react-icons/fa';
 import productApi from '../../../api/productApi';
 
 const AdminProductList = () => {
@@ -27,6 +27,27 @@ const AdminProductList = () => {
       console.error('제품 목록을 불러오는 중 오류 발생:', error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleToggleMainFeatured = async (product) => {
+    try {
+      // API 호출하여 상태 업데이트
+      const response = await productApi.updateProduct(product.id, {
+        ...product,
+        isMainFeatured: !product.isMainFeatured
+      });
+
+      if (response.data.success) {
+        // 성공 시 목록 재조회하여 데이터 동기화
+        await fetchProducts();
+      } else {
+        alert('상태 변경에 실패했습니다.');
+      }
+    } catch (error) {
+      console.error('상태 변경 실패:', error);
+      alert('변경 중 오류가 발생했습니다.');
+      fetchProducts(); // 에러 시 목록 새로고침하여 UI 복구
     }
   };
 
@@ -61,9 +82,10 @@ const AdminProductList = () => {
         </Button>
       </div>
 
-      <Table responsive hover className="admin-table">
+      <Table responsive hover className="admin-table align-middle">
         <thead>
           <tr>
+            <th className="text-center" style={{ width: '80px' }}>메인</th>
             <th>ID</th>
             <th>이미지</th>
             <th>제품명</th>
@@ -73,15 +95,25 @@ const AdminProductList = () => {
         </thead>
         <tbody>
           {loading ? (
-            <tr><td colSpan="5" className="text-center py-5">로딩 중...</td></tr>
+            <tr><td colSpan="6" className="text-center py-5">로딩 중...</td></tr>
           ) : products.map((product) => (
             <tr key={product.id}>
+              <td className="text-center">
+                <Button 
+                  variant="link" 
+                  className="p-0 text-warning"
+                  onClick={() => handleToggleMainFeatured(product)}
+                  title={product.isMainFeatured ? "메인 노출 해제" : "메인 노출 설정"}
+                >
+                  {product.isMainFeatured ? <FaStar size={20} /> : <FaRegStar size={20} style={{ color: '#ccc' }} />}
+                </Button>
+              </td>
               <td>{product.id}</td>
               <td>
                 <img src={product.image} alt={product.title} style={{ width: '50px', height: '50px', objectFit: 'cover', borderRadius: '5px' }} />
               </td>
               <td className="fw-bold">{product.title}</td>
-              <td><Badge bg="secondary">{product.category}</Badge></td>
+              <td><Badge bg="success" style={{ backgroundColor: '#8CC63F', fontWeight: '500' }}>{product.category}</Badge></td>
               <td className="text-center">
                 <Button variant="outline-primary" size="sm" className="me-2" onClick={() => navigate(`/admin/product/edit/${product.id}`)}>
                   <FaEdit />
