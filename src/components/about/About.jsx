@@ -2,23 +2,22 @@ import React, { useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
-import { FaBrain, FaIndustry, FaCarSide, FaLeaf, FaCog, FaCogs } from 'react-icons/fa';
+import { FaBrain, FaIndustry, FaCarSide, FaLeaf, FaArrowRight } from 'react-icons/fa';
 import { BsBuildingGear } from 'react-icons/bs';
 import KakaoMap from './Location/KakaoMap';
 import './About.css';
+import { useNavigate } from 'react-router-dom';
 
 gsap.registerPlugin(ScrollTrigger);
 
 const About = () => {
-  const containerRef = useRef(null); // 전체 컨테이너 참조 (Scope용)
+  const containerRef = useRef(null);
   const aboutTopWrapperRef = useRef(null);
-  const missionWrapperRef = useRef(null);
-  const missionContentBoxRef = useRef(null);
-  const missionTextGroupRef = useRef(null);
+  const navigate = useNavigate();
 
   useGSAP(() => {
     // ---------------------------------------------------------
-    // 1. Top Section: Forest Background Animation
+    // 1. Top Section: Forest Background Animation (유지)
     // ---------------------------------------------------------
     
     // Forest Layers Parallax
@@ -59,45 +58,9 @@ const About = () => {
       }
     });
 
+    // Mission Section Animation 제거됨
 
-    // ---------------------------------------------------------
-    // 2. Mission Section Animation
-    // ---------------------------------------------------------
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: missionWrapperRef.current,
-        start: "top top",
-        end: "+=300%",
-        pin: true,
-        scrub: 1,
-        pinSpacing: true,
-      },
-    });
-
-    // 박스 확대 애니메이션
-    tl.fromTo(
-      missionContentBoxRef.current, 
-      { 
-        clipPath: "inset(20% 10% 20% 10% round 50px)", 
-        scale: 0.95, 
-      },
-      { 
-        clipPath: "inset(0% 0% 0% 0% round 0px)",     
-        scale: 1,
-        ease: "power2.inOut",
-        duration: 1 
-      }
-    );
-    
-    // 텍스트 등장
-    tl.from(missionTextGroupRef.current, {
-      y: 50,
-      opacity: 0,
-      duration: 0.5,
-      ease: "power2.out"
-    }, "-=0.3");
-
-  }, { scope: containerRef }); // 전체 컨테이너를 스코프로 지정하여 모든 ref 접근 가능하게 함
+  }, { scope: containerRef });
 
 
   return (
@@ -145,31 +108,28 @@ const About = () => {
       </div>
 
       {/* ======================================================= */}
-      {/* 3. Mission Section */}
+      {/* 3. Mission Section (Static Design) */}
       {/* ======================================================= */}
-      <div ref={missionWrapperRef} className="mission-sticky-wrapper">
-        <section ref={missionContentBoxRef} className="mission-content-box about-section mission-section">
-          <div className="mission-bg-overlay">
-            <FaCog className="gear-icon gear-large" />
-            <FaCogs className="gear-icon gear-small" />
-          </div>
-
-          <div ref={missionTextGroupRef} className="section-content mission-text-group">
-            <h2 className="mission-title">
-              <span className="brand-green">BOAS-SE </span> <span className="mission-title-suffix">는</span>
-            </h2>
-            <div className="mission-desc">
-              <p>하드웨어 제조 기술과 ICT 기술을 융합해</p>
-              <p>수시로 변하는 다양한 산업의 요구를 해결하며,</p>
-              <p>효율성을 높이는 지능형 기업입니다.</p>
+      <section className="about-section mission-section-static">
+        <div className="section-content">
+          <div className="mission-grid">
+            <div className="mission-title-col">
+              <h2>Mission</h2>
             </div>
-            <div className="mission-graphic">
-              <div className="line"></div>
-              <div className="dot"></div>
+            <div className="mission-desc-col">
+              <p className="mission-main-text">
+                하드웨어 제조 기술과 <span className="text-highlight">ICT 기술을 융합</span>해<br />
+                수시로 변하는 다양한 산업의 요구를 해결하며,<br />
+                <span className="text-highlight">효율성을 높이는 지능형 기업</span>입니다.
+              </p>
+              <p className="mission-sub-text">
+                우리는 끊임없는 기술 혁신을 통해 고객의 비즈니스 가치를 극대화하고,
+                지속 가능한 미래를 함께 만들어갑니다.
+              </p>
             </div>
           </div>
-        </section>
-      </div>
+        </div>
+      </section>
 
       {/* 4. Portfolio Section */}
       <section className="about-section portfolio-section">
@@ -292,6 +252,19 @@ const About = () => {
         <div className="section-content">
           <h2>오시는 길</h2>
           <KakaoMap />
+        </div>
+      </section>
+
+      {/* 7. CTA Section (New) */}
+      <section className="about-section cta-section">
+        <div className="section-content">
+          <div className="cta-container">
+            <h2 className="cta-title">새로운 혁신을 시작할 준비가 되셨나요?</h2>
+            <p className="cta-desc">BOAS-SE의 전문가들이 귀사의 비즈니스에 최적화된 솔루션을 제안해 드립니다.</p>
+            <button className="cta-button" onClick={() => navigate('/contact')}>
+              프로젝트 문의하기 <FaArrowRight className="cta-icon" />
+            </button>
+          </div>
         </div>
       </section>
     </div>
