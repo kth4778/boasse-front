@@ -12,13 +12,14 @@ export const partnerApi = {
     if (!path) return '';
     if (path.startsWith('http')) return path;
     
-    // VITE_API_BASE_URL이 상대경로(/api/v1)인 경우와 절대경로인 경우 대응
-    const baseUrl = import.meta.env.VITE_API_BASE_URL;
-    if (baseUrl && baseUrl.startsWith('http')) {
-      const origin = new URL(baseUrl).origin;
-      return `${origin}${path}`;
+    // 백엔드 기본 URL 설정 (프로덕션 환경 대응)
+    const backendUrl = 'https://boasse-backend.onrender.com';
+    
+    // path가 /api로 시작하면 백엔드 주소만 붙임
+    if (path.startsWith('/')) {
+      return `${backendUrl}${path}`;
     }
-    return path;
+    return `${backendUrl}/${path}`;
   },
 
   // 파트너 목록 조회
