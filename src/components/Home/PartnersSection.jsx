@@ -11,20 +11,23 @@ const PartnersSection = () => {
       try {
         const response = await partnerApi.getPartners();
         const resData = response.data;
-        let data = [];
+        
+        // [디버깅] 실제 들어오는 데이터 구조 확인용
+        console.log('Partners API Response:', resData);
 
-        // 다양한 응답 구조에 유연하게 대응
-        if (resData.success && Array.isArray(resData.data)) {
-          data = resData.data; // 표준 Spec: { success: true, data: [...] }
-        } else if (Array.isArray(resData)) {
-          data = resData; // 배열 직접 반환: [...]
+        // 성공 플래그(success) 상관없이 배열 위치를 강제로 탐색
+        if (Array.isArray(resData)) {
+          setPartners(resData);
+        } else if (resData.data && Array.isArray(resData.data)) {
+          setPartners(resData.data);
         } else if (resData.partners && Array.isArray(resData.partners)) {
-          data = resData.partners; // 변형: { partners: [...] }
-        } else if (resData.data && Array.isArray(resData.data.partners)) {
-          data = resData.data.partners; // 중첩 변형: { data: { partners: [...] } }
+          setPartners(resData.partners);
+        } else if (resData.data && resData.data.partners && Array.isArray(resData.data.partners)) {
+          setPartners(resData.data.partners);
+        } else {
+          console.warn('파트너 데이터를 찾을 수 없습니다. 구조를 확인하세요:', resData);
+          setPartners([]);
         }
-
-        setPartners(data);
       } catch (error) {
         console.error('Failed to load partners:', error);
         setPartners([]);

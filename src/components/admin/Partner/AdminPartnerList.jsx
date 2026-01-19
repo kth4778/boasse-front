@@ -21,20 +21,19 @@ const AdminPartnerList = () => {
     try {
       const response = await partnerApi.getPartners();
       const resData = response.data;
-      let data = [];
+      console.log('Admin Partners API Response:', resData); // 디버깅용 로그
 
-      // 다양한 응답 구조 처리
-      if (resData.success && Array.isArray(resData.data)) {
-        data = resData.data;
-      } else if (Array.isArray(resData)) {
-        data = resData;
+      if (Array.isArray(resData)) {
+        setPartners(resData);
+      } else if (resData.data && Array.isArray(resData.data)) {
+        setPartners(resData.data);
       } else if (resData.partners && Array.isArray(resData.partners)) {
-        data = resData.partners;
-      } else if (resData.data && Array.isArray(resData.data.partners)) {
-        data = resData.data.partners;
+        setPartners(resData.partners);
+      } else if (resData.data && resData.data.partners && Array.isArray(resData.data.partners)) {
+        setPartners(resData.data.partners);
+      } else {
+        setPartners([]);
       }
-
-      setPartners(data);
     } catch (error) {
       console.error('파트너 목록 로딩 실패:', error);
       setPartners([]);
