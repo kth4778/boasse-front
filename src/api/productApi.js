@@ -1,8 +1,26 @@
 import axios from 'axios';
 import { products as initialProducts } from './productData';
 
-// 실제 백엔드 연동 전까지 사용할 목업 데이터
-let mockProducts = [...initialProducts];
+const STORAGE_KEY = 'boasse_products';
+
+// 로컬 스토리지에서 데이터 로드 (없으면 초기값 사용)
+const loadData = () => {
+  const saved = localStorage.getItem(STORAGE_KEY);
+  if (saved) {
+    return JSON.parse(saved);
+  }
+  // 초기 데이터 저장
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(initialProducts));
+  return [...initialProducts];
+};
+
+// 메모리 상의 데이터 (초기 로드)
+let mockProducts = loadData();
+
+// 데이터 저장 헬퍼
+const saveData = () => {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(mockProducts));
+};
 
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL || '/api/v1',
@@ -14,41 +32,74 @@ const api = axios.create({
 export const productApi = {
   // 제품 목록 조회
   getProducts: async () => {
-    // 실제 API 연동 시: return api.get('/products');
-    return { data: { success: true, data: mockProducts } };
+    // 조회 시마다 최신 스토리지 데이터 동기화 (탭 간 동기화 등을 위해 안전하게)
+    mockProducts = loadData();
+    return new Promise(resolve => {
+      setTimeout(() => {
+        resolve({ data: { success: true, data: mockProducts } });
+      }, 100);
+    });
   },
 
   // 제품 상세 조회
   getProductDetail: async (id) => {
-    // 실제 API 연동 시: return api.get(`/products/${id}`);
-    const product = mockProducts.find(p => p.id === parseInt(id));
-    return { data: { success: true, data: product } };
+    mockProducts = loadData();
+    return new Promise(resolve => {
+      setTimeout(() => {
+        const product = mockProducts.find(p => p.id === parseInt(id));
+        resolve({ data: { success: true, data: product } });
+      }, 100);
+    });
   },
 
   // 제품 등록
   createProduct: async (data) => {
-    // 실제 API 연동 시: return api.post('/products', data);
-    const newProduct = {
-      ...data,
-      id: Math.max(...mockProducts.map(p => p.id), 0) + 1,
-      createdAt: new Date().toISOString()
-    };
-    mockProducts.push(newProduct);
-    return { data: { success: true, data: newProduct } };
+    return new Promise(resolve => {
+      setTimeout(() => {
+        const newProduct = {
+          ...data,
+          id: Math.max(...mockProducts.map(p => p.id), 0) + 1,
+          createdAt: new Date().toISOString(),
+          specs: typeof data.specs === 'string' ? JSON.parse(data.specs) : data.specs,
+          features: typeof data.features === 'string' ? JSON.parse(data.features) : data.features
+        };
+        mockProducts.push(newProduct);
+        saveData(); // 저장
+        resolve({ data: { success: true, data: newProduct } });
+      }, 100);
+    });
   },
 
   // 제품 수정
   updateProduct: async (id, data) => {
-    // 실제 API 연동 시: return api.put(`/products/${id}`, data);
-    mockProducts = mockProducts.map(p => p.id === parseInt(id) ? { ...p, ...data } : p);
-    return { data: { success: true } };
+    return new Promise(resolve => {
+      setTimeout(() => {
+        mockProducts = mockProducts.map(p => {
+          if (p.id === parseInt(id)) {
+            return { 
+              ...p, 
+              ...data,
+              specs: typeof data.specs === 'string' ? JSON.parse(data.specs) : data.specs,
+              features: typeof data.features === 'string' ? JSON.parse(data.features) : data.features
+            };
+          }
+          return p;
+        });
+        saveData(); // 저장
+        resolve({ data: { success: true } });
+      }, 100);
+    });
   },
 
   // 제품 삭제
   deleteProduct: async (id) => {
-    // 실제 API 연동 시: return api.delete(`/products/${id}`);
-    mockProducts = mockProducts.filter(p => p.id !== parseInt(id));
-    return { data: { success: true } };
+    return new Promise(resolve => {
+      setTimeout(() => {
+        mockProducts = mockProducts.filter(p => p.id !== parseInt(id));
+        saveData(); // 저장
+        resolve({ data: { success: true } });
+      }, 100);
+    });
   }
 };
 

@@ -39,6 +39,8 @@ import AdminProductList from './components/admin/Product/AdminProductList';
 import AdminProductForm from './components/admin/Product/AdminProductForm';
 import AdminInquiryList from './components/admin/Inquiry/AdminInquiryList';
 import AdminInquiryDetail from './components/admin/Inquiry/AdminInquiryDetail';
+import AdminPartnerList from './components/admin/Partner/AdminPartnerList';
+import AdminPartnerForm from './components/admin/Partner/AdminPartnerForm';
 
 function App() {
   const location = useLocation();
@@ -100,6 +102,9 @@ function App() {
               <Route path="product" element={<AdminProductList />} />
               <Route path="product/write" element={<AdminProductForm />} />
               <Route path="product/edit/:id" element={<AdminProductForm />} />
+              <Route path="partner" element={<AdminPartnerList />} />
+              <Route path="partner/write" element={<AdminPartnerForm />} />
+              <Route path="partner/edit/:id" element={<AdminPartnerForm />} />
               <Route path="inquiry" element={<AdminInquiryList />} />
               <Route path="inquiry/:id" element={<AdminInquiryDetail />} />
             </Route>

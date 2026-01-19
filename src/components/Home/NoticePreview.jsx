@@ -1,25 +1,30 @@
-import React, { useEffect, useState } from 'react';
-import { Container, Row, Col } from 'react-bootstrap';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import noticeApi from '../../api/noticeApi'; // 공지사항 API (실제 연동)
+import noticeApi from '../../api/noticeApi';
 import './NoticePreview.css';
 
 const NoticePreview = () => {
   const [notices, setNotices] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchLatestNotices = async () => {
+    const fetchNotices = async () => {
+      setLoading(true);
       try {
-        // 최근 3개만 조회 (API가 지원한다면 limit=3, 아니면 10개 받아와서 slice)
         const response = await noticeApi.getNotices(1, 3);
         if (response.data.success) {
+          // 서버 응답 구조: response.data.data.notices
           setNotices(response.data.data.notices.slice(0, 3));
         }
       } catch (error) {
-        console.error('공지사항 로딩 실패:', error);
+        console.error('공지사항을 불러오는 중 오류가 발생했습니다:', error);
+        setNotices([]);
+      } finally {
+        setLoading(false);
       }
     };
-    fetchLatestNotices();
+
+    fetchNotices();
   }, []);
 
   const formatDate = (dateString) => {
@@ -29,39 +34,49 @@ const NoticePreview = () => {
 
   return (
     <section className="notice-preview-section">
-      {/* 장식 요소: 반 잘린 둥근 박스 */}
-      <div className="deco-box-half"></div>
-
-      <Container className="position-relative" style={{ zIndex: 2 }}>
-        <div className="d-flex justify-content-between align-items-end mb-5">
-          <div>
-            <h4 className="notice-sub-title">NEWS & NOTICE</h4>
-            <h2 className="notice-main-title">보아스에스이 소식</h2>
+      <div className="notice-preview-wrapper">
+        <div className="notice-container">
+          <div className="notice-header">
+            <div>
+              <p style={{ color: '#4caf50', fontWeight: '600', marginBottom: '10px', letterSpacing: '1px' }}>NEWS</p>
+              <h2 style={{ color: '#333' }}>공지사항</h2>
+            </div>
+            <Link to="/notice" className="view-all" style={{ color: '#666' }}>
+              전체보기 +
+            </Link>
           </div>
-          <Link to="/notice" className="notice-more-btn">
-            더보기 +
-          </Link>
-        </div>
 
-        <Row className="gy-4">
-          {notices.length > 0 ? (
-            notices.map((notice) => (
-              <Col lg={4} key={notice.id}>
-                <Link to={`/notice/${notice.id}`} className="notice-card">
-                  <div className="notice-card-body">
-                    <span className="notice-badge">공지</span>
-                    <h3 className="notice-card-title">{notice.title}</h3>
-                    <p className="notice-card-date">{formatDate(notice.createdAt)}</p>
-                    <div className="notice-arrow">→</div>
+          <div className="notice-grid">
+            {loading ? (
+              // 로딩 중 UI
+              [1, 2, 3].map((n) => (
+                <div key={n} className="notice-card" style={{ opacity: 0.5, backgroundColor: '#f9f9f9' }}>
+                  <div className="notice-tag" style={{ width: '60px', height: '20px', backgroundColor: '#eee' }}></div>
+                  <div style={{ width: '100%', height: '24px', backgroundColor: '#eee', marginBottom: '10px' }}></div>
+                  <div style={{ width: '80%', height: '24px', backgroundColor: '#eee' }}></div>
+                </div>
+              ))
+            ) : notices.length > 0 ? (
+              notices.map((notice) => (
+                <Link to={`/notice/${notice.id}`} key={notice.id} className="notice-card" style={{ backgroundColor: '#f9f9f9', boxShadow: 'none', border: '1px solid #eee' }}>
+                  <div>
+                    <span className="notice-tag">{notice.category || 'NOTICE'}</span>
+                    <h3 className="notice-title">{notice.title}</h3>
+                  </div>
+                  <div className="d-flex justify-content-between align-items-center">
+                    <span className="notice-date">{formatDate(notice.createdAt)}</span>
+                    <span className="notice-more">자세히 보기 →</span>
                   </div>
                 </Link>
-              </Col>
-            ))
-          ) : (
-            <div className="text-center py-5 text-muted">등록된 공지사항이 없습니다.</div>
-          )}
-        </Row>
-      </Container>
+              ))
+            ) : (
+              <div className="w-100 text-center py-5" style={{ color: '#999', gridColumn: '1 / -1' }}>
+                현재 등록된 공지사항이 없습니다.
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
     </section>
   );
 };
