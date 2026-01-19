@@ -20,11 +20,14 @@ const AdminPartnerList = () => {
     setLoading(true);
     try {
       const response = await partnerApi.getPartners();
-      if (response.data.success) {
+      if (response.data.success && Array.isArray(response.data.data)) {
         setPartners(response.data.data);
+      } else {
+        setPartners([]);
       }
     } catch (error) {
       console.error('파트너 목록 로딩 실패:', error);
+      setPartners([]);
     } finally {
       setLoading(false);
     }
