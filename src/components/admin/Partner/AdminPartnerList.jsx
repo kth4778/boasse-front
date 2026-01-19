@@ -89,11 +89,22 @@ const AdminPartnerList = () => {
               <tr key={partner.id}>
                 <td>{partner.id}</td>
                 <td>
-                  <img 
-                    src={partnerApi.getImageUrl(partner.logo)} 
-                    alt={partner.name} 
-                    style={{ height: '40px', objectFit: 'contain', background: '#f8f9fa', padding: '5px', borderRadius: '4px' }} 
-                  />
+                  <div style={{ 
+                    background: '#fff', 
+                    borderRadius: '20px', 
+                    padding: '5px 15px', 
+                    display: 'inline-flex', 
+                    alignItems: 'center', 
+                    justifyContent: 'center',
+                    boxShadow: '0 2px 4px rgba(0,0,0,0.05)',
+                    border: '1px solid #eee'
+                  }}>
+                    <img 
+                      src={partnerApi.getImageUrl(partner.logo)} 
+                      alt={partner.name} 
+                      style={{ height: '25px', maxWidth: '80px', objectFit: 'contain' }} 
+                    />
+                  </div>
                 </td>
                 <td className="fw-bold align-middle">
                   {partner.name}
