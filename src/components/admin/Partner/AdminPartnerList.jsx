@@ -90,7 +90,7 @@ const AdminPartnerList = () => {
                 <td>{partner.id}</td>
                 <td>
                   <img 
-                    src={partner.logo} 
+                    src={partnerApi.getImageUrl(partner.logo)} 
                     alt={partner.name} 
                     style={{ height: '40px', objectFit: 'contain', background: '#f8f9fa', padding: '5px', borderRadius: '4px' }} 
                   />

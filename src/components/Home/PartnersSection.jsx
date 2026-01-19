@@ -65,11 +65,11 @@ const PartnersSection = () => {
                       className="partner-card partner-card-link" 
                       key={`row1-${index}`}
                     >
-                      <img src={partner.logo} alt={partner.name} className="partner-logo-img" />
+                      <img src={partnerApi.getImageUrl(partner.logo)} alt={partner.name} className="partner-logo-img" />
                     </a>
                   ) : (
                     <div className="partner-card" key={`row1-${index}`}>
-                      <img src={partner.logo} alt={partner.name} className="partner-logo-img" />
+                      <img src={partnerApi.getImageUrl(partner.logo)} alt={partner.name} className="partner-logo-img" />
                     </div>
                   )
                 ))}
@@ -88,11 +88,11 @@ const PartnersSection = () => {
                       className="partner-card partner-card-link" 
                       key={`row2-${index}`}
                     >
-                      <img src={partner.logo} alt={partner.name} className="partner-logo-img" />
+                      <img src={partnerApi.getImageUrl(partner.logo)} alt={partner.name} className="partner-logo-img" />
                     </a>
                   ) : (
                     <div className="partner-card" key={`row2-${index}`}>
-                      <img src={partner.logo} alt={partner.name} className="partner-logo-img" />
+                      <img src={partnerApi.getImageUrl(partner.logo)} alt={partner.name} className="partner-logo-img" />
                     </div>
                   )
                 ))}
@@ -111,11 +111,11 @@ const PartnersSection = () => {
                       className="partner-card partner-card-link" 
                       key={`row3-${index}`}
                     >
-                      <img src={partner.logo} alt={partner.name} className="partner-logo-img" />
+                      <img src={partnerApi.getImageUrl(partner.logo)} alt={partner.name} className="partner-logo-img" />
                     </a>
                   ) : (
                     <div className="partner-card" key={`row3-${index}`}>
-                      <img src={partner.logo} alt={partner.name} className="partner-logo-img" />
+                      <img src={partnerApi.getImageUrl(partner.logo)} alt={partner.name} className="partner-logo-img" />
                     </div>
                   )
                 ))}
