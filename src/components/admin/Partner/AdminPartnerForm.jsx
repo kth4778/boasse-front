@@ -26,21 +26,28 @@ const AdminPartnerForm = () => {
     try {
       const response = await partnerApi.getPartnerDetail(id);
       const res = response.data;
-      console.log('Partner Detail Data:', res);
+      console.log('Partner Detail Full Response:', res);
 
-      // 백엔드 응답 구조(res.data)가 객체인지 확인
-      if (res.success && res.data) {
-        const { name, logo, link } = res.data;
+      // 1. 데이터 추출 (res.data 또는 res 자체가 데이터일 경우 대응)
+      const partnerData = res.success ? res.data : res;
+      
+      if (partnerData) {
+        // 필드 채우기
+        const { name, logo, link } = partnerData;
         setName(name || '');
         setLink(link || ''); 
         
-        // 기존 로고가 있을 경우 절대 경로로 변환하여 미리보기 설정
+        // 이미지 미리보기 설정
         if (logo) {
-          setLogoPreview(partnerApi.getImageUrl(logo));
+          const fullLogoUrl = partnerApi.getImageUrl(logo);
+          setLogoPreview(fullLogoUrl);
+          console.log('Set Logo Preview to:', fullLogoUrl);
         }
+      } else {
+        console.warn('파트너 데이터를 찾을 수 없습니다.');
       }
     } catch (error) {
-      console.error('불러오기 실패:', error);
+      console.error('상세 정보 불러오기 실패:', error);
       alert('데이터를 불러오는 중 오류가 발생했습니다.');
       navigate('/admin/partner');
     }
