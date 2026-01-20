@@ -104,10 +104,12 @@ const AdminProductForm = () => {
       const response = await productApi.getProductDetail(id);
       if (response.data.success) {
         const data = response.data.data;
-        // 데이터 병합 시 specs/features가 없으면 초기값 사용
+        // 데이터 병합 시 안전장치 추가
         setFormData(prev => ({
           ...prev,
           ...data,
+          // 카테고리가 없거나 null이면 기존 값(또는 기본값) 유지
+          category: data.category || prev.category || 'Smart Farm',
           specs: data.specs && Array.isArray(data.specs) && data.specs.length > 0 ? data.specs : INITIAL_SPECS,
           features: data.features && Array.isArray(data.features) && data.features.length > 0 ? data.features : INITIAL_FEATURES
         }));
@@ -167,42 +169,52 @@ const AdminProductForm = () => {
       alert('제품명은 필수입니다.');
       return;
     }
+    
+    if (!formData.category) {
+      alert('카테고리를 선택해주세요!');
+      return;
+    }
+
     setLoading(true);
     try {
-      let dataToSend;
-      const isMultipart = !!imageFile;
+      // 항상 FormData를 사용하여 백엔드 파싱 방식(@ModelAttribute)에 맞춤
+      const form = new FormData();
+      form.append('category', formData.category);
+      form.append('title', formData.title);
+      form.append('description', formData.description || '');
+      form.append('detail', formData.detail || '');
+      form.append('isMainFeatured', formData.isMainFeatured);
+      
+      // specs와 features는 문자열로 변환하여 추가
+      form.append('specs', JSON.stringify(formData.specs));
+      form.append('features', JSON.stringify(formData.features));
+      
+      // 이미지 파일이 있으면 파일 추가
+      if (imageFile) {
+        form.append('image', imageFile);
+      } else if (formData.image && !formData.image.startsWith('blob:')) {
+        // 파일이 없지만 URL 텍스트가 있는 경우 -> 'imageUrl' 필드로 전송
+        // (백엔드에 String imageUrl 필드가 추가되어야 정상 동작함)
+        form.append('imageUrl', formData.image);
+      }
 
-      if (isMultipart) {
-        const form = new FormData();
-        form.append('category', formData.category);
-        form.append('title', formData.title);
-        form.append('description', formData.description);
-        form.append('detail', formData.detail);
-        form.append('isMainFeatured', formData.isMainFeatured);
-        form.append('specs', JSON.stringify(formData.specs));
-        form.append('features', JSON.stringify(formData.features));
-        
-        if (imageFile) form.append('image', imageFile);
-        dataToSend = form;
-      } else {
-        // JSON으로 보낼 때도 specs와 features는 문자열이어야 함
-        dataToSend = { 
-          ...formData,
-          specs: JSON.stringify(formData.specs),
-          features: JSON.stringify(formData.features)
-        };
+      console.log("백엔드로 전송되는 최종 데이터 (FormData):");
+      for (let pair of form.entries()) {
+        console.log(pair[0] + ': ' + (pair[1] instanceof File ? `File: ${pair[1].name}` : pair[1]));
       }
 
       if (isEdit) {
-        await productApi.updateProduct(id, dataToSend);
+        await productApi.updateProduct(id, form);
       } else {
-        await productApi.createProduct(dataToSend);
+        await productApi.createProduct(form);
       }
+      
       alert('저장되었습니다.');
       navigate('/admin/product');
     } catch (error) {
-      console.error(error);
-      alert('저장 중 오류가 발생했습니다.');
+      console.error("저장 실패 상세 오류:", error.response?.data || error.message);
+      const serverMessage = error.response?.data?.error?.message || error.response?.data?.message || '알 수 없는 오류';
+      alert(`저장 중 오류가 발생했습니다: ${serverMessage}`);
     } finally {
       setLoading(false);
     }
