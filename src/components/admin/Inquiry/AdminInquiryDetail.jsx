@@ -16,15 +16,20 @@ const AdminInquiryDetail = () => {
   const fetchDetail = async () => {
     try {
       const response = await inquiryApi.getInquiryDetail(id);
-      if (response.data.success) {
-        setInquiry(response.data.data);
+      
+      // HTTP 상태 코드가 200이면 성공으로 간주
+      if (response.status === 200 && response.data) {
+        // response.data.data(래핑된 경우) 또는 response.data(직접 반환) 사용
+        const inquiryData = response.data.data || response.data;
+        setInquiry(inquiryData);
       } else {
+        console.warn('Unexpected response:', response);
         alert('문의 내역을 불러오는데 실패했습니다.');
         navigate('/admin/inquiry');
       }
     } catch (error) {
       console.error('상세 조회 오류:', error);
-      alert('오류가 발생했습니다.');
+      alert('문의 내역을 불러오는 중 오류가 발생했습니다.');
       navigate('/admin/inquiry');
     } finally {
       setLoading(false);

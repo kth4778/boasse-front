@@ -42,9 +42,15 @@ const AdminProductList = () => {
 
   const handleToggleMainFeatured = async (product) => {
     try {
+      // 백엔드에서 specs와 features를 JSON 문자열로 처리하므로, 객체인 경우 변환하여 전송
+      const specsData = typeof product.specs === 'object' ? JSON.stringify(product.specs) : product.specs;
+      const featuresData = typeof product.features === 'object' ? JSON.stringify(product.features) : product.features;
+
       // API 호출하여 상태 업데이트
       const response = await productApi.updateProduct(product.id, {
         ...product,
+        specs: specsData,
+        features: featuresData,
         isMainFeatured: !product.isMainFeatured
       });
 
