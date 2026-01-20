@@ -16,16 +16,15 @@ const AdminInquiryDetail = () => {
   const fetchDetail = async () => {
     try {
       const response = await inquiryApi.getInquiryDetail(id);
-      console.log('Inquiry Detail API Response:', response); // 디버깅용 로그
-
-      // success 필드가 있거나, data 객체 안에 id가 있다면 성공으로 간주
-      if (response.data?.success || response.data?.data?.id || response.data?.id) {
-        // 응답 구조에 따라 데이터 추출 (data.data가 없으면 response.data 자체를 사용 고려)
+      
+      // HTTP 상태 코드가 200이면 성공으로 간주
+      if (response.status === 200 && response.data) {
+        // response.data.data(래핑된 경우) 또는 response.data(직접 반환) 사용
         const inquiryData = response.data.data || response.data;
         setInquiry(inquiryData);
       } else {
-        console.warn('Invalid response structure:', response.data);
-        alert('문의 내역을 불러오는데 실패했습니다. (응답 형식 오류)');
+        console.warn('Unexpected response:', response);
+        alert('문의 내역을 불러오는데 실패했습니다.');
         navigate('/admin/inquiry');
       }
     } catch (error) {
