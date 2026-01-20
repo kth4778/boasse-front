@@ -169,7 +169,7 @@ const AdminProductForm = () => {
     }
     setLoading(true);
     try {
-      let dataToSend = formData;
+      let dataToSend;
       const isMultipart = !!imageFile;
 
       if (isMultipart) {
@@ -183,8 +183,14 @@ const AdminProductForm = () => {
         form.append('features', JSON.stringify(formData.features));
         
         if (imageFile) form.append('image', imageFile);
+        dataToSend = form;
       } else {
-        dataToSend = { ...formData };
+        // JSON으로 보낼 때도 specs와 features는 문자열이어야 함
+        dataToSend = { 
+          ...formData,
+          specs: JSON.stringify(formData.specs),
+          features: JSON.stringify(formData.features)
+        };
       }
 
       if (isEdit) {
