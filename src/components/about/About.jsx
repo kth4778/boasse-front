@@ -2,7 +2,11 @@ import React, { useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
-import { FaBrain, FaIndustry, FaCarSide, FaLeaf, FaArrowRight } from 'react-icons/fa';
+import { 
+  FaBrain, FaIndustry, FaCarSide, FaLeaf, FaArrowRight, 
+  FaHandshake, FaBalanceScale, FaUsers, 
+  FaMapMarkerAlt, FaPhoneAlt, FaEnvelope, FaPaw
+} from 'react-icons/fa';
 import { BsBuildingGear } from 'react-icons/bs';
 import KakaoMap from './Location/KakaoMap';
 import './About.css';
@@ -10,107 +14,129 @@ import { useNavigate } from 'react-router-dom';
 
 gsap.registerPlugin(ScrollTrigger);
 
+const HISTORY_DATA = [
+  { year: "2025", content: ["지에스티산업 AI 기반 생산공정 스케줄 최적화 및 납기예측을 위한 DX 서비스 개발", "LS Electric 설비진단 고도화를 위한 센서 4종 및 엔지니어링 연계 개발"] },
+  { year: "2024", content: ["과수 병해충 예측 및 방제 빅데이터 통합 플랫폼 구축", "LS Electric 진단 솔루션 고도화 및 서버 이중화 시스템 개발"] },
+  { year: "2023", content: ["국유양묘장 데이터 표준화 및 관리 시스템 구축", "(주)LG이노텍, SK실트론 전력 진단 시스템 납품"] },
+  { year: "2022", content: ["감귤 농장 생육환경 모니터링 시스템 개발", "(주)LG화학 전력 진단시스템 납품"] },
+  { year: "2021", content: ["제주 감귤 농장 당도예측 시스템 구축", "농산물 유통 모니터링 시스템 개발"] },
+  { year: "2020", content: ["농업 실용화재단 모니터링 시스템 납품", "서울풍물시장 LoRa 460ea 설치", "서울디지털재단 LoRa 100ea 설치 운용"] },
+  { year: "2019", content: ["농업 실용화 재단 생육 모니터링 시스템 납품", "청담동 버버리본사 모니터링 시스템 납품 (LoRa센서 300ea 설치 운용)"] },
+  { year: "2018", content: ["LS Electric 송/배전 전력진단시스템 공급", "건축물 에너지 분석/모니터링 솔루션 납품"] },
+  { year: "2017", content: ["농장 환경 생육정보 모니터링 솔루션 납품 (6개 농장 센서 500ea 설치 운용)"] },
+  { year: "2016", content: ["성주참외 환경/유통 모니터링 시스템 납품 (성주농협 센서 20ea 설치 운용)"] },
+  { year: "2015", content: ["충주사과 환경/유통 모니터링 시스템 납품 (충주사과농협 센서 20ea 설치 운용)"] },
+  { year: "2014", content: ["제주 딸기/키위 모니터링 시스템 납품 (5개 농장 센서 30ea 설치 운용)"] },
+  { year: "2013", content: ["사과 과수원 환경모니터링, 수확/유통 관리 시스템 개발", "환경/과수센서 300ea 설치 운용"] },
+  { year: "2011", content: ["벤처기업 인증", "무선센싱기술 2.6억 보증"] },
+  { year: "2010", content: ["회사설립"] }
+];
+
 const About = () => {
   const containerRef = useRef(null);
   const aboutTopWrapperRef = useRef(null);
+  const missionSectionRef = useRef(null);
+  const historyRef = useRef(null);
   const navigate = useNavigate();
 
   useGSAP(() => {
-    // ---------------------------------------------------------
-    // 1. Top Section: Forest Background Animation (유지)
-    // ---------------------------------------------------------
-    
-    // Forest Layers Parallax
-    gsap.to('.forest-layer-1', {
-      y: -30,
-      ease: "none",
-      scrollTrigger: {
-        trigger: aboutTopWrapperRef.current,
-        start: "top top",
-        end: "bottom top",
-        scrub: 1.5
-      }
+    // 1. Intro Animation
+    gsap.set('.intro-section h1', { y: 50, opacity: 0 });
+    gsap.to('.intro-section h1', { y: 0, opacity: 1, duration: 1, ease: "power3.out", stagger: 0.2 });
+    gsap.set('.intro-desc', { y: 30, opacity: 0 });
+    gsap.to('.intro-desc', { y: 0, opacity: 1, duration: 1, ease: "power3.out", delay: 0.5 });
+
+    // 2. Values & Mission
+    gsap.set('.value-item', { scale: 0.8, opacity: 0 });
+    gsap.to('.value-item', { scale: 1, opacity: 1, duration: 1, stagger: 0.2, scrollTrigger: { trigger: '.values-section', start: "top 80%" } });
+
+    if (missionSectionRef.current) {
+      gsap.set('.mission-main-text', { y: 50, opacity: 0 });
+      gsap.to('.mission-main-text', {
+        y: 0, opacity: 1, duration: 1,
+        scrollTrigger: { trigger: missionSectionRef.current, start: "top 70%" }
+      });
+    }
+
+    // 3. Portfolio Animation
+    gsap.utils.toArray('.portfolio-list li').forEach((li, i) => {
+      gsap.set(li, { y: 50, opacity: 0 });
+      gsap.to(li, {
+        y: 0, opacity: 1, duration: 0.8, delay: i * 0.1,
+        scrollTrigger: { trigger: li, start: "top 90%" }
+      });
     });
 
-    gsap.to('.forest-layer-2', {
-      y: -15,
-      ease: "none",
-      scrollTrigger: {
-        trigger: aboutTopWrapperRef.current,
-        start: "top top",
-        end: "bottom top",
-        scrub: 1
+    // 4. History Timeline Line Animation
+    const timer = setTimeout(() => {
+      const iconCells = gsap.utils.toArray('.t-icon-cell'); // 아이콘 셀 기준
+      if (iconCells.length > 0) {
+        const first = iconCells[0];
+        const last = iconCells[iconCells.length - 1];
+        
+        // 아이콘 셀의 상단 오프셋 + 내부 패딩(5px) + 아이콘 절반 높이(7px)
+        const topOffset = 12; 
+        const totalHeight = (last.offsetTop + topOffset) - (first.offsetTop + topOffset);
+        
+        gsap.set('.history-track-fill', { top: first.offsetTop + topOffset });
+        
+        gsap.to('.history-track-fill', {
+          height: totalHeight,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: '.history-timeline',
+            start: "top center", 
+            end: "bottom center",
+            scrub: 0.5,
+            invalidateOnRefresh: true
+          }
+        });
       }
-    });
-
-    // Leaf Particles Animation
-    gsap.to('.leaf-particle', {
-      y: 'random(-50, 50)',
-      x: 'random(-30, 30)',
-      rotation: 'random(-180, 180)',
-      duration: 'random(3, 5)',
-      repeat: -1,
-      yoyo: true,
-      ease: 'sine.inOut',
-      stagger: {
-        each: 0.2,
-        from: 'random'
-      }
-    });
-
-    // Mission Section Animation 제거됨
+      ScrollTrigger.refresh();
+    }, 500);
+    return () => clearTimeout(timer);
 
   }, { scope: containerRef });
 
 
   return (
     <div className="about-page" ref={containerRef}>
-      {/* Wrapper for Intro & Values with Forest Background */}
+      
+      {/* 1. Hero & Values */}
       <div ref={aboutTopWrapperRef} className="about-top-wrapper">
         <div className="forest-bg">
           <div className="forest-layer forest-layer-1"></div>
           <div className="forest-layer forest-layer-2"></div>
           <div className="forest-light-rays"></div>
-          {/* Leaf Particles */}
-          {[...Array(10)].map((_, i) => (
-            <div key={i} className={`leaf-particle leaf-${i + 1}`}></div>
-          ))}
+          {[...Array(10)].map((_, i) => <div key={i} className={`leaf-particle leaf-${i + 1}`} style={{top: `${10+i*8}%`, left: `${(i%3)*30+5}%`}}></div>)}
         </div>
 
-        {/* 1. Intro Section */}
         <section className="about-section intro-section">
           <div className="section-content">
-            <h1>Belong to BOAS-SE</h1>
-            <p>BOAS-SE 는 고객의 의견을 지속적으로 반영 및 개선하여 정확한 시스템을 개발해 높은 만족도를 제공합니다.<br />
-            프로젝트를 성공으로 이끌 BOAS-SE만의 3가지 가치와 <br />
-            팀 협업과 단계적 계획으로 오류를 최소화하고, 빠르고 안정적으로 프로젝트를 완수해 나가겠습니다.</p>
+            <div className="intro-title-wrapper">
+              <h1>Belong to <br /><span className="highlight">BOAS-SE</span></h1>
+            </div>
+            <p className="intro-desc">
+              BOAS-SE는 끊임없는 혁신과 기술 융합을 통해<br />
+              고객의 비즈니스 가치를 극대화하고, 지속 가능한 미래를 설계하는<br />
+              <strong>스마트 기술 파트너</strong>입니다.
+            </p>
           </div>
         </section>
 
-        {/* 2. Values Section */}
         <section className="about-section values-section">
           <div className="section-content">
             <div className="values-container">
-              <div className="value-item">
-                <div className="circle">Respect</div>
-              </div>
-              <div className="connector"></div>
-              <div className="value-item">
-                <div className="circle">Balance</div>
-              </div>
-              <div className="connector"></div>
-              <div className="value-item">
-                <div className="circle">Synergy</div>
-              </div>
+              <div className="value-item"><div className="value-content"><FaHandshake className="value-icon"/><div className="value-text">Respect</div><div className="value-sub">상호 존중과 신뢰</div></div></div>
+              <div className="value-item"><div className="value-content"><FaBalanceScale className="value-icon"/><div className="value-text">Balance</div><div className="value-sub">일과 삶의 조화</div></div></div>
+              <div className="value-item"><div className="value-content"><FaUsers className="value-icon"/><div className="value-text">Synergy</div><div className="value-sub">협력의 가치 창출</div></div></div>
             </div>
           </div>
         </section>
       </div>
 
-      {/* ======================================================= */}
-      {/* 3. Mission Section (Static Design) */}
-      {/* ======================================================= */}
-      <section className="about-section mission-section-static">
+      {/* 2. Mission */}
+      <section className="about-section mission-section-static" ref={missionSectionRef}>
         <div className="section-content">
           <div className="mission-grid">
             <div className="mission-title-col">
@@ -123,74 +149,48 @@ const About = () => {
                 <span className="text-highlight">효율성을 높이는 지능형 기업</span>입니다.
               </p>
               <p className="mission-sub-text">
-                우리는 끊임없는 기술 혁신을 통해 고객의 비즈니스 가치를 극대화하고,
-                지속 가능한 미래를 함께 만들어갑니다.
+                우리는 단순히 소프트웨어를 개발하는 것을 넘어, 하드웨어와 소프트웨어의 완벽한 결합을 통해 실질적인 문제를 해결합니다. 
+                스마트 팩토리부터 디지털 트윈, 모빌리티 관제까지, BOAS-SE의 기술은 산업 현장 곳곳에서 새로운 가치를 창출하고 있습니다.
               </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* 4. Portfolio Section */}
+      {/* 3. Portfolio */}
       <section className="about-section portfolio-section">
         <div className="section-content">
           <div className="portfolio-container">
             <h2 className="portfolio-title">BOAS-SE 만의<br />포트폴리오</h2>
             <ul className="portfolio-list">
               <li>
-                <div className="portfolio-icon-wrapper">
-                  <FaBrain />
-                </div>
-                <div className="portfolio-item-content">
-                  <h3>AI 기반 예측 및 최적화 솔루션</h3>
-                  <p>다양한 산업 현장의 빅데이터를 분석하여 핵심 인사이트를 도출하고, <strong>AI 기반 예측 및 최적화 모델</strong>을 통해 <br /><strong>비즈니스 효율성을 극대화</strong>합니다.
-                  제조 공정의 납기 예측 및 스케줄 최적화, 차량 운행 데이터 기반의 위험 운전 패턴 분석, 제로에너지빌딩(ZEB)의 에너지 소비량 예측, 농작물 병해충 발생 시기 예측 등 각 분야에 특화된<br />
-                   AI 기술로 높은 정확도와 신뢰성을 갖춘 솔루션을 제공합니다.</p>
+                <div className="portfolio-card">
+                  <div className="portfolio-icon-wrapper"><FaBrain /></div>
+                  <div className="portfolio-item-content"><h3>AI 기반 예측 및 최적화</h3><p>빅데이터 분석과 머신러닝을 통해<br/>비즈니스 효율성을 극대화합니다.</p></div>
                 </div>
               </li>
               <li>
-                <div className="portfolio-icon-wrapper">
-                  <FaIndustry />
-                </div>
-                <div className="portfolio-item-content">
-                  <h3>스마트 팩토리 & 디지털 트윈</h3>
-                  <p>제조 공정의 디지털 전환(DX)을 위한 통합 솔루션을 제공합니다.<br />
-                  생산 설비에 IoT 센서와 MES를 연동하여 설비 가동률, 생산 수량, 품질 상태 등의 데이터를 실시간으로 <br />
-                  수집하고, 이를 <strong>3D 디지털 트윈 환경에서 시각화</strong>하여 <strong>생산 공정 전체를 원격으로 모니터링하고 제어</strong>할 수 있습니다. 강화학습, 유전 알고리즘 등 AI 기술을 활용하여 복잡한 생산 환경에서도 최적의 작업 순서를 도출하고 연쇄 지연을 최소화합니다.</p>
+                <div className="portfolio-card">
+                  <div className="portfolio-icon-wrapper"><FaIndustry /></div>
+                  <div className="portfolio-item-content"><h3>스마트 팩토리 & DT</h3><p>IoT 센서와 MES를 연동하여<br/>생산 현장을 실시간 시각화합니다.</p></div>
                 </div>
               </li>
               <li>
-                <div className="portfolio-icon-wrapper">
-                  <FaCarSide />
-                </div>
-                <div className="portfolio-item-content">
-                  <h3>스마트 모빌리티 & 관제 플랫폼</h3>
-                  <p>차량 운행 데이터(DTG)를 실시간으로 수집하고 분석하여 차량 관제, 교통 안전, 친환경 물류를 지원하는 <strong>AI 기반 모빌리티 플랫폼</strong>을 개발합니다. 스마트폰과 연동되는
-                  '스마트 DTG'를 통해 운행 데이터(위치, 속도, 연료 소모 등)를 수집하고, <strong>위험 운전 패턴 분석 및 사고 위험도 예측</strong>, 주행 데이터 기반의 정밀 탄소 배출량 산정 등
-                  지능형 관제 서비스를 제공합니다.</p>
+                <div className="portfolio-card">
+                  <div className="portfolio-icon-wrapper"><FaCarSide /></div>
+                  <div className="portfolio-item-content"><h3>스마트 모빌리티 관제</h3><p>차량 운행 데이터를 정밀 분석하여<br/>교통 안전 솔루션을 제시합니다.</p></div>
                 </div>
               </li>
               <li>
-                <div className="portfolio-icon-wrapper">
-                  <BsBuildingGear />
-                </div>
-                <div className="portfolio-item-content">
-                  <h3>스마트 빌딩 & 시설 안전 진단</h3>
-                  <p>건물 및 주요 시설물의 <strong>에너지 효율성과 안전성을 극대화</strong>하는 지능형 관리 시스템을 구축합니다. <br />
-                  제로에너지빌딩(ZEB)의 에너지 생산·소비·자립률을 실시간으로 모니터링하는 '에너지 관리 시스템'부터,<br />
-                  3D 영상 및 뎁스 카메라 분석 기술을 통해 승강기 플랫벨트의 이상(흔들림, 파손)을 정밀하게 진단하고 원격으로<br />
-                  감시하는 '<strong>시설 안전 진단 솔루션</strong>'까지 제공합니다.</p>
+                <div className="portfolio-card">
+                  <div className="portfolio-icon-wrapper"><BsBuildingGear /></div>
+                  <div className="portfolio-item-content"><h3>스마트 빌딩 & 안전 진단</h3><p>3D 비전 기술로 시설물의 이상 징후를<br/>조기에 감지하고 예방합니다.</p></div>
                 </div>
               </li>
               <li>
-                <div className="portfolio-icon-wrapper">
-                  <FaLeaf />
-                </div>
-                <div className="portfolio-item-content">
-                  <h3>스마트 팜 & 농업 빅데이터 플랫폼</h3>
-                  <p> IoT 센서와 빅데이터, AI 기술을 융합하여 <strong>지속 가능한 정밀 농업</strong>을 위한 스마트 팜 솔루션을 제공합니다. <br />
-                  토양과 대기 환경 데이터를 실시간으로 수집하는 자체 개발 센서와 외부 공공 데이터를 통합하여, <strong>과수 병해충의 발생을 예측</strong>하고 최적의 방제 시기와 방법을 안내하는 빅데이터 플랫폼을 구축·운영합니다. <br />
-                  이를 통해 노동력 및  운영 비용을 절감하고 생산성 증대에 기여합니다.</p>
+                <div className="portfolio-card">
+                  <div className="portfolio-icon-wrapper"><FaLeaf /></div>
+                  <div className="portfolio-item-content"><h3>스마트 팜 & 농업 데이터</h3><p>데이터 기반의 정밀 농업을 실현하여<br/>농가의 생산성을 획기적으로 높입니다.</p></div>
                 </div>
               </li>
             </ul>
@@ -198,69 +198,63 @@ const About = () => {
         </div>
       </section>
 
-      {/* 5. History Section */}
-      <section className="about-section history-section">
+      {/* 4. History Section (New Grid) */}
+      <section className="about-section history-section" ref={historyRef}>
+        <div className="history-bg-pattern"></div>
+
         <div className="section-content history-flex-container">
           <div className="history-title-column">
-            <h2>BOAS-SE가 걸어온 길</h2>
+            <h2>BOAS-SE가<br />걸어온 길</h2>
           </div>
           <div className="history-timeline-column">
             <div className="history-timeline">
-              <div className="timeline-item">
-                <div className="timeline-year">2025</div>
-                <div className="timeline-content">
-                  <p>스마프 팩토리,스마트팜,스마트빌딩 등<br />차세대 산업 AI 솔루션 고도화</p>
-                </div>
+              {/* 중앙 선 */}
+              <div className="history-track-bg">
+                <div className="history-track-fill"></div>
               </div>
-              <div className="timeline-item">
-                <div className="timeline-year">2022</div>
-                <div className="timeline-content">
-                  <p>제로에너지빌딩(ZEB) 모니터링<br />및 스마트 모빌리티(DTG) 사업 본격화</p>
+
+              {HISTORY_DATA.map((item, index) => (
+                <div key={index} className={`timeline-row ${index % 2 === 0 ? 'row-right-content' : 'row-left-content'}`}>
+                  {/* 연도 (Year) */}
+                  <div className="t-year-col">
+                    <span className="t-year">{item.year}</span>
+                  </div>
+
+                  {/* 중앙 아이콘 (Icon) */}
+                  <div className="t-icon-cell">
+                    <div className="t-icon"></div>
+                  </div>
+
+                  {/* 내용 (Content) */}
+                  <div className="t-content-col">
+                    {item.content.map((text, i) => <p key={i}>{text}</p>)}
+                  </div>
                 </div>
-              </div>
-              <div className="timeline-item">
-                <div className="timeline-year">2020</div>
-                <div className="timeline-content">
-                  <p>AI/빅데이터 기반 산업별 DX(디지털전환) 솔루션 사업 확장</p>
-                </div>
-              </div>
-              <div className="timeline-item">
-                <div className="timeline-year">2017</div>
-                <div className="timeline-content">
-                  <p>건축물 에너지 분석 및 LS산전<br />전력 진단 시스템 공급 등 사업 다각화</p>
-                </div>
-              </div>
-              <div className="timeline-item">
-                <div className="timeline-year">2013</div>
-                <div className="timeline-content">
-                  <p>IoT 기반 스마트 팜 HW/SW 시스템 구축<br />및 솔루션 사업 개시</p>
-                </div>
-              </div>
-              <div className="timeline-item">
-                <div className="timeline-year">2010</div>
-                <div className="timeline-content">
-                  <p>BOAS-SE 법인 설립</p>
-                </div>
-              </div>
+              ))}
             </div>
           </div>
         </div>
       </section>
 
-      {/* 6. Location Section */}
+      {/* 5. Location & CTA */}
       <section className="about-section location-section">
         <div className="section-content">
-          <h2>오시는 길</h2>
-          <KakaoMap />
+          <div className="location-wrapper">
+            <KakaoMap />
+            <div className="location-info-card">
+              <h3>오시는 길</h3>
+              <div className="location-detail"><FaMapMarkerAlt className="text-primary-custom" /><span>충북 청주시 흥덕구 오송읍 오송생명로 194, 2층</span></div>
+              <div className="location-detail"><FaPhoneAlt className="text-primary-custom" /><span>043-123-4567</span></div>
+              <div className="location-detail"><FaEnvelope className="text-primary-custom" /><span>contact@boasse.com</span></div>
+            </div>
+          </div>
         </div>
       </section>
 
-      {/* 7. CTA Section (New) */}
       <section className="about-section cta-section">
         <div className="section-content">
           <div className="cta-container">
             <h2 className="cta-title">새로운 혁신을 시작할 준비가 되셨나요?</h2>
-            <p className="cta-desc">BOAS-SE의 전문가들이 귀사의 비즈니스에 최적화된 솔루션을 제안해 드립니다.</p>
             <button className="cta-button" onClick={() => navigate('/contact')}>
               프로젝트 문의하기 <FaArrowRight className="cta-icon" />
             </button>
