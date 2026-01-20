@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Mousewheel, Pagination, EffectFade } from 'swiper/modules';
-import { products } from '../../api/productData';
+import productApi from '../../api/productApi';
 import { 
   FaBrain, FaChartLine, FaShieldAlt, FaLeaf, FaBolt, FaMobileAlt, FaCheckCircle, FaArrowLeft, FaPaperPlane,
   FaCog, FaDatabase, FaServer, FaCloud
@@ -28,7 +28,7 @@ const ICON_MAP = {
   'FaCloud': <FaCloud />
 };
 
-// [데이터] Bento Grid Specs
+// [데이터] Bento Grid Specs (기본값)
 const getSpecs = (category) => {
   switch (category) {
     case 'Smart Mobility':
@@ -61,7 +61,7 @@ const getSpecs = (category) => {
   }
 };
 
-// [데이터] 상세 기능
+// [데이터] 상세 기능 (기본값)
 const getDetailFeatures = (category) => {
   switch (category) {
     case 'Smart Mobility':
@@ -99,8 +99,34 @@ const ProductDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [activeIndex, setActiveIndex] = useState(0);
-  
-  const product = products.find(p => p.id === parseInt(id));
+  const [product, setProduct] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchProduct = async () => {
+      try {
+        const response = await productApi.getProductDetail(id);
+        if (response.data.success) {
+          const data = response.data.data;
+          // specs와 features가 JSON 문자열로 올 경우 파싱 처리
+          // (axios나 백엔드 설정에 따라 이미 객체일 수도 있음)
+          if (typeof data.specs === 'string') {
+            try { data.specs = JSON.parse(data.specs); } catch (e) {}
+          }
+          if (typeof data.features === 'string') {
+            try { data.features = JSON.parse(data.features); } catch (e) {}
+          }
+          setProduct(data);
+        }
+      } catch (error) {
+        console.error("제품 상세 조회 실패:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProduct();
+  }, [id]);
 
   useEffect(() => {
     // 스크롤 복원 방지 및 최상단 이동
@@ -115,7 +141,23 @@ const ProductDetail = () => {
     };
   }, []);
 
-  if (!product) return <div className="pd-container">Not Found</div>;
+  if (loading) {
+    return (
+      <div className="pd-container d-flex align-items-center justify-content-center" style={{ height: '100vh', backgroundColor: '#000' }}>
+        <div className="spinner-border text-light" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </div>
+      </div>
+    );
+  }
+
+  if (!product) {
+    return (
+      <div className="pd-container d-flex align-items-center justify-content-center" style={{ height: '100vh', backgroundColor: '#000', color: '#fff' }}>
+        <h3>제품 정보를 찾을 수 없습니다.</h3>
+      </div>
+    );
+  }
 
   // 동적 데이터(specs, features)가 있으면 사용하고, 없으면 카테고리별 기본 데이터 사용
   const specs = product.specs && product.specs.length > 0 

@@ -126,7 +126,7 @@ const ProductCards = () => {
 
   }, { scope: sectionRef, dependencies: [loading, products] });
 
-  const gridProducts = products.filter(p => p.isMainFeatured);
+  const gridProducts = products.filter(p => p.isMainFeatured || p.mainFeatured);
 
   if (loading) return null;
 
