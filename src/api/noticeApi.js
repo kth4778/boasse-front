@@ -2,9 +2,6 @@ import axios from 'axios';
 
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL || '/api/v1',
-  headers: {
-    'Content-Type': 'application/json',
-  },
 });
 
 export const noticeApi = {
@@ -16,7 +13,7 @@ export const noticeApi = {
   getNoticeDetail: (id) => 
     api.get(`/notices/${id}`),
 
-  // 공지사항 작성
+  // 공지사항 작성 (Admin)
   createNotice: (formData) => 
     api.post('/notices', formData, {
       headers: {
@@ -24,7 +21,7 @@ export const noticeApi = {
       },
     }),
 
-  // 공지사항 수정
+  // 공지사항 수정 (Admin)
   updateNotice: (id, formData) => 
     api.put(`/notices/${id}`, formData, {
       headers: {
@@ -32,7 +29,7 @@ export const noticeApi = {
       },
     }),
 
-  // 공지사항 삭제
+  // 공지사항 삭제 (Admin)
   deleteNotice: (id) => 
     api.delete(`/notices/${id}`),
 };
