@@ -3,6 +3,7 @@ import { Button, Table, Badge, Modal } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { FaPlus, FaEdit, FaTrash, FaStar, FaRegStar } from 'react-icons/fa';
 import productApi from '../../../api/productApi';
+import { products as dummyProducts } from '../../../api/productData'; // 더미 데이터 임포트
 
 const AdminProductList = () => {
   const [products, setProducts] = useState([]);
@@ -12,6 +13,9 @@ const AdminProductList = () => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
 
+  // 더미 데이터 사용 여부 제어 (나중에 API 연동 완료 시 false로 변경하거나 삭제)
+  const USE_DUMMY_DATA = true;
+
   useEffect(() => {
     fetchProducts();
   }, []);
@@ -20,11 +24,17 @@ const AdminProductList = () => {
     setLoading(true);
     try {
       const response = await productApi.getProducts();
-      if (response.data.success) {
+      if (response.data.success && response.data.data.length > 0) {
         setProducts(response.data.data);
+      } else if (USE_DUMMY_DATA) {
+        // API 결과가 없거나 실패했을 때 더미 데이터 사용
+        setProducts(dummyProducts);
       }
     } catch (error) {
       console.error('제품 목록을 불러오는 중 오류 발생:', error);
+      if (USE_DUMMY_DATA) {
+        setProducts(dummyProducts);
+      }
     } finally {
       setLoading(false);
     }
