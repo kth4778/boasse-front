@@ -22,20 +22,12 @@ export const productApi = {
   createProduct: async (formData) => {
     // 명세에 따라 specs, features가 객체 상태라면 JSON.stringify 처리가 필요할 수 있음
     // (보통 FormData 생성 시점에서 처리해서 넘겨주거나 여기서 처리)
-    return api.post('/products', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    });
+    return api.post('/products', formData);
   },
 
   // 제품 수정 (Admin)
   updateProduct: async (id, formData) => {
-    return api.put(`/products/${id}`, formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    });
+    return api.put(`/products/${id}`, formData);
   },
 
   // 제품 삭제 (Admin)
