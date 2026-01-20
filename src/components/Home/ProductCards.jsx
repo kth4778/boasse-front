@@ -86,17 +86,27 @@ const ProductCards = () => {
         ease: 'power2.inOut'
       });
 
-      // 2. 검은색 카드 고정 (Pinning) - 동적 높이 계산
-      ScrollTrigger.create({
-        trigger: rightGridRef.current, 
-        start: 'top top+=150',
-        // 오른쪽 그리드 높이 - 왼쪽 카드 높이만큼만 스크롤 (정확히 끝에서 멈춤)
-        end: () => `+=${rightGridRef.current.offsetHeight - leftCardRef.current.offsetHeight}`, 
-        pin: leftCardRef.current,
-        pinSpacing: false,
-        anticipatePin: 1,
-        invalidateOnRefresh: true // 리사이즈 시 재계산
-      });
+      // 2. 검은색 카드 고정 (Manual Sticky via Translation)
+      // Pin 기능을 쓰지 않고, 스크롤 거리만큼 정확히 y축으로 이동시켜 Sticky 효과를 냄 (튀는 현상 원천 차단)
+      const getDist = () => {
+        const rightH = rightGridRef.current?.offsetHeight || 0;
+        const leftH = leftCardRef.current?.offsetHeight || 0;
+        return rightH - leftH;
+      };
+
+      if (getDist() > 0) {
+        gsap.to(leftCardRef.current, {
+          y: getDist, // 오른쪽 높이 - 왼쪽 높이만큼 이동
+          ease: "none", // 등속 운동 (스크롤과 1:1 매칭)
+          scrollTrigger: {
+            trigger: rightGridRef.current,
+            start: "top top+=150", // 화면 상단 150px 지점에서 시작
+            end: () => `+=${getDist()}`, // 이동해야 할 거리만큼만 스크롤 영역 설정
+            scrub: 0, // 지연 없이 즉각 반응 (Hard Sticky)
+            invalidateOnRefresh: true, // 리사이즈 시 재계산
+          }
+        });
+      }
 
       // 3. 오른쪽 카드 순차 등장
       const items = gsap.utils.toArray('.masonry-item');
@@ -136,7 +146,7 @@ const ProductCards = () => {
         <div className="pc-container">
           <div className="pc-grid">
             {/* Left: Sticky Card Area */}
-            <div className="pc-left" style={{ height: '100%' }}> 
+            <div className="pc-left"> 
               {/* Pinning 대상 */}
               <div className="title-card" ref={leftCardRef}>
                 <h2 className="title-card-head">OUR<br />PRODUCTS</h2>
