@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Row, Col, Card, Spinner } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 import { FaBullhorn, FaUserTie, FaBoxOpen } from 'react-icons/fa';
 import noticeApi from '../../api/noticeApi';
 import recruitApi from '../../api/recruitApi';
@@ -7,6 +8,7 @@ import recruitApi from '../../api/recruitApi';
 import productApi from '../../api/productApi';
 
 const AdminDashboard = () => {
+  const navigate = useNavigate();
   const [counts, setCounts] = useState({
     notice: 0,
     recruit: 0,
@@ -40,9 +42,9 @@ const AdminDashboard = () => {
   }, []);
 
   const stats = [
-    { title: '공지사항', count: counts.notice, icon: <FaBullhorn />, color: '#8CC63F' },
-    { title: '채용공고', count: counts.recruit, icon: <FaUserTie />, color: '#2196f3' },
-    { title: '등록 제품', count: counts.product, icon: <FaBoxOpen />, color: '#ff9800' },
+    { title: '공지사항', count: counts.notice, icon: <FaBullhorn />, color: '#8CC63F', link: '/admin/notice' },
+    { title: '채용공고', count: counts.recruit, icon: <FaUserTie />, color: '#2196f3', link: '/admin/recruit' },
+    { title: '등록 제품', count: counts.product, icon: <FaBoxOpen />, color: '#ff9800', link: '/admin/product' },
   ];
 
   if (loading) {
@@ -59,7 +61,11 @@ const AdminDashboard = () => {
       <Row className="g-4">
         {stats.map((stat, idx) => (
           <Col key={idx} md={4}>
-            <Card className="admin-card text-center">
+            <Card 
+              className="admin-card text-center" 
+              onClick={() => navigate(stat.link)}
+              style={{ cursor: 'pointer' }}
+            >
               <div className="mb-3" style={{ fontSize: '2.5rem', color: stat.color }}>
                 {stat.icon}
               </div>
