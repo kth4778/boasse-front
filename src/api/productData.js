@@ -143,7 +143,7 @@ export const products = [
     id: 11,
     title: "병해충 예찰 앱",
     category: "Smart Farm",
-    image: "https://images.unsplash.com/photo-1555421689-d68471e189f2?auto=format&fit=crop&q=80&w=800",
+    image: "https://images.unsplash.com/photo-1536147116438-62679a5e01f2?auto=format&fit=crop&q=80&w=800",
     description: "농작물의 병해충 발생 위험 시기를 예측하여 알림을 제공하는 농업 플랫폼",
     detail: "기상 데이터와 과거 병해충 발생 이력을 AI로 분석하여 방제 적기를 알려줍니다. 약제 처방 가이드와 연동되어 과도한 농약 사용을 방지하고 작물 품질을 높입니다.",
     isMainFeatured: false
@@ -152,7 +152,7 @@ export const products = [
     id: 18,
     title: "스마트팜 생육 관리",
     category: "Smart Farm",
-    image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&q=80&w=800",
+    image: "https://images.unsplash.com/photo-1558449028-b53a39d100fc?auto=format&fit=crop&q=80&w=800",
     description: "데이터 기반으로 작물의 최적 생육 환경을 자동으로 제어하는 토탈 솔루션",
     detail: "환경 제어기(환풍기, 양액기, 보일러 등)를 데이터에 기반하여 자동 제어합니다. 작물별 최적 성장 모델을 적용하여 수확량을 극대화하고 노동력을 절감합니다.",
     isMainFeatured: false
@@ -163,7 +163,7 @@ export const products = [
     id: 5,
     title: "승강기 진단 센서",
     category: "Smart Building",
-    image: "https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&q=80&w=800",
+    image: "https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?auto=format&fit=crop&q=80&w=800",
     description: "승강기 플랫벨트의 미세한 흔들림과 파손을 감지하는 고성능 뎁스 카메라",
     detail: "승강기의 핵심 안전 부품인 플랫벨트를 24시간 감시합니다. 비접촉식 광학 분석 기술을 사용하여 벨트의 아주 작은 실금이나 마모 상태도 정확히 식별합니다.",
     isMainFeatured: false

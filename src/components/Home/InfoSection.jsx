@@ -23,11 +23,10 @@ const InfoSection = () => {
     },
     {
       id: 2,
-      category: 'Smart Factory',
-      title: '스마트 팩토리',
-      desc: '제조 현장의 데이터를 실시간으로 수집하고 분석하여 공정을 최적화합니다. 예지 보전과 품질 관리 자동화로 생산 효율을 혁신합니다.',
-      // 엔지니어와 블루톤의 설비 이미지로 전문성 강조
-      image: 'https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&w=1200&q=80',
+      category: 'Auto Control',
+      title: '원격 제어 시스템',
+      desc: '언제 어디서나 스마트폰과 PC를 통해 농장 설비를 원격으로 제어할 수 있습니다. 천창 개폐, 관수, 냉난방 등을 자동화하여 노동력을 절감하고 최적의 생육 환경을 유지합니다.',
+      image: 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&w=1200&q=80',
       link: '/business'
     },
     {
