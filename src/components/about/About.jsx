@@ -137,6 +137,11 @@ const About = () => {
 
       {/* 2. Mission */}
       <section className="about-section mission-section-static" ref={missionSectionRef}>
+        {/* Mission 전용 장식: 은은한 반딧불이 */}
+        <div className="section-deco-container">
+          {[...Array(5)].map((_, i) => <div key={i} className={`local-firefly lf-${i}`}></div>)}
+        </div>
+
         <div className="section-content">
           <div className="mission-grid">
             <div className="mission-title-col">
@@ -159,6 +164,13 @@ const About = () => {
 
       {/* 3. Portfolio */}
       <section className="about-section portfolio-section">
+        {/* Portfolio 전용 장식: 살랑거리는 나뭇잎 */}
+        <div className="section-deco-container">
+          <div className="local-leaf leaf-1">🌿</div>
+          <div className="local-leaf leaf-2">🍃</div>
+          <div className="local-leaf leaf-3">🌱</div>
+        </div>
+
         <div className="section-content">
           <div className="portfolio-container">
             <h2 className="portfolio-title">BOAS-SE 만의<br />포트폴리오</h2>
