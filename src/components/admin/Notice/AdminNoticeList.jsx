@@ -92,41 +92,47 @@ const AdminNoticeList = () => {
               <td colSpan="6" className="text-center py-5 text-muted">데이터를 불러오는 중입니다...</td>
             </tr>
           ) : notices.length > 0 ? (
-            notices.map((notice) => (
-              <tr key={notice.id}>
-                <td>{notice.id}</td>
-                <td className="fw-bold">{notice.title}</td>
-                <td>{notice.author}</td>
-                <td>{notice.viewCount}</td>
-                <td>{formatDate(notice.createdAt)}</td>
-                <td className="text-center">
-                  <Button 
-                    variant="outline-secondary" 
-                    size="sm" 
-                    className="me-2"
-                    onClick={() => window.open(`/notice/${notice.id}`, '_blank')}
-                    title="미리보기"
-                  >
-                    <FaEye />
-                  </Button>
-                  <Button 
-                    variant="outline-primary" 
-                    size="sm" 
-                    className="me-2"
-                    onClick={() => navigate(`/admin/notice/edit/${notice.id}`)}
-                  >
-                    <FaEdit /> 수정
-                  </Button>
-                  <Button 
-                    variant="outline-danger" 
-                    size="sm"
-                    onClick={() => handleDeleteClick(notice)}
-                  >
-                    <FaTrash /> 삭제
-                  </Button>
-                </td>
-              </tr>
-            ))
+            notices.map((notice, index) => {
+              const totalCount = pagination?.totalCount || notices.length;
+              const currentPage = pagination?.currentPage || 1;
+              const virtualNum = totalCount - ((currentPage - 1) * 10) - index;
+              
+              return (
+                <tr key={notice.id}>
+                  <td>{virtualNum}</td>
+                  <td className="fw-bold">{notice.title}</td>
+                  <td>{notice.author}</td>
+                  <td>{notice.viewCount}</td>
+                  <td>{formatDate(notice.createdAt)}</td>
+                  <td className="text-center">
+                    <Button 
+                      variant="outline-secondary" 
+                      size="sm" 
+                      className="me-2"
+                      onClick={() => window.open(`/notice/${notice.id}`, '_blank')}
+                      title="미리보기"
+                    >
+                      <FaEye />
+                    </Button>
+                    <Button 
+                      variant="outline-primary" 
+                      size="sm" 
+                      className="me-2"
+                      onClick={() => navigate(`/admin/notice/edit/${notice.id}`)}
+                    >
+                      <FaEdit /> 수정
+                    </Button>
+                    <Button 
+                      variant="outline-danger" 
+                      size="sm"
+                      onClick={() => handleDeleteClick(notice)}
+                    >
+                      <FaTrash /> 삭제
+                    </Button>
+                  </td>
+                </tr>
+              );
+            })
           ) : (
             <tr>
               <td colSpan="6" className="text-center py-5 text-muted">등록된 공지사항이 없습니다.</td>
