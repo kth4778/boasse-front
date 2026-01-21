@@ -152,4 +152,27 @@
   opacity: 1;
   transform: scale(1.3);
   box-shadow: 0 0 10px rgba(140, 198, 63, 0.6);
+}\
+
+.contact-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #ffffff;
+  color: #000000 !important; /* Header.css 스타일과 통일 */
+  padding: 12px 35px;
+  border-radius: 50px;
+  font-weight: 600;
+  font-size: 1.1rem;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  border: 1px solid #ffffff;
 }
+
+.contact-btn:hover {
+  background-color: var(--primary-color, #4caf50);
+  color: #ffffff !important;
+  border-color: var(--primary-color, #4caf50);
+  transform: translateY(-2px); /* 약간 떠오르는 효과 추가 */
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}\
