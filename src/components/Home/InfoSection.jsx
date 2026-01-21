@@ -25,7 +25,7 @@ const InfoSection = () => {
       category: 'Auto Control',
       title: '원격 제어 시스템',
       desc: '언제 어디서나 스마트폰과 PC를 통해 농장 설비를 원격으로 제어할 수 있습니다. 천창 개폐, 관수, 냉난방 등을 자동화하여 노동력을 절감하고 최적의 생육 환경을 유지합니다.',
-      image: 'https://images.unsplash.com/photo-1581094288338-2314dddb7ece?auto=format&w=1200&q=80',
+      image: 'https://images.unsplash.com/photo-1492496913980-501348b61469?auto=format&fit=crop&w=800&q=80',
       link: '/business'
     },
     {
