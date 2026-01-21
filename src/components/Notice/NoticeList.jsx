@@ -105,18 +105,24 @@ const NoticeList = () => {
               </tr>
             </thead>
             <tbody>
-              {filteredNotices.map((notice) => (
-                <tr key={notice.id} onClick={() => navigate(`/notice/${notice.id}`)} style={{ cursor: 'pointer' }}>
-                  <td>{notice.id}</td>
-                  <td className="text-start">
-                    <span className="notice-title-text">{notice.title}</span>
-                    {notice.hasAttachments && <span className="ms-2 attachment-icon">📎</span>}
-                  </td>
-                  <td>{notice.author}</td>
-                  <td>{formatDate(notice.createdAt)}</td>
-                  <td>{notice.viewCount}</td>
-                </tr>
-              ))}
+              {filteredNotices.map((notice, index) => {
+                // 가상 번호 계산 (전체 개수 - ((현재페이지-1)*10) - 인덱스)
+                const totalCount = pagination?.totalCount || notices.length;
+                const virtualNum = totalCount - ((currentPage - 1) * 10) - index;
+                
+                return (
+                  <tr key={notice.id} onClick={() => navigate(`/notice/${notice.id}`)} style={{ cursor: 'pointer' }}>
+                    <td>{virtualNum}</td>
+                    <td className="text-start">
+                      <span className="notice-title-text">{notice.title}</span>
+                      {notice.hasAttachments && <span className="ms-2 attachment-icon">📎</span>}
+                    </td>
+                    <td>{notice.author || '관리자'}</td>
+                    <td>{formatDate(notice.createdAt)}</td>
+                    <td>{notice.viewCount}</td>
+                  </tr>
+                );
+              })}
               {filteredNotices.length === 0 && (
                 <tr>
                   <td colSpan="5" className="py-5 text-center text-muted">

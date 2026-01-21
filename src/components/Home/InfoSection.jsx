@@ -14,10 +14,11 @@ const InfoSection = () => {
   const solutions = [
     {
       id: 1,
-      category: 'Smart Sensing',
-      title: '스마트 센싱 시스템',
-      desc: '농장 내부의 온도, 습도, CO2, 광량 등 작물 생장에 필수적인 환경 데이터를 초정밀 센서로 실시간 수집합니다. 수집된 데이터는 클라우드 서버로 전송되어 정밀한 분석의 기초가 됩니다.',
-      image: 'https://images.unsplash.com/photo-1553406830-ef2513450d76?auto=format&w=1200&q=80',
+      category: 'Smart Farm',
+      title: '스마트 팜 솔루션',
+      desc: '빅데이터와 AI 기반의 정밀 제어 시스템으로 최적의 생육 환경을 제공합니다. 생산성을 극대화하고 노동력을 절감하는 미래형 농업 기술입니다.',
+      // 수직 농장(Vertical Farm) 이미지로 첨단 기술 느낌 강조
+      image: 'https://images.unsplash.com/photo-1574943320219-553eb213f72d?auto=format&w=1200&q=80',
       link: '/business'
     },
     {
@@ -30,18 +31,20 @@ const InfoSection = () => {
     },
     {
       id: 3,
-      category: 'Data Analysis',
-      title: '생육 데이터 분석',
-      desc: '축적된 빅데이터를 AI가 분석하여 작물별 최적의 생육 레시피를 제공합니다. 생산량 예측, 병해충 예방 등 데이터 기반의 의사결정을 지원하여 농가 소득 증대에 기여합니다.',
-      image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&w=1200&q=80',
+      category: 'Smart Mobility',
+      title: '스마트 모빌리티',
+      desc: '자율주행 물류 로봇과 통합 관제 시스템으로 물류의 흐름을 혁신합니다. 안전하고 효율적인 이동을 위한 최첨단 모빌리티 솔루션입니다.',
+      // 실제 자율주행 로봇 이미지
+      image: 'https://images.unsplash.com/photo-1519681393798-38e43269d877?auto=format&w=1200&q=80',
       link: '/business'
     },
     {
       id: 4,
-      category: 'Green Energy',
-      title: '친환경 에너지 솔루션',
-      desc: '지열, 태양광 등 신재생 에너지를 활용한 저탄소 에너지 솔루션을 제공합니다. 에너지 비용을 절감하고 탄소 중립을 실현하여 지속 가능한 미래 농업을 만들어갑니다.',
-      image: 'https://images.unsplash.com/photo-1466692476868-aef1dfb1e735?auto=format&w=1200&q=80',
+      category: 'Smart Building',
+      title: '스마트 빌딩 에너지',
+      desc: '건물의 에너지 사용 패턴을 AI가 학습하여 최적의 제어를 수행합니다. 에너지 비용을 획기적으로 절감하고 쾌적한 공간 환경을 조성합니다.',
+      // 웅장한 현대식 빌딩 이미지
+      image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&w=1200&q=80',
       link: '/business'
     }
   ];
