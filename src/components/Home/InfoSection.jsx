@@ -9,6 +9,7 @@ const InfoSection = () => {
   const sectionRef = useRef(null);
   const [activeIndex, setActiveIndex] = useState(0);
   const previousIndex = useRef(0);
+  const isAnimating = useRef(false); // 애니메이션 진행 상태 추적
 
   const solutions = [
     {
@@ -71,6 +72,8 @@ const InfoSection = () => {
   const touchEndX = useRef(0);
 
   const handleNext = () => {
+    if (isAnimating.current) return;
+    isAnimating.current = true;
     if (activeIndex < solutions.length - 1) {
       setActiveIndex(activeIndex + 1);
     } else {
@@ -79,6 +82,8 @@ const InfoSection = () => {
   };
 
   const handlePrev = () => {
+    if (isAnimating.current) return;
+    isAnimating.current = true;
     if (activeIndex > 0) {
       setActiveIndex(activeIndex - 1);
     } else {
@@ -110,11 +115,22 @@ const InfoSection = () => {
     const texts = gsap.utils.toArray('.info-text-group');
     const cards = gsap.utils.toArray('.image-card');
     
+    // 이전 애니메이션 강제 종료 (겹침 방지)
+    gsap.killTweensOf(texts);
+    gsap.killTweensOf(cards);
+
     const prevIdx = previousIndex.current;
     const currentIdx = activeIndex;
 
     // 1. 텍스트 전환
     if (prevIdx !== currentIdx) {
+      // 숨겨져야 할 텍스트들 즉시 숨김 처리 (안전장치)
+      texts.forEach((text, i) => {
+        if (i !== currentIdx && i !== prevIdx) {
+          gsap.set(text, { autoAlpha: 0, x: -20 });
+        }
+      });
+
       gsap.to(texts[prevIdx], {
         autoAlpha: 0,
         x: -20,
@@ -125,12 +141,25 @@ const InfoSection = () => {
     
     gsap.fromTo(texts[currentIdx],
       { autoAlpha: 0, x: 20 },
-      { autoAlpha: 1, x: 0, duration: 0.5, delay: 0.2, ease: 'power2.out' }
+      { 
+        autoAlpha: 1, 
+        x: 0, 
+        duration: 0.5, 
+        delay: 0.2, 
+        ease: 'power2.out',
+        onComplete: () => {
+           // 텍스트 애니메이션이 끝나는 시점을 전체 애니메이션 종료로 간주 (가장 늦게 끝남)
+           // 혹은 이미지 애니메이션 시간과 맞춰서 넉넉하게 잡음
+        }
+      }
     );
 
     // 2. 이미지 전환 (3D 원형 회전 Carousel)
     const radius = 350; 
     const theta = 50;   
+    
+    // 가장 긴 애니메이션 시간을 추적하여 잠금 해제
+    let maxDuration = 0.8; 
 
     cards.forEach((card, i) => {
       const offset = i - currentIdx;
@@ -150,7 +179,13 @@ const InfoSection = () => {
         zIndex: zIndex,
         duration: 0.8,
         ease: 'power3.out',
-        transformOrigin: "50% 50% -400px" 
+        transformOrigin: "50% 50% -400px",
+        onComplete: () => {
+          if (i === currentIdx) {
+            // 메인 카드의 애니메이션이 끝났을 때 잠금 해제
+            isAnimating.current = false;
+          }
+        }
       });
 
       if (i === currentIdx) {
@@ -164,6 +199,8 @@ const InfoSection = () => {
   }, [activeIndex]);
 
   const handleTabClick = (index) => {
+    if (isAnimating.current || index === activeIndex) return;
+    isAnimating.current = true;
     setActiveIndex(index);
   };
 

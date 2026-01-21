@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Mousewheel, Pagination } from 'swiper/modules';
+import { Link } from 'react-router-dom';
 
 import 'swiper/css';
 import 'swiper/css/pagination';
@@ -16,6 +17,7 @@ const Business = () => {
     'https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=2070&auto=format&fit=crop', // SI (Circuit/Chip)
     'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070&auto=format&fit=crop', // Mobile (Digital Tech)
     'https://images.unsplash.com/photo-1620712943543-bcc4688e7485?q=80&w=1965&auto=format&fit=crop', // AI (Abstract Brain)
+    'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop', // Contact (Architecture - No Face)
   ];
 
   return (
@@ -90,6 +92,23 @@ const Business = () => {
               인공지능과 빅데이터 분석을 통해 숨겨진 패턴을 찾고, <br />
               미래를 예측하여 비즈니스 의사결정을 혁신합니다.
             </p>
+          </div>
+        </SwiperSlide>
+
+        {/* Slide 5: Contact */}
+        <SwiperSlide className="business-slide">
+          <div className="slide-content">
+            <div className="slide-eyebrow">Contact Us</div>
+            <h2 className="slide-title">새로운 가능성,<br />BOAS-SE와 함께하세요.</h2>
+            <p className="slide-description">
+              성공적인 비즈니스를 위한 첫걸음.<br />
+              당신의 고민을 해결해 드릴 최적의 솔루션을 제안합니다.
+            </p>
+            <div style={{ marginTop: '50px' }}>
+              <Link to="/contact" className="contact-btn">
+                문의하기
+              </Link>
+            </div>
           </div>
         </SwiperSlide>
       </Swiper>
