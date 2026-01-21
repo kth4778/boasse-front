@@ -57,7 +57,7 @@ const ProductCards = () => {
         borderRadius: '100px'
       });
 
-      // 1. 흰색 박스 확장 및 축소 (Timeline)
+      // 1. 흰색 박스 확장 및 축소 (Timeline) - 복구됨
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: sectionRef.current,
@@ -68,7 +68,6 @@ const ProductCards = () => {
         }
       });
 
-      // 가로 75% -> 88%, 세로 패딩 미세 조정
       tl.to(wrapperRef.current, {
         width: '88%',            
         paddingTop: '100px',
@@ -87,7 +86,6 @@ const ProductCards = () => {
       });
 
       // 2. 검은색 카드 고정 (Manual Sticky via Translation)
-      // Pin 기능을 쓰지 않고, 스크롤 거리만큼 정확히 y축으로 이동시켜 Sticky 효과를 냄 (튀는 현상 원천 차단)
       const getDist = () => {
         const rightH = rightGridRef.current?.offsetHeight || 0;
         const leftH = leftCardRef.current?.offsetHeight || 0;
@@ -96,37 +94,20 @@ const ProductCards = () => {
 
       if (getDist() > 0) {
         gsap.to(leftCardRef.current, {
-          y: getDist, // 오른쪽 높이 - 왼쪽 높이만큼 이동
-          ease: "none", // 등속 운동 (스크롤과 1:1 매칭)
+          y: getDist, 
+          ease: "none", 
           scrollTrigger: {
             trigger: rightGridRef.current,
-            start: "top top+=150", // 화면 상단 150px 지점에서 시작
-            end: () => `+=${getDist()}`, // 이동해야 할 거리만큼만 스크롤 영역 설정
-            scrub: 0, // 지연 없이 즉각 반응 (Hard Sticky)
-            invalidateOnRefresh: true, // 리사이즈 시 재계산
+            start: "top top+=150", 
+            end: () => `+=${getDist()}`, 
+            scrub: 0, 
+            invalidateOnRefresh: true, 
           }
         });
       }
 
-      // 3. 오른쪽 카드 순차 등장
-      const items = gsap.utils.toArray('.masonry-item');
-      if (items.length > 0) {
-        gsap.fromTo(items,
-          { y: 100, opacity: 0 },
-          {
-            y: 0,
-            opacity: 1,
-            duration: 0.8,
-            stagger: 0.1,
-            ease: 'power3.out',
-            scrollTrigger: {
-              trigger: rightGridRef.current,
-              start: 'top 85%',
-              toggleActions: 'play none none reverse'
-            }
-          }
-        );
-      }
+      // 3. 오른쪽 카드 순차 등장 애니메이션은 떨림 방지를 위해 제거 상태 유지
+      gsap.set('.masonry-item', { opacity: 1, y: 0 });
     });
 
     return () => {

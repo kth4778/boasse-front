@@ -7,7 +7,6 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
 
 import 'swiper/css';
-/* import 'swiper/css/pagination'; 제거 - 커스텀 구현 */
 
 import './HeroSlider.css';
 
@@ -40,8 +39,8 @@ const HeroSlider = () => {
   const slides = [
     {
       id: 1,
-      // Smart Farm: 깨끗한 스마트 온실 내부 (신뢰감, 청정 이미지)
-      image: 'https://cdn.nongupin.co.kr/news/photo/202303/98231_56560_5749.jpg',
+      // Smart Farm: 깨끗한 스마트 온실 내부 (신뢰감, 청정 이미지, 인물 없음)
+      image: '/images/HeroSlider-smartFarm.jpg',
       subtitle: 'BOAS-SE SMART FARM SOLUTION',
       title: '데이터로 완성하는\n미래 농업의 기준',
       highlight: 'AI 기반 정밀 생육 제어 시스템',
@@ -49,8 +48,8 @@ const HeroSlider = () => {
     },
     {
       id: 2,
-      // Smart Factory: 엔지니어와 자동화 설비 (전문성, 기술력)
-      image: 'https://cdn.mmkorea.net/news/photo/201906/7461_12733_216.png',
+      // Smart Factory: 자동화 로봇 팔 (전문성, 기술력, 인물 없음)
+      image: '/images/HeroSlider-smartFactory.jpg',
       subtitle: 'SMART FACTORY INNOVATION',
       title: '제조 현장의 혁신,\n지능형 자동화 솔루션',
       highlight: '실시간 설비 예지 보전과 품질 관리',
@@ -58,8 +57,8 @@ const HeroSlider = () => {
     },
     {
       id: 3,
-      // Smart Mobility: 대형 물류 센터와 자동화 (규모감, 효율성)
-      image: 'https://live.lge.co.kr/wp-content/uploads/2022/10/1.lg_-18.jpg',
+      // Smart Mobility: 현대적인 물류 창고 (규모감, 효율성, 인물 없음)
+      image: '/images/HeroSlider-smartLogitics.jpg',
       subtitle: 'AUTONOMOUS LOGISTICS',
       title: '공간을 연결하는\n자율주행의 시작',
       highlight: '스마트 물류 로봇과 통합 관제',

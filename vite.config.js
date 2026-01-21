@@ -8,7 +8,7 @@ export default defineConfig({
     proxy: {
       // '/api'로 시작하는 모든 요청을 백엔드로 전달
       '/api/v1': {
-        target: 'https://boasse-backend.onrender.com',
+        target: 'http://localhost:8080',
         changeOrigin: true,
         secure: false,
         // 필요하다면 rewrite를 사용할 수 있지만, 

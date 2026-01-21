@@ -11,7 +11,6 @@ const PartnersSection = () => {
       try {
         const response = await partnerApi.getPartners();
         const res = response.data;
-        console.log('Final Home Partners Check:', res);
 
         let partnerList = [];
         if (res.success && res.data) {
