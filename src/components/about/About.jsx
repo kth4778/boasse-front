@@ -5,7 +5,7 @@ import { useGSAP } from '@gsap/react';
 import { 
   FaBrain, FaIndustry, FaCarSide, FaLeaf, FaArrowRight, 
   FaHandshake, FaBalanceScale, FaUsers, 
-  FaMapMarkerAlt, FaPhoneAlt, FaEnvelope, FaPaw
+  FaMapMarkerAlt, FaPhoneAlt, FaEnvelope, FaBuilding, FaShoePrints
 } from 'react-icons/fa';
 import { BsBuildingGear } from 'react-icons/bs';
 import KakaoMap from './Location/KakaoMap';
@@ -36,60 +36,151 @@ const About = () => {
   const containerRef = useRef(null);
   const aboutTopWrapperRef = useRef(null);
   const missionSectionRef = useRef(null);
+  const portfolioSectionRef = useRef(null);
   const historyRef = useRef(null);
   const navigate = useNavigate();
 
   useGSAP(() => {
-    // 1. Intro Animation
+    // 1. Hero Parallax
+    if (aboutTopWrapperRef.current) {
+      gsap.to('.forest-layer-1', {
+        yPercent: 30, ease: 'none',
+        scrollTrigger: { trigger: aboutTopWrapperRef.current, start: 'top top', end: 'bottom top', scrub: true }
+      });
+      gsap.to('.forest-layer-2', {
+        yPercent: 60, ease: 'none',
+        scrollTrigger: { trigger: aboutTopWrapperRef.current, start: 'top top', end: 'bottom top', scrub: true }
+      });
+      gsap.utils.toArray('.leaf-particle').forEach((leaf, i) => {
+        gsap.to(leaf, {
+          y: (i + 1) * 80, x: (i % 2 === 0 ? 1 : -1) * 40, rotation: 360, opacity: 0,
+          scrollTrigger: { trigger: aboutTopWrapperRef.current, start: 'top top', end: 'bottom 20%', scrub: 1.5 }
+        });
+      });
+    }
+
+    // 2. Mission Parallax
+    if (missionSectionRef.current) {
+      gsap.to('.mission-bg-layer-1', {
+        yPercent: 20, ease: 'none',
+        scrollTrigger: { trigger: missionSectionRef.current, start: 'top bottom', end: 'bottom top', scrub: true }
+      });
+      gsap.to('.mission-bg-layer-2', {
+        yPercent: 40, ease: 'none',
+        scrollTrigger: { trigger: missionSectionRef.current, start: 'top bottom', end: 'bottom top', scrub: true }
+      });
+    }
+
+    // 3. Portfolio Parallax
+    if (portfolioSectionRef.current) {
+      gsap.to('.portfolio-bg-layer-1', {
+        yPercent: 15, ease: 'none',
+        scrollTrigger: { trigger: portfolioSectionRef.current, start: 'top bottom', end: 'bottom top', scrub: true }
+      });
+      gsap.utils.toArray('.side-leaf').forEach((leaf, i) => {
+        const isLeft = i % 2 === 0;
+        gsap.fromTo(leaf, 
+          { x: isLeft ? -100 : 100, y: 0, rotation: 0, opacity: 0.8 },
+          { 
+            x: isLeft ? 100 : -100, y: 300, rotation: isLeft ? 45 : -45, opacity: 0, ease: "power1.inOut",
+            scrollTrigger: { trigger: portfolioSectionRef.current, start: "top center", end: "bottom center", scrub: 1.5 }
+          }
+        );
+      });
+    }
+
+    // 4. History Parallax & 3D Footprint Stomp (EQUAL PACING FIXED)
+    if (historyRef.current) {
+      gsap.to('.history-bg-layer-1', {
+        yPercent: 15, ease: 'none',
+        scrollTrigger: { trigger: historyRef.current, start: 'top bottom', end: 'bottom top', scrub: true }
+      });
+      gsap.to('.history-bg-layer-2', {
+        yPercent: 25, ease: 'none',
+        scrollTrigger: { trigger: historyRef.current, start: 'top bottom', end: 'bottom top', scrub: true }
+      });
+
+      // 발자국 애니메이션: 타임라인으로 균등 배분 (Staggered Timeline)
+      // 초기 상태 설정
+      const footprints = gsap.utils.toArray('.footprint-icon');
+      gsap.set(footprints, { opacity: 0, scale: 3, filter: "blur(12px)" });
+
+      const fpTimeline = gsap.timeline({
+        scrollTrigger: {
+          trigger: historyRef.current,
+          start: "top 60%", // 섹션 상단이 화면 중간보다 조금 아래에 오면 시작
+          end: "bottom 90%", // 섹션이 거의 다 올라갈 때까지
+          scrub: 1, // 스크롤 속도에 맞춰 부드럽게 재생 (1초 지연으로 부드러움 극대화)
+        }
+      });
+
+      // 순차적으로 쿵쿵 찍히도록 설정
+      fpTimeline.to(footprints, {
+        opacity: 0.6,
+        scale: 1,
+        filter: "blur(0px)",
+        stagger: 0.8, // 발자국 간의 간격 (스크롤 길이에 따라 자동 배분됨)
+        duration: 1,  // 각 발자국이 찍히는 시간
+        ease: "power4.in" // 쿵! 하는 타격감 유지
+      });
+
+      // Spores (유지)
+      gsap.utils.toArray('.history-spore').forEach((spore, i) => {
+        gsap.set(spore, { x: gsap.utils.random(-20, 20), opacity: gsap.utils.random(0.3, 0.7), scale: gsap.utils.random(0.5, 1.5) });
+        gsap.to(spore, {
+          y: -400, x: `+=${gsap.utils.random(-50, 50)}`, rotation: gsap.utils.random(-180, 180),
+          opacity: 0, duration: gsap.utils.random(5, 10), repeat: -1, ease: "none", delay: gsap.utils.random(0, 5)
+        });
+      });
+    }
+
+    // Atmosphere Animation
+    ScrollTrigger.create({
+      trigger: missionSectionRef.current, start: "top 60%", end: "bottom 60%",
+      onEnter: () => gsap.to('.about-page', { backgroundColor: '#1a2920', duration: 0.8 }),
+      onLeaveBack: () => gsap.to('.about-page', { backgroundColor: '#f7fdf9', duration: 0.8 })
+    });
+    ScrollTrigger.create({
+      trigger: '.portfolio-section', start: "top 60%", end: "bottom 60%",
+      onEnter: () => gsap.to('.about-page', { backgroundColor: '#dcedc8', duration: 0.8 }),
+      onLeaveBack: () => gsap.to('.about-page', { backgroundColor: '#1a2920', duration: 0.8 })
+    });
+    ScrollTrigger.create({
+      trigger: '.history-section', start: "top 60%", end: "bottom bottom",
+      onEnter: () => gsap.to('.about-page', { backgroundColor: '#d7ccc8', duration: 0.8 }), 
+      onLeaveBack: () => gsap.to('.about-page', { backgroundColor: '#dcedc8', duration: 0.8 })
+    });
+
     gsap.set('.intro-section h1', { y: 50, opacity: 0 });
     gsap.to('.intro-section h1', { y: 0, opacity: 1, duration: 1, ease: "power3.out", stagger: 0.2 });
     gsap.set('.intro-desc', { y: 30, opacity: 0 });
     gsap.to('.intro-desc', { y: 0, opacity: 1, duration: 1, ease: "power3.out", delay: 0.5 });
-
-    // 2. Values & Mission
+    
     gsap.set('.value-item', { scale: 0.8, opacity: 0 });
     gsap.to('.value-item', { scale: 1, opacity: 1, duration: 1, stagger: 0.2, scrollTrigger: { trigger: '.values-section', start: "top 80%" } });
 
     if (missionSectionRef.current) {
       gsap.set('.mission-main-text', { y: 50, opacity: 0 });
-      gsap.to('.mission-main-text', {
-        y: 0, opacity: 1, duration: 1,
-        scrollTrigger: { trigger: missionSectionRef.current, start: "top 70%" }
-      });
+      gsap.to('.mission-main-text', { y: 0, opacity: 1, duration: 1, scrollTrigger: { trigger: missionSectionRef.current, start: "top 70%" } });
     }
 
-    // 3. Portfolio Animation
     gsap.utils.toArray('.portfolio-list li').forEach((li, i) => {
       gsap.set(li, { y: 50, opacity: 0 });
-      gsap.to(li, {
-        y: 0, opacity: 1, duration: 0.8, delay: i * 0.1,
-        scrollTrigger: { trigger: li, start: "top 90%" }
-      });
+      gsap.to(li, { y: 0, opacity: 1, duration: 0.8, delay: i * 0.1, scrollTrigger: { trigger: li, start: "top 90%" } });
     });
 
-    // 4. History Timeline Line Animation
     const timer = setTimeout(() => {
-      const iconCells = gsap.utils.toArray('.t-icon-cell'); // 아이콘 셀 기준
+      const iconCells = gsap.utils.toArray('.t-icon-cell'); 
       if (iconCells.length > 0) {
         const first = iconCells[0];
         const last = iconCells[iconCells.length - 1];
-        
-        // 아이콘 셀의 상단 오프셋 + 내부 패딩(5px) + 아이콘 절반 높이(7px)
         const topOffset = 12; 
         const totalHeight = (last.offsetTop + topOffset) - (first.offsetTop + topOffset);
         
         gsap.set('.history-track-fill', { top: first.offsetTop + topOffset });
-        
         gsap.to('.history-track-fill', {
-          height: totalHeight,
-          ease: 'none',
-          scrollTrigger: {
-            trigger: '.history-timeline',
-            start: "top center", 
-            end: "bottom center",
-            scrub: 0.5,
-            invalidateOnRefresh: true
-          }
+          height: totalHeight, ease: 'none',
+          scrollTrigger: { trigger: '.history-timeline', start: "top center", end: "bottom center", scrub: 0.5, invalidateOnRefresh: true }
         });
       }
       ScrollTrigger.refresh();
@@ -137,110 +228,77 @@ const About = () => {
 
       {/* 2. Mission */}
       <section className="about-section mission-section-static" ref={missionSectionRef}>
-        {/* Mission 전용 장식: 은은한 반딧불이 */}
+        <div className="bg-layer mission-bg-layer-1"></div>
+        <div className="bg-layer mission-bg-layer-2"></div>
         <div className="section-deco-container">
-          {[...Array(5)].map((_, i) => <div key={i} className={`local-firefly lf-${i}`}></div>)}
+          {[...Array(8)].map((_, i) => <div key={i} className={`local-firefly lf-${i}`}></div>)}
         </div>
-
         <div className="section-content">
           <div className="mission-grid">
-            <div className="mission-title-col">
-              <h2>Mission</h2>
-            </div>
+            <div className="mission-title-col"><h2>Mission</h2></div>
             <div className="mission-desc-col">
-              <p className="mission-main-text">
-                하드웨어 제조 기술과 <span className="text-highlight">ICT 기술을 융합</span>해<br />
-                수시로 변하는 다양한 산업의 요구를 해결하며,<br />
-                <span className="text-highlight">효율성을 높이는 지능형 기업</span>입니다.
-              </p>
-              <p className="mission-sub-text">
-                우리는 단순히 소프트웨어를 개발하는 것을 넘어, 하드웨어와 소프트웨어의 완벽한 결합을 통해 실질적인 문제를 해결합니다. 
-                스마트 팩토리부터 디지털 트윈, 모빌리티 관제까지, BOAS-SE의 기술은 산업 현장 곳곳에서 새로운 가치를 창출하고 있습니다.
-              </p>
+              <p className="mission-main-text">하드웨어 제조 기술과 <span className="text-highlight">ICT 기술을 융합</span>해<br />수시로 변하는 다양한 산업의 요구를 해결하며,<br /><span className="text-highlight">효율성을 높이는 지능형 기업</span>입니다.</p>
+              <p className="mission-sub-text">우리는 단순히 소프트웨어를 개발하는 것을 넘어, 하드웨어와 소프트웨어의 완벽한 결합을 통해 실질적인 문제를 해결합니다. 스마트 팩토리부터 디지털 트윈, 모빌리티 관제까지, BOAS-SE의 기술은 산업 현장 곳곳에서 새로운 가치를 창출하고 있습니다.</p>
             </div>
           </div>
         </div>
       </section>
 
       {/* 3. Portfolio */}
-      <section className="about-section portfolio-section">
-        {/* Portfolio 전용 장식: 살랑거리는 나뭇잎 */}
-        <div className="section-deco-container">
-          <div className="local-leaf leaf-1">🌿</div>
-          <div className="local-leaf leaf-2">🍃</div>
-          <div className="local-leaf leaf-3">🌱</div>
+      <section className="about-section portfolio-section" ref={portfolioSectionRef}>
+        <div className="bg-layer portfolio-bg-layer-1"></div>
+        <div className="bg-layer portfolio-bg-layer-2"></div>
+        <div className="portfolio-leaves-container">
+          {[...Array(6)].map((_, i) => (
+            <div key={i} className={`side-leaf side-leaf-${i} ${i % 2 === 0 ? 'left-leaf' : 'right-leaf'}`}></div>
+          ))}
         </div>
-
         <div className="section-content">
           <div className="portfolio-container">
             <h2 className="portfolio-title">BOAS-SE 만의<br />포트폴리오</h2>
             <ul className="portfolio-list">
-              <li>
-                <div className="portfolio-card">
-                  <div className="portfolio-icon-wrapper"><FaBrain /></div>
-                  <div className="portfolio-item-content"><h3>AI 기반 예측 및 최적화</h3><p>빅데이터 분석과 머신러닝을 통해<br/>비즈니스 효율성을 극대화합니다.</p></div>
-                </div>
-              </li>
-              <li>
-                <div className="portfolio-card">
-                  <div className="portfolio-icon-wrapper"><FaIndustry /></div>
-                  <div className="portfolio-item-content"><h3>스마트 팩토리 & DT</h3><p>IoT 센서와 MES를 연동하여<br/>생산 현장을 실시간 시각화합니다.</p></div>
-                </div>
-              </li>
-              <li>
-                <div className="portfolio-card">
-                  <div className="portfolio-icon-wrapper"><FaCarSide /></div>
-                  <div className="portfolio-item-content"><h3>스마트 모빌리티 관제</h3><p>차량 운행 데이터를 정밀 분석하여<br/>교통 안전 솔루션을 제시합니다.</p></div>
-                </div>
-              </li>
-              <li>
-                <div className="portfolio-card">
-                  <div className="portfolio-icon-wrapper"><BsBuildingGear /></div>
-                  <div className="portfolio-item-content"><h3>스마트 빌딩 & 안전 진단</h3><p>3D 비전 기술로 시설물의 이상 징후를<br/>조기에 감지하고 예방합니다.</p></div>
-                </div>
-              </li>
-              <li>
-                <div className="portfolio-card">
-                  <div className="portfolio-icon-wrapper"><FaLeaf /></div>
-                  <div className="portfolio-item-content"><h3>스마트 팜 & 농업 데이터</h3><p>데이터 기반의 정밀 농업을 실현하여<br/>농가의 생산성을 획기적으로 높입니다.</p></div>
-                </div>
-              </li>
+              <li><div className="portfolio-card"><div className="portfolio-icon-wrapper"><FaBrain /></div><div className="portfolio-item-content"><h3>AI 기반 예측 및 최적화</h3><p>빅데이터 분석과 머신러닝을 통해<br/>비즈니스 효율성을 극대화합니다.</p></div></div></li>
+              <li><div className="portfolio-card"><div className="portfolio-icon-wrapper"><FaIndustry /></div><div className="portfolio-item-content"><h3>스마트 팩토리 & DT</h3><p>IoT 센서와 MES를 연동하여<br/>생산 현장을 실시간 시각화합니다.</p></div></div></li>
+              <li><div className="portfolio-card"><div className="portfolio-icon-wrapper"><FaCarSide /></div><div className="portfolio-item-content"><h3>스마트 모빌리티 관제</h3><p>차량 운행 데이터를 정밀 분석하여<br/>교통 안전 솔루션을 제시합니다.</p></div></div></li>
+              <li><div className="portfolio-card"><div className="portfolio-icon-wrapper"><BsBuildingGear /></div><div className="portfolio-item-content"><h3>스마트 빌딩 & 안전 진단</h3><p>3D 비전 기술로 시설물의 이상 징후를<br/>조기에 감지하고 예방합니다.</p></div></div></li>
+              <li><div className="portfolio-card"><div className="portfolio-icon-wrapper"><FaLeaf /></div><div className="portfolio-item-content"><h3>스마트 팜 & 농업 데이터</h3><p>데이터 기반의 정밀 농업을 실현하여<br/>농가의 생산성을 획기적으로 높입니다.</p></div></div></li>
             </ul>
           </div>
         </div>
       </section>
 
-      {/* 4. History Section (New Grid) */}
+      {/* 4. History */}
       <section className="about-section history-section" ref={historyRef}>
-        <div className="history-bg-pattern"></div>
-
+        <div className="bg-layer history-bg-layer-1"></div>
+        <div className="bg-layer history-bg-layer-2"></div>
+        <div className="history-living-bg">
+          {[...Array(15)].map((_, i) => <div key={i} className="history-spore" style={{left: `${Math.random() * 100}%`, bottom: `-${Math.random() * 20}%`}}></div>)}
+        </div>
+        
+        <div className="history-footprints-container">
+          {[...Array(10)].map((_, i) => (
+            <FaShoePrints 
+              key={i} 
+              className="footprint-icon" 
+              style={{
+                top: `${8 + i * 10}%`, 
+                left: i % 2 === 0 ? '60px' : '140px', 
+                transform: `rotate(${i % 2 === 0 ? -25 : 25}deg)`
+              }} 
+            />
+          ))}
+        </div>
+        
         <div className="section-content history-flex-container">
-          <div className="history-title-column">
-            <h2>BOAS-SE가<br />걸어온 길</h2>
-          </div>
+          <div className="history-title-column"><h2>BOAS-SE가<br />걸어온 길</h2></div>
           <div className="history-timeline-column">
             <div className="history-timeline">
-              {/* 중앙 선 */}
-              <div className="history-track-bg">
-                <div className="history-track-fill"></div>
-              </div>
-
+              <div className="history-track-bg"><div className="history-track-fill"></div></div>
               {HISTORY_DATA.map((item, index) => (
                 <div key={index} className={`timeline-row ${index % 2 === 0 ? 'row-right-content' : 'row-left-content'}`}>
-                  {/* 연도 (Year) */}
-                  <div className="t-year-col">
-                    <span className="t-year">{item.year}</span>
-                  </div>
-
-                  {/* 중앙 아이콘 (Icon) */}
-                  <div className="t-icon-cell">
-                    <div className="t-icon"></div>
-                  </div>
-
-                  {/* 내용 (Content) */}
-                  <div className="t-content-col">
-                    {item.content.map((text, i) => <p key={i}>{text}</p>)}
-                  </div>
+                  <div className="t-year-col"><span className="t-year">{item.year}</span></div>
+                  <div className="t-icon-cell"><div className="t-icon"></div></div>
+                  <div className="t-content-col">{item.content.map((text, i) => <p key={i}>{text}</p>)}</div>
                 </div>
               ))}
             </div>
@@ -255,7 +313,8 @@ const About = () => {
             <KakaoMap />
             <div className="location-info-card">
               <h3>오시는 길</h3>
-              <div className="location-detail"><FaMapMarkerAlt className="text-primary-custom" /><span>충북 청주시 흥덕구 오송읍 오송생명로 194, 2층</span></div>
+              <div className="location-group mb-3"><div className="location-detail" style={{alignItems:'flex-start'}}><FaBuilding className="text-primary-custom mt-1 flex-shrink-0" /><div><strong style={{display:'block', marginBottom:'2px', color:'#1e2f23'}}>사무실 (본사)</strong><span style={{fontSize:'0.9rem'}}>충북 청주시 흥덕구 오송읍<br/>오송생명로 194, 7층 702호</span></div></div></div>
+              <div className="location-group mb-4"><div className="location-detail" style={{alignItems:'flex-start'}}><FaIndustry className="text-primary-custom mt-1 flex-shrink-0" /><div><strong style={{display:'block', marginBottom:'2px', color:'#1e2f23'}}>공장</strong><span style={{fontSize:'0.9rem'}}>충북 청주시 흥덕구 월명로<br/>55번길 31</span></div></div></div>
               <div className="location-detail"><FaPhoneAlt className="text-primary-custom" /><span>043-123-4567</span></div>
               <div className="location-detail"><FaEnvelope className="text-primary-custom" /><span>contact@boasse.com</span></div>
             </div>
@@ -267,9 +326,7 @@ const About = () => {
         <div className="section-content">
           <div className="cta-container">
             <h2 className="cta-title">새로운 혁신을 시작할 준비가 되셨나요?</h2>
-            <button className="cta-button" onClick={() => navigate('/contact')}>
-              프로젝트 문의하기 <FaArrowRight className="cta-icon" />
-            </button>
+            <button className="cta-button" onClick={() => navigate('/contact')}>프로젝트 문의하기 <FaArrowRight className="cta-icon" /></button>
           </div>
         </div>
       </section>
