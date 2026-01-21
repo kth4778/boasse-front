@@ -254,7 +254,7 @@ const ProductDetail = () => {
           <div className="pd-content">
             <h2 className="pd-title" style={{ fontSize: '3.5rem' }}>Ready to Innovate?</h2>
             <p className="pd-desc" style={{ marginBottom: '3rem' }}>
-              보아스소프트의 첨단 기술로 당신의 비즈니스를 혁신하세요.
+              보아스에스이의 첨단 기술로 당신의 비즈니스를 혁신하세요.
             </p>
             <div className="pd-btn-group">
               <button onClick={() => navigate(-1)} className="pd-btn-back">

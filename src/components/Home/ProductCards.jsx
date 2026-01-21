@@ -57,7 +57,7 @@ const ProductCards = () => {
         borderRadius: '100px'
       });
 
-      // 1. 흰색 박스 확장 및 축소 (Timeline)
+      // 1. 흰색 박스 확장 및 축소 (Timeline) - 복구됨
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: sectionRef.current,
@@ -68,7 +68,6 @@ const ProductCards = () => {
         }
       });
 
-      // 가로 75% -> 88%, 세로 패딩 미세 조정
       tl.to(wrapperRef.current, {
         width: '88%',            
         paddingTop: '100px',
@@ -86,37 +85,29 @@ const ProductCards = () => {
         ease: 'power2.inOut'
       });
 
-      // 2. 검은색 카드 고정 (Pinning) - 동적 높이 계산
-      ScrollTrigger.create({
-        trigger: rightGridRef.current, 
-        start: 'top top+=150',
-        // 오른쪽 그리드 높이 - 왼쪽 카드 높이만큼만 스크롤 (정확히 끝에서 멈춤)
-        end: () => `+=${rightGridRef.current.offsetHeight - leftCardRef.current.offsetHeight}`, 
-        pin: leftCardRef.current,
-        pinSpacing: false,
-        anticipatePin: 1,
-        invalidateOnRefresh: true // 리사이즈 시 재계산
-      });
+      // 2. 검은색 카드 고정 (Manual Sticky via Translation)
+      const getDist = () => {
+        const rightH = rightGridRef.current?.offsetHeight || 0;
+        const leftH = leftCardRef.current?.offsetHeight || 0;
+        return rightH - leftH;
+      };
 
-      // 3. 오른쪽 카드 순차 등장
-      const items = gsap.utils.toArray('.masonry-item');
-      if (items.length > 0) {
-        gsap.fromTo(items,
-          { y: 100, opacity: 0 },
-          {
-            y: 0,
-            opacity: 1,
-            duration: 0.8,
-            stagger: 0.1,
-            ease: 'power3.out',
-            scrollTrigger: {
-              trigger: rightGridRef.current,
-              start: 'top 85%',
-              toggleActions: 'play none none reverse'
-            }
+      if (getDist() > 0) {
+        gsap.to(leftCardRef.current, {
+          y: getDist, 
+          ease: "none", 
+          scrollTrigger: {
+            trigger: rightGridRef.current,
+            start: "top top+=150", 
+            end: () => `+=${getDist()}`, 
+            scrub: 0, 
+            invalidateOnRefresh: true, 
           }
-        );
+        });
       }
+
+      // 3. 오른쪽 카드 순차 등장 애니메이션은 떨림 방지를 위해 제거 상태 유지
+      gsap.set('.masonry-item', { opacity: 1, y: 0 });
     });
 
     return () => {
@@ -136,7 +127,7 @@ const ProductCards = () => {
         <div className="pc-container">
           <div className="pc-grid">
             {/* Left: Sticky Card Area */}
-            <div className="pc-left" style={{ height: '100%' }}> 
+            <div className="pc-left"> 
               {/* Pinning 대상 */}
               <div className="title-card" ref={leftCardRef}>
                 <h2 className="title-card-head">OUR<br />PRODUCTS</h2>

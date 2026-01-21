@@ -17,16 +17,17 @@ const InfoSection = () => {
       category: 'Smart Farm',
       title: '스마트 팜 솔루션',
       desc: '빅데이터와 AI 기반의 정밀 제어 시스템으로 최적의 생육 환경을 제공합니다. 생산성을 극대화하고 노동력을 절감하는 미래형 농업 기술입니다.',
-      // 수직 농장(Vertical Farm) 이미지로 첨단 기술 느낌 강조
-      image: 'https://images.unsplash.com/photo-1574943320219-553eb213f72d?auto=format&w=1200&q=80',
+      // 수직 농장(Vertical Farm) 이미지로 첨단 기술 느낌 강조 (인물 없음)
+      image: '/images/smartFarm.jpg',
       link: '/business'
     },
     {
       id: 2,
-      category: 'Auto Control',
-      title: '원격 제어 시스템',
-      desc: '언제 어디서나 스마트폰과 PC를 통해 농장 설비를 원격으로 제어할 수 있습니다. 천창 개폐, 관수, 냉난방 등을 자동화하여 노동력을 절감하고 최적의 생육 환경을 유지합니다.',
-      image: 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&w=1200&q=80',
+      category: 'Smart Factory',
+      title: '스마트 팩토리',
+      desc: '제조 현장의 데이터를 실시간으로 수집하고 분석하여 공정을 최적화합니다. 예지 보전과 품질 관리 자동화로 생산 효율을 혁신합니다.',
+      // 자동화 로봇 팔 이미지 (전문성, 기술력)
+      image: '/images/smartFactory.jpg',
       link: '/business'
     },
     {
@@ -34,8 +35,8 @@ const InfoSection = () => {
       category: 'Smart Mobility',
       title: '스마트 모빌리티',
       desc: '자율주행 물류 로봇과 통합 관제 시스템으로 물류의 흐름을 혁신합니다. 안전하고 효율적인 이동을 위한 최첨단 모빌리티 솔루션입니다.',
-      // 실제 자율주행 로봇 이미지
-      image: 'https://images.unsplash.com/photo-1519681393798-38e43269d877?auto=format&w=1200&q=80',
+      // 자율주행 AGV 로봇 이미지
+      image: '/images/smartMobility.jpg',
       link: '/business'
     },
     {
@@ -43,8 +44,8 @@ const InfoSection = () => {
       category: 'Smart Building',
       title: '스마트 빌딩 에너지',
       desc: '건물의 에너지 사용 패턴을 AI가 학습하여 최적의 제어를 수행합니다. 에너지 비용을 획기적으로 절감하고 쾌적한 공간 환경을 조성합니다.',
-      // 웅장한 현대식 빌딩 이미지
-      image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&w=1200&q=80',
+      // 현대식 빌딩 복도 이미지
+      image: '/images/smartBuilding.jpg',
       link: '/business'
     }
   ];

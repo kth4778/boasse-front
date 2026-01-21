@@ -4,523 +4,468 @@
 .about-page {
   font-family: 'Pretendard', sans-serif;
   color: #333;
-  background-color: #ffffff;
+  background-color: #f7fdf9; 
   width: 100%;
   overflow-x: hidden;
   position: relative;
+  transition: background-color 0.8s ease;
 }
 
 .about-section {
-  padding: 2rem 0;
+  padding: 6rem 0;
   position: relative;
-  z-index: 2;
-  background-color: #ffffff;
   width: 100%;
-  overflow-x: hidden;
+  overflow: hidden; 
 }
 
 .section-content {
   max-width: 1280px; 
   width: 100%;
   margin: 0 auto;
-  padding: 0 1rem;
+  padding: 0 2rem;
+  position: relative;
+  z-index: 10;
 }
 
 .about-section h2 {
-  font-size: var(--font-size-md);
-  font-weight: 700;
-  margin-bottom: 3rem;
-  color: #2c3e50;
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin-bottom: 4rem;
+  color: #1e2f23;
+  letter-spacing: -0.02em;
 }
 
-.about-section p {
-  font-weight: 400;
-  line-height: 1.6;
-}
-
-/* --- Background Color Scheme --- */
-.portfolio-section, .location-section, .history-section {
-  background-color: #ffffff;
-}
-
-.intro-section, .values-section {
-  background-color: transparent;
+/* --- Common Background Layer Style --- */
+.bg-layer {
+  position: absolute;
+  left: 0; width: 100%; height: 120%; 
+  pointer-events: none;
+  background-size: cover;
+  will-change: transform;
+  z-index: 0;
 }
 
 /* --- Top Wrapper with Forest Background --- */
 .about-top-wrapper {
   position: relative;
   width: 100%;
-  overflow: hidden;
+  padding-bottom: 4rem;
+  z-index: 10; 
+  overflow: hidden; 
 }
 
-/* --- Forest Background Styles --- */
 .forest-bg {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  top: 0; left: 0; width: 100%; height: 100%;
   pointer-events: none;
-  z-index: 0;
+  z-index: -1;
 }
 
 .forest-layer {
   position: absolute;
-  bottom: -10%;
-  left: -10%;
-  width: 120%;
-  height: 60%;
-  background-size: cover;
-  background-position: bottom;
-  opacity: 0.15;
+  left: 0; width: 100%; height: 100%;
+  background-size: cover; 
+  transition: transform 0.1s linear;
 }
 
 .forest-layer-1 {
-  background: linear-gradient(to top, #1e2f23 0%, transparent 100%);
-  clip-path: polygon(0% 100%, 15% 70%, 35% 85%, 55% 65%, 75% 80%, 100% 100%);
+  background: linear-gradient(to top, rgba(74, 124, 89, 0.25) 0%, transparent 70%);
+  clip-path: ellipse(150% 100% at 50% 100%);
   z-index: 1;
+  bottom: -15%; 
 }
 
 .forest-layer-2 {
-  background: linear-gradient(to top, #2e4a36 0%, transparent 100%);
-  clip-path: polygon(0% 100%, 20% 80%, 40% 90%, 60% 75%, 85% 95%, 100% 100%);
+  background: linear-gradient(to top, rgba(46, 74, 54, 0.5) 0%, transparent 60%);
+  clip-path: ellipse(120% 85% at 20% 100%);
   z-index: 2;
-  bottom: -15%;
+  bottom: -5%;
 }
 
 .forest-light-rays {
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 100%;
-  height: 100%;
-  background: radial-gradient(circle at 80% 0%, rgba(255, 255, 255, 0.4) 0%, transparent 60%);
+  position: absolute; top: 0; right: 0; width: 100%; height: 100%;
+  background: radial-gradient(circle at 80% 0%, rgba(140, 198, 63, 0.15) 0%, transparent 60%);
   z-index: 3;
 }
 
-/* --- Leaf Particles Styles --- */
 .leaf-particle {
-  position: absolute;
-  width: 20px;
-  height: 20px;
-  background: var(--primary-color);
-  border-radius: 50% 0 50% 0;
-  opacity: 0.3;
-  z-index: 4;
+  position: absolute; width: 15px; height: 15px;
+  background: #8CC63F; border-radius: 0 50% 0 50%;
+  opacity: 0.6; z-index: 4;
 }
-
-.leaf-1 { top: 20%; left: 10%; width: 15px; height: 15px; }
-.leaf-2 { top: 10%; left: 40%; width: 25px; height: 25px; transform: rotate(45deg); }
-.leaf-3 { top: 30%; right: 15%; width: 20px; height: 20px; }
-.leaf-4 { bottom: 20%; left: 20%; }
-.leaf-5 { bottom: 10%; right: 30%; width: 12px; height: 12px; }
-.leaf-6 { top: 60%; left: 5%; }
-.leaf-7 { top: 40%; right: 5%; }
-.leaf-8 { bottom: 40%; left: 45%; }
-.leaf-9 { top: 5%; right: 40%; }
-.leaf-10 { bottom: 5%; left: 80%; }
-
 
 /* --- 1. Intro Section --- */
-.intro-section .section-content {
-  text-align: left;
-}
-.intro-section h1 {
-  font-size: var(--font-size-lg);
-  font-weight: 800;
-  color: var(--primary-color);
-  margin-bottom: 3rem;
-}
-.intro-section p {
-  font-size: var(--font-size-sm);
-  color: #555;
-  max-width: 1000px;
-  line-height: 2;
-}
+.intro-section { padding-top: 12rem; padding-bottom: 6rem; }
+.intro-section .section-content { text-align: center; }
+.intro-section h1 { font-size: 4.5rem; font-weight: 900; color: #1e2f23; margin: 0; line-height: 1.1; }
+.intro-section h1 .highlight { color: var(--primary-color); display: inline-block; }
+.intro-desc { font-size: 1.35rem; color: #444; max-width: 800px; margin: 0 auto; line-height: 1.8; font-weight: 500; }
 
 /* --- 2. Values Section --- */
-.values-section {
-  padding-bottom: 5rem;
-}
-.values-section .section-content {
-  text-align: center;
-}
-.values-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 2rem;
-  /* 모바일 대응: flex-wrap 대신 스케일링으로 처리 고려 */
-}
-.value-item { position: relative; }
-.value-item:nth-of-type(1) { margin-right: -30px; z-index: 0; }
-.value-item:nth-of-type(5) { margin-left: -30px; z-index: 1; }
-.value-item .circle {
-  width: 360px;
-  height: 360px;
-  border-radius: 50%;
-  border: 3px solid #333;
-  color: var(--primary-color);
-  font-size: var(--font-size-lg);
-  font-weight: 800;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(5px);
+.values-section { padding-bottom: 12rem; position: relative; overflow: visible; }
+.values-container { display: flex; justify-content: center; align-items: center; margin-top: 5rem; position: relative; height: 400px; }
+
+.value-item {
+  position: absolute; width: 360px; height: 360px;
+  display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;
+  backdrop-filter: blur(15px);
+  box-shadow: 0 20px 50px rgba(30, 47, 35, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  /* Hover 시 부드러운 전환을 위한 transition */
+  transition: z-index 0s, filter 0.3s ease, transform 0.3s ease; 
 }
 
+/* Hover Effect: 최상단으로 올리기 */
+.value-item:hover {
+  z-index: 100 !important;
+  animation-play-state: paused; /* 애니메이션 일시 정지하여 위치 고정 */
+  filter: brightness(1.05) drop-shadow(0 15px 30px rgba(0,0,0,0.15));
+  cursor: pointer;
+}
 
-/* --- 3. Mission Section (Static Style - Updated) --- */
+.value-item:nth-child(1) { 
+  left: 50%; transform: translateX(-130%); z-index: 2; 
+  background-color: rgba(197, 225, 165, 0.5); 
+  animation: morphAndFloat1 8s ease-in-out infinite; 
+}
+.value-item:nth-child(2) { 
+  left: 50%; transform: translateX(-50%); z-index: 3; margin-top: -40px; 
+  background-color: rgba(140, 198, 63, 0.45); 
+  animation: morphAndFloat2 10s ease-in-out infinite 0.5s; 
+}
+.value-item:nth-child(3) { 
+  left: 50%; transform: translateX(30%); z-index: 1; 
+  background-color: rgba(76, 175, 80, 0.35); 
+  animation: morphAndFloat3 9s ease-in-out infinite 1s; 
+}
+
+@keyframes morphAndFloat1 { 
+  0%, 100% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; transform: translateX(-130%) translateY(0); } 
+  50% { border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%; transform: translateX(-130%) translateY(-25px); } 
+}
+@keyframes morphAndFloat2 { 
+  0%, 100% { border-radius: 40% 60% 50% 50% / 50% 50% 60% 40%; transform: translateX(-50%) translateY(0); } 
+  50% { border-radius: 60% 40% 40% 60% / 40% 60% 50% 50%; transform: translateX(-50%) translateY(25px); } 
+}
+@keyframes morphAndFloat3 { 
+  0%, 100% { border-radius: 50% 50% 30% 70% / 50% 60% 40% 50%; transform: translateX(30%) translateY(0); } 
+  50% { border-radius: 70% 30% 60% 40% / 40% 40% 70% 60%; transform: translateX(30%) translateY(-20px); } 
+}
+
+.value-icon { font-size: 3.5rem; color: #1e2f23; margin-bottom: 1rem; filter: drop-shadow(0 2px 4px rgba(255,255,255,0.3)); }
+.value-text { font-size: 1.8rem; font-weight: 800; color: #1e2f23; }
+.value-sub { font-size: 1rem; color: #2e4a36; font-weight: 700; margin-top: 0.5rem; }
+
+
+/* --- 3. Mission Section (Deep Forest Parallax) --- */
 .mission-section-static {
-  background-color: #111;
+  background: radial-gradient(circle at 50% 30%, #2e4a36 0%, #1a2920 100%);
   color: #fff;
-  padding: 10rem 0;
+  padding: 12rem 0 12rem 0;
+  position: relative;
+  margin-top: -80px;
+  z-index: 5;
+  filter: drop-shadow(0 -20px 30px rgba(0,0,0,0.3));
+  clip-path: polygon(0 80px, 100% 0, 100% 100%, 0 100%);
 }
 
-.mission-grid {
-  display: flex;
-  gap: 4rem;
-  align-items: flex-start;
-  flex-wrap: nowrap; /* 화면이 줄어도 2단 유지 시도 */
+.mission-bg-layer-1 {
+  bottom: -20%;
+  background: linear-gradient(to top, #101c15 0%, transparent 80%);
+  clip-path: polygon(0% 100%, 20% 60%, 40% 90%, 60% 50%, 80% 80%, 100% 40%, 100% 100%);
+  opacity: 0.4;
+  z-index: 1;
 }
 
-.mission-title-col {
-  flex: 0 0 30%;
-  min-width: 250px; /* 최소 너비 확보 */
+.mission-bg-layer-2 {
+  bottom: -40%;
+  background: linear-gradient(to top, #0b140e 0%, transparent 60%);
+  clip-path: ellipse(130% 70% at 30% 100%);
+  opacity: 0.6;
+  z-index: 2;
 }
 
-.mission-title-col h2 {
-  color: #fff;
-  font-size: 3rem;
-  margin: 0;
-  position: sticky;
-  top: 140px;
-  line-height: 1;
+.section-deco-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 3; }
+.local-firefly {
+  position: absolute; width: 6px; height: 6px; 
+  background-color: #ccff66;
+  border-radius: 50%;
+  box-shadow: 0 0 15px 4px rgba(204, 255, 102, 0.8); 
+  opacity: 0;
+  animation: fireflyBlink 4s ease-in-out infinite alternate;
 }
+@keyframes fireflyBlink { 0% { opacity: 0.2; transform: scale(0.8); } 100% { opacity: 1; transform: scale(1.2); } }
 
-.mission-desc-col {
-  flex: 1;
-  padding-top: 0.5rem;
-}
+.lf-0 { top: 30%; left: 20%; animation-delay: 0s; }
+.lf-1 { top: 60%; left: 80%; animation-delay: 1.5s; }
+.lf-2 { top: 80%; left: 40%; animation-delay: 3s; }
+.lf-3 { top: 40%; left: 60%; animation-delay: 0.5s; }
+.lf-4 { top: 20%; left: 90%; animation-delay: 2s; }
+.lf-5 { top: 70%; left: 10%; animation-delay: 1s; }
+.lf-6 { top: 50%; left: 50%; animation-delay: 2.5s; }
+.lf-7 { top: 90%; left: 70%; animation-delay: 0.2s; }
 
-.mission-main-text {
-  font-size: 2.4rem;
-  font-weight: 700;
-  line-height: 1.5;
-  margin-bottom: 3rem;
-  word-break: keep-all;
-  color: #fff;
-}
-
-.mission-sub-text {
-  font-size: 1.2rem;
-  color: #aaa;
-  line-height: 1.8;
-  max-width: 800px;
-  font-weight: 400;
-}
-
-.text-highlight {
-  color: var(--primary-color);
-}
+.mission-grid { display: flex; gap: 6rem; align-items: flex-start; position: relative; z-index: 10; }
+.mission-title-col { flex: 0 0 25%; }
+.mission-title-col h2 { color: #fff; font-size: 4rem; line-height: 1; }
+.mission-desc-col { flex: 1; }
+.mission-main-text { font-size: 2.2rem; margin-bottom: 2rem; color: #f1f8f3; }
+.mission-sub-text { font-size: 1.15rem; color: rgba(255, 255, 255, 0.7); max-width: 800px; }
 
 
-/* --- 4. Portfolio Section --- */
+/* --- 4. Portfolio Section (Fresh Forest Parallax) --- */
 .portfolio-section {
-  padding-top: 10rem;
+  background-color: #dcedc8;
+  background-image: linear-gradient(135deg, #dcedc8 0%, #e8f5e9 100%);
+  position: relative;
+  z-index: 6; 
+  margin-top: -100px; 
+  padding-top: 180px; 
+  padding-bottom: 10rem;
+  filter: drop-shadow(0 -20px 40px rgba(0,0,0,0.15));
+  clip-path: polygon(0 0, 100% 100px, 100% 90%, 0 100%);
 }
 
-.portfolio-container {
-  display: flex;
-  gap: 4rem;
-  align-items: flex-start;
-  flex-wrap: nowrap; /* 2단 구조 유지 */
+.portfolio-bg-layer-1 {
+  bottom: -10%;
+  background: radial-gradient(ellipse at 80% 100%, rgba(174, 213, 129, 0.4) 0%, transparent 60%);
+  z-index: 1;
 }
 
-.portfolio-title {
-  flex: 0 0 30%;
-  min-width: 250px; /* 최소 너비 확보 */
-  font-size: var(--font-size-lg);
-  font-weight: 800;
-  line-height: 1.3;
-  position: sticky;
-  top: 140px;
-  
-  /* [수정] 우측 리스트 아이템의 첫 번째 줄과 시각적 높이 맞춤 */
-  margin-top: 0; 
-  padding-top: 5px; /* 아이콘/제목 위치 미세 조정 */
+.portfolio-bg-layer-2 {
+  bottom: -20%;
+  background: radial-gradient(ellipse at 20% 100%, rgba(139, 195, 74, 0.3) 0%, transparent 50%);
+  z-index: 2;
 }
 
-.portfolio-list {
-  flex: 1;
-  list-style: none;
-  padding: 0;
-  margin: 0;
+.portfolio-leaves-container {
+  position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+  pointer-events: none; z-index: 3; overflow: hidden;
 }
-
-.portfolio-list li {
-  display: flex;
-  align-items: flex-start;
-  gap: 2rem;
-  padding-bottom: 3rem;
-  margin-bottom: 3rem;
-  border-bottom: 1px solid #e9ecef;
+.side-leaf {
+  position: absolute;
+  width: 50px; height: 50px; 
+  background: #8BC34A;
+  border-radius: 5% 50% 5% 50%;
+  opacity: 0.9; 
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
 }
+.side-leaf-0 { top: 15%; left: 2%; width: 60px; height: 60px; background: #689F38; }
+.side-leaf-1 { top: 25%; right: 2%; width: 40px; height: 40px; background: #9CCC65; }
+.side-leaf-2 { top: 45%; left: 5%; width: 55px; height: 55px; background: #558B2F; }
+.side-leaf-3 { top: 55%; right: 5%; width: 45px; height: 45px; background: #AED581; }
+.side-leaf-4 { top: 75%; left: 3%; width: 50px; height: 50px; background: #7CB342; }
+.side-leaf-5 { top: 8%; right: 4%; width: 65px; height: 65px; background: #8BC34A; }
 
-/* 첫 번째 리스트 아이템의 상단 여백 제거하여 타이틀과 높이 맞춤 */
-.portfolio-list li:first-child {
-  padding-top: 0;
+.portfolio-title { color: #2e4a36 !important; text-align: center; margin-bottom: 4rem !important; position: relative; z-index: 10; }
+.portfolio-container { max-width: 1200px; margin: 0 auto; position: relative; z-index: 10; }
+.portfolio-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; list-style: none; padding: 0; }
+.portfolio-card {
+  background-color: rgba(255, 255, 255, 0.7); backdrop-filter: blur(5px);
+  padding: 2.5rem 2rem; border-radius: 20px;
+  box-shadow: 0 10px 25px rgba(46, 74, 54, 0.05); border: 1px solid rgba(255,255,255,0.6);
+  display: flex; flex-direction: column; align-items: center; text-align: center;
+  transition: transform 0.3s ease;
 }
-
-.portfolio-list li:last-child {
-  border-bottom: none;
-  margin-bottom: 0;
-}
-
+.portfolio-card:hover { transform: translateY(-10px); background-color: #fff; }
 .portfolio-icon-wrapper {
-  width: 56px;
-  flex-shrink: 0;
-  /* margin-top: 5px; 제거 또는 조정하여 텍스트와 정렬 맞춤 */
-  margin-top: 0; 
-  font-size: 48px;
-  color: var(--primary-color);
-  display: flex;
-  justify-content: center;
-  align-items: flex-start; /* 아이콘 상단 정렬 */
-  line-height: 1; /* 아이콘 높이 영향 최소화 */
-}
-
-.portfolio-item-content {
-  /* 추가적인 정렬 보정 */
-}
-
-.portfolio-item-content h3 {
-  margin: 0 0 0.75rem 0;
-  font-size: var(--font-size-md);
-  font-weight: 700;
-  line-height: 1.2; /* 제목 라인 높이 조정 */
-}
-
-.portfolio-item-content p {
-  margin: 0;
-  color: #555;
-  font-size: var(--font-size-sm);
-  line-height: 1.6;
-  word-break: keep-all;
+  width: 80px; height: 80px; border-radius: 50%;
+  background: #fff; display: flex; justify-content: center; align-items: center;
+  font-size: 2.5rem; color: #558b2f; margin-bottom: 1.5rem;
 }
 
 
-/* --- 5. History Section --- */
-.history-section {
-  background-color: #f9f9f9;
-}
-.history-section .section-content {
-  text-align: left;
-  margin-top: 5rem;
-  margin-bottom: 5rem;
-}
-
-.history-flex-container { 
-  display: flex; 
-  gap: 4rem; 
-  flex-wrap: nowrap; /* 2단 유지 */
-}
-
-.history-title-column { 
-  flex: 0 0 30%; 
-  min-width: 250px;
-}
-
-.history-title-column h2 {
-  font-size: var(--font-size-md);
-  font-weight: 700;
-  line-height: 1.3;
-  position: sticky;
-  top: 140px;
-}
-
-.history-timeline-column { flex: 1; }
-.history-timeline {
+/* --- 5. History Section (Enhanced Earth Concept) --- */
+.history-section { 
+  background-color: #d7ccc8; /* 차분한 미디엄 베이지 */
   position: relative;
-  max-width: 830px;
-  margin: 3rem auto 0;
-  padding: 2rem 0;
+  z-index: 4; 
+  margin-top: -150px; 
+  padding-top: 300px; 
+  padding-bottom: 6rem;
+  filter: drop-shadow(0 -10px 30px rgba(0,0,0,0.08));
+  clip-path: polygon(0 150px, 100% 0, 100% 100%, 0 100%); 
+  overflow: hidden; 
 }
-.history-timeline::before {
+
+.history-section::before {
+  content: ''; 
+  position: absolute; top: -10%; left: -10%; width: 120%; height: 120%;
+  background-image: url('https://images.unsplash.com/photo-1605218457332-dd46d1775243?q=80&w=2000&auto=format&fit=crop');
+  background-size: cover;
+  background-position: center;
+  opacity: 0.4; 
+  pointer-events: none; 
+  z-index: 0;
+  animation: soilPan 60s linear infinite alternate;
+}
+
+.history-section::after {
   content: '';
+  position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+  background: linear-gradient(180deg, #d7ccc8 0%, rgba(215, 204, 200, 0.7) 50%, #d7ccc8 100%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+@keyframes soilPan { 
+  0% { transform: scale(1) translate(0, 0); } 
+  100% { transform: scale(1.05) translate(-1%, -1%); } 
+}
+
+.history-living-bg {
+  position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+  pointer-events: none; z-index: 1;
+}
+
+.history-spore {
   position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 50%;
-  width: 3px;
-  background-color: var(--primary-color);
-  transform: translateX(-50%);
+  width: 4px; height: 4px;
+  background-color: #8d6e63;
+  border-radius: 50%;
+  opacity: 0; 
 }
-.timeline-item {
-  position: relative;
-  margin-bottom: 3rem;
-  width: 50%;
+
+/* 3D Stomp Footprints */
+.history-footprints-container {
+  position: absolute; top: 0; left: 0; width: 200px; height: 100%;
+  pointer-events: none; z-index: 2;
 }
-.timeline-item:nth-child(odd) { left: 0; padding-right: 3rem; text-align: right; }
-.timeline-item:nth-child(even) { left: 50%; padding-left: 3rem; text-align: left; }
-.timeline-year {
-  font-size: var(--font-size-md);
-  font-weight: 700;
-  color: var(--primary-color);
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  background: #f9f9f9;
-  padding: 0.5rem;
-  z-index: 10;
+.footprint-icon {
+  position: absolute; 
+  font-size: 8rem; 
+  color: rgba(141, 110, 99, 0.35); 
+  transform-origin: center;
+  filter: drop-shadow(1px 1px 1px rgba(255,255,255,0.5)) drop-shadow(-1px -1px 2px rgba(0,0,0,0.2)); 
 }
-.timeline-item:nth-child(odd) .timeline-year { right: -3rem; }
-.timeline-item:nth-child(even) .timeline-year { left: -3rem; }
-.timeline-content {
-  background-color: #ffffff;
-  padding: 2rem;
-  border-radius: 10px;
-  box-shadow: 0 4px 30px rgba(0,0,0,0.07);
-  word-break: keep-all;
+
+.history-bg-layer-1 {
+  bottom: -20%; left: -10%; width: 40%;
+  background: linear-gradient(90deg, rgba(141, 110, 99, 0.1) 0%, transparent 100%);
+  clip-path: polygon(0 0, 100% 30%, 80% 60%, 100% 100%, 0 100%);
+  z-index: 1;
 }
-.timeline-content p { font-size: var(--font-size-sm); margin: 0; font-weight: 500; }
-.timeline-item:last-child { margin-bottom: 0; }
+
+.history-bg-layer-2 {
+  bottom: -30%; left: auto; right: -10%; width: 40%;
+  background: linear-gradient(-90deg, rgba(141, 110, 99, 0.08) 0%, transparent 100%);
+  clip-path: polygon(20% 0, 100% 0, 100% 100%, 0 80%, 30% 40%);
+  z-index: 2;
+}
+
+
+.history-flex-container { display: flex; gap: 4rem; position: relative; z-index: 10; }
+.history-title-column { flex: 0 0 25%; }
+.history-title-column h2 { 
+  position: sticky; top: 120px;
+  color: #4e342e; 
+  text-align: right; padding-right: 2rem;
+}
+
+.history-timeline-column { flex: 1; min-width: 0; }
+.history-timeline { position: relative; padding: 2rem 0; width: 100%; }
+.history-track-bg { position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 2px; height: 100%; background-color: rgba(141, 110, 99, 0.15); }
+.history-track-fill { position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 2px; background-color: #8d6e63; height: 0; }
+
+.timeline-row { display: flex; align-items: center; width: 100%; margin-bottom: 5rem; position: relative; z-index: 2; }
+.t-year-col, .t-content-col { flex: 1; min-width: 0; position: relative; }
+
+.row-right-content { flex-direction: row; }
+.row-right-content .t-year-col { text-align: right; padding-right: 4rem; }
+.row-right-content .t-content-col { text-align: left; margin-left: 3.5rem; }
+
+.row-left-content { flex-direction: row-reverse; }
+.row-left-content .t-year-col { text-align: left; padding-left: 4rem; }
+.row-left-content .t-content-col { text-align: right; margin-right: 3.5rem; }
+
+.t-year { font-size: 3.5rem; font-weight: 900; color: #8d6e63; opacity: 0.9; line-height: 1; letter-spacing: -2px; }
+
+.t-icon-cell { 
+  position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); 
+  width: 40px; height: 40px; display: flex; justify-content: center; align-items: center; 
+  background: #efebe9; border-radius: 50%; z-index: 5; 
+}
+.t-icon { width: 16px; height: 16px; background: #fff; border: 4px solid #8d6e63; border-radius: 50%; box-shadow: 0 0 10px rgba(141, 110, 99, 0.2); }
+
+.t-content-col { 
+  background-color: #fff; padding: 2.2rem; border-radius: 20px; 
+  border: 1px solid rgba(141, 110, 99, 0.1); box-shadow: 0 10px 30px rgba(0,0,0,0.05); 
+}
+.t-content-col p { margin: 0 0 0.5rem 0; font-size: 1.1rem; color: #5d4037; font-weight: 600; line-height: 1.6; }
 
 
 /* --- 6. Location Section --- */
-.location-section .section-content {
-  text-align: center;
-  margin-top: 5rem;
+.location-section {
+  background-color: #fff;
+  position: relative;
+  z-index: 2;
+  margin-top: 0; 
+  padding-top: 6rem; 
+  padding-bottom: 8rem;
+  clip-path: none; 
 }
+.location-wrapper {
+  position: relative; height: 500px; border-radius: 30px; overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.1); border: 4px solid #fff;
+}
+.location-info-card {
+  position: absolute; top: 40px; left: 40px; 
+  background: rgba(255,255,255,0.95); backdrop-filter: blur(10px);
+  padding: 2.5rem; border-radius: 20px; z-index: 10; 
+  box-shadow: 0 15px 40px rgba(0,0,0,0.1); max-width: 350px;
+}
+.location-info-card h3 { font-size: 1.6rem; margin-bottom: 1.5rem; color: #1e2f23; }
+.location-detail { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 0.8rem; color: #555; }
+.location-detail svg { margin-top: 4px; color: var(--primary-color); }
 
 
 /* --- 7. CTA Section --- */
 .cta-section {
-  background-color: #f0f2f5;
-  text-align: center;
-  padding: 8rem 0;
-}
-
-.cta-container {
-  max-width: 800px;
-  margin: 0 auto;
-}
-
-.cta-title {
-  font-size: 2.5rem !important;
-  margin-bottom: 1.5rem !important;
-  color: #1d1d1f !important;
-}
-
-.cta-desc {
-  font-size: 1.2rem;
-  color: #666;
-  margin-bottom: 3rem;
-  line-height: 1.6;
-}
-
-.cta-button {
-  display: inline-flex;
-  align-items: center;
-  gap: 12px;
-  background-color: var(--primary-color);
+  background: #1e2f23;
   color: #fff;
-  padding: 1.2rem 3rem;
-  font-size: 1.1rem;
-  font-weight: 700;
-  border: none;
-  border-radius: 50px;
-  cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.25, 0.1, 0.25, 1.0);
-  box-shadow: 0 4px 15px rgba(140, 198, 63, 0.3);
+  position: relative;
+  z-index: 1;
+  margin-top: 0;
+  padding-top: 10rem; 
+  padding-bottom: 10rem;
+  clip-path: polygon(0 100px, 100% 0, 100% 100%, 0 100%);
 }
-
-.cta-button:hover {
-  background-color: #7ab332;
-  transform: translateY(-3px);
-  box-shadow: 0 8px 25px rgba(140, 198, 63, 0.5);
+.cta-title { color: #fff !important; font-size: 2.8rem; font-weight: 800; margin-bottom: 3.5rem; }
+.cta-button {
+  display: inline-flex; align-items: center; gap: 15px;
+  padding: 1.5rem 4.5rem; font-size: 1.3rem; font-weight: 700;
+  background: #8CC63F; border: none; border-radius: 100px; color: #1e2f23;
+  transition: all 0.3s ease; box-shadow: 0 10px 30px rgba(140, 198, 63, 0.3);
 }
+.cta-button:hover { transform: translateY(-5px) scale(1.05); background: #fff; }
 
-.cta-icon {
-  font-size: 1rem;
-}
 
-/* Responsive adjustments (Updated for better tablet/small desktop view) */
-@media (max-width: 1024px) { /* 태블릿, 작은 노트북 */
-  .section-content {
-    padding: 0 2rem; /* 좌우 여백 확보 */
+/* --- Responsive Adjustments --- */
+@media (max-width: 992px) {
+  .mission-section-static, .portfolio-section, .history-section, .location-section, .cta-section {
+    margin-top: 0; padding-top: 6rem; padding-bottom: 6rem; clip-path: none; filter: none; z-index: 1;
   }
-
-  .mission-title-col h2, 
-  .portfolio-title {
-    font-size: 2.2rem; /* 타이틀 크기 약간 줄임 */
-  }
+  .values-container { flex-direction: column; height: auto; gap: 2rem; }
+  .value-item { position: relative; top: auto; left: auto !important; transform: none !important; margin: 0 auto !important; width: 100%; max-width: 320px; height: 320px; animation: none; }
   
-  .mission-main-text {
-    font-size: 2rem;
-  }
+  .history-flex-container { flex-direction: column; gap: 2rem; }
+  .history-title-column h2 { position: static; text-align: left; padding: 0; margin-bottom: 2rem; }
   
-  .value-item .circle {
-    width: 280px;
-    height: 280px;
-    font-size: 2.2rem;
+  .timeline-row, .row-right-content, .row-left-content {
+    flex-direction: column; margin-bottom: 3rem; padding-left: 60px; align-items: flex-start;
   }
-}
-
-@media (max-width: 768px) { /* 모바일 (기존대로 1단 변경) */
-  .mission-grid, .portfolio-container, .history-flex-container {
-    flex-direction: column;
-    gap: 2rem;
-  }
+  .t-year-col, .t-content-col { width: 100%; text-align: left !important; padding: 0 !important; margin: 0 !important; }
+  .t-content-col { margin-top: 1rem !important; }
+  .t-icon-cell { left: 20px; top: 0; transform: translateX(-50%); margin-top: 15px; }
+  .history-track-bg, .history-track-fill { left: 20px; transform: none; }
   
-  .mission-title-col, .portfolio-title, .history-title-column {
-    flex: auto;
-    width: 100%;
-    min-width: 0;
-    position: static;
-    margin-bottom: 2rem;
-  }
+  .location-info-card { position: relative; top: 0; left: 0; width: 100%; max-width: none; background: transparent; padding: 0 0 2rem 0; box-shadow: none; }
+  .location-wrapper { height: 400px; border-radius: 20px; }
   
-  .portfolio-title {
-    margin-top: 0;
-    padding-top: 0;
-  }
+  .history-section::before { display: block; } 
+  .bg-layer, .history-living-bg, .portfolio-leaves-container { display: none; } 
+  .history-footprints-container { display: block; } 
+  .section-deco-container { display: none; }
   
-  .mission-title-col h2 {
-    font-size: 2.5rem;
-  }
-
-  .mission-main-text {
-    font-size: 1.8rem;
-  }
-
-  /* Values Section Mobile Optimization */
-  .values-container {
-    flex-direction: column;
-    gap: 1rem;
-  }
-  
-  .value-item:nth-of-type(1), 
-  .value-item:nth-of-type(5) { 
-    margin: 0; 
-  }
-  
-  .connector {
-    display: none; /* 모바일에서는 연결선 숨김 */
-  }
-
-  .value-item .circle {
-    width: 200px;
-    height: 200px;
-    font-size: 1.8rem;
-    margin: 0 auto;
-  }
-  
-  /* History Timeline Mobile */
-  .history-timeline::before { left: 20px; }
-  .timeline-item { width: 100%; padding-left: 50px !important; padding-right: 0 !important; text-align: left !important; }
-  .timeline-item:nth-child(odd), .timeline-item:nth-child(even) { left: 0; }
-  .timeline-year { left: 0 !important; right: auto !important; width: 40px; text-align: center; font-size: 1.2rem; }
+  .footprint-icon { font-size: 6rem; left: -20px !important; } 
 }
