@@ -53,7 +53,6 @@ const BoardInquiry = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Form submission started', formData); // Debug log
     
     if (!formData.name || !formData.message || !formData.isAgreed) {
       alert('이름, 내용, 개인정보 동의는 필수입니다.');
@@ -64,7 +63,6 @@ const BoardInquiry = () => {
     
     try {
       const response = await inquiryApi.createInquiry(formData);
-      console.log('API Response:', response); // Debug log
 
       // 백엔드 응답 구조에 따라 성공 여부 판단 (status code 200/201 또는 data.success)
       if (response.status === 200 || response.status === 201 || response.data?.success) {

@@ -1,198 +1,214 @@
+// (주)보아스에스이(BOAS-SE) 기업 분석 기반 로컬 데이터 (총 12종)
+// 백엔드 API 장애 시 사용되는 Fallback Data
+
 export const products = [
-  // --- Smart Mobility ---
+  // --- 메인 노출 제품 (Key Solutions) ---
   {
     id: 1,
-    title: "스마트 DTG 단말기",
-    category: "Smart Mobility",
-    image: "https://images.unsplash.com/photo-1597733336794-12d05021d510?auto=format&fit=crop&q=80&w=800",
-    description: "차량 운행 데이터(위치, 속도 등)를 실시간으로 수집하는 고정밀 IoT 단말기",
-    detail: "스마트 DTG 단말기는 국토교통부 표준 규격을 준수하며, 운전자의 주행 습관 분석 및 사고 예방을 위한 핵심 데이터를 수집합니다. 4G/5G 통신을 통해 관제 서버와 실시간으로 연동됩니다.",
-    isMainFeatured: false
+    category: "Smart Building",
+    title: "ZEBRA (지능형 제로 에너지 빌딩)",
+    description: "건물 에너지 소비를 실시간 감시하고 AI로 예측하여 에너지 자립을 실현하는 모니터링 시스템",
+    detail: "제로에너지건축물(ZEB) 인증 필수 지침을 준수하며, 건물 내 에너지 소비 현황을 실시간으로 모니터링합니다. MSE 0.012 수준의 정밀한 AI 알고리즘을 통해 미래 에너지 수요를 예측하고 설비 효율을 최적화하여 스마트한 에너지 관리를 실현합니다.",
+    image: "/images/solution-zebra.jpg",
+    isMainFeatured: true,
+    specs: [
+      { icon: "FaLeaf", label: "인증", highlight: "ZEB", text: "제로에너지 인증 지원" },
+      { icon: "FaBrain", label: "정밀도", highlight: "MSE 0.012", text: "수요 예측 정확도" }
+    ],
+    features: [
+      { title: "에너지 소비 예측", desc: "AI 기반 실시간 소비량 및 설비 효율 분석" },
+      { title: "ZEB 인증 대응", desc: "공공기관 및 민간 건물 필수 가이드라인 준수" }
+    ]
   },
   {
-    id: 8,
-    title: "스마트 운전자 앱",
-    category: "Smart Mobility",
-    image: "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?auto=format&fit=crop&q=80&w=800",
-    description: "운행 기록 조회 및 안전 운전 점수를 제공하는 모바일 애플리케이션",
-    detail: "운전자는 본인의 운전 점수를 실시간으로 확인하고, 위험 운전 패턴을 분석받을 수 있습니다. 기업용 솔루션과 연동하여 효율적인 차량 관리를 지원합니다.",
-    isMainFeatured: false
+    id: 2,
+    category: "Smart Building",
+    title: "승강기 플랫벨트 3차원 진단",
+    description: "뎁스(Depth) 카메라와 영상 처리 기술로 승강기 벨트의 상태를 비접촉 실시간 진단하는 솔루션",
+    detail: "승강기의 핵심 안전 부품인 플랫벨트를 24시간 실시간 감시합니다. 3차원 영상 처리 기술을 활용하여 벨트의 미세한 흔들림, 파열, 마모 상태를 정밀 진단함으로써 사고를 사전에 예방하고 유지보수 효율을 극대화합니다.",
+    image: "/images/solution-elevator.jpg",
+    isMainFeatured: true,
+    specs: [
+      { icon: "FaCamera", label: "방식", highlight: "비접촉", text: "3D Depth 스캔" },
+      { icon: "FaShieldAlt", label: "안전", highlight: "24h", text: "상시 실시간 모니터링" }
+    ],
+    features: [
+      { title: "3차원 정밀 진단", desc: "미세 크랙 및 파열 상태 시각적 분석" },
+      { title: "예지 보전 서비스", desc: "교체 주기 예측을 통한 관리 비용 절감" }
+    ]
   },
-  {
-    id: 16,
-    title: "운전 패턴 분석 AI",
-    category: "Smart Mobility",
-    image: "https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?auto=format&fit=crop&q=80&w=800",
-    description: "사고 위험도를 예측하고 안전 운전을 유도하는 지능형 드라이빙 솔루션",
-    detail: "딥러닝 알고리즘을 통해 수백만 건의 주행 데이터를 분석하여 사고 발생 가능성이 높은 패턴을 사전에 감지합니다. 보험 연계형 솔루션으로도 활용 가능합니다.",
-    isMainFeatured: false
-  },
-  {
-    id: 13,
-    title: "탄소 배출 분석 플랫폼",
-    category: "Smart Mobility",
-    image: "https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?auto=format&fit=crop&q=80&w=800",
-    description: "주행 데이터 및 공정 데이터를 기반으로 탄소 배출량을 자동 산정하는 소프트웨어",
-    detail: "ESG 경영의 핵심 지표인 탄소 배출량을 데이터 기반으로 정밀하게 측정합니다. 탄소 배출권 거래 및 친환경 물류 정책 수립의 기초 자료를 제공합니다.",
-    isMainFeatured: false
-  },
-  {
-    id: 14,
-    title: "물류 가시성 플랫폼",
-    category: "Smart Mobility",
-    image: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&q=80&w=800",
-    description: "배송 차량의 현재 위치와 도착 예정 시간을 실시간으로 관제하는 시스템",
-    detail: "화물의 이동 경로를 실시간으로 추적하고 지연 발생 시 알림을 제공합니다. 고객사 API 연동을 통해 도착 예정 시간(ETA)의 정확도를 극대화합니다.",
-    isMainFeatured: false
-  },
-  {
-    id: 20,
-    title: "지능형 배차 최적화",
-    category: "Smart Mobility",
-    image: "https://images.unsplash.com/photo-1519003722824-194d4455a60c?auto=format&fit=crop&q=80&w=800",
-    description: "최단 경로 및 적재율을 계산하여 물류 효율성을 극대화하는 배차 솔루션",
-    detail: "유전 알고리즘 기반의 경로 최적화 엔진을 사용하여 유류비와 운송 시간을 획기적으로 절감합니다. 차량의 적재 공간을 최대화하는 적재 최적화 알고리즘이 포함되어 있습니다.",
-    isMainFeatured: false
-  },
-
-  // --- Smart Factory ---
   {
     id: 3,
-    title: "IoT 게이트웨이",
-    category: "Smart Factory",
-    image: "https://images.unsplash.com/photo-1558346490-a72e53ae2d4f?auto=format&fit=crop&q=80&w=800",
-    description: "다양한 생산 설비의 데이터를 수집하여 서버로 전송하는 산업용 게이트웨이",
-    detail: "Modbus, OPC-UA 등 다양한 산업용 통신 프로토콜을 지원하며, 엣지 컴퓨팅 기술을 통해 현장에서 1차 데이터 처리를 수행합니다. 가혹한 산업 환경에서도 안정적으로 동작합니다.",
-    isMainFeatured: false
+    category: "Smart Mobility",
+    title: "스마트 DTG 관제 플랫폼",
+    description: "디지털 운행 기록계(DTG)와 연동하여 위험물 운송 차량의 위치와 상태를 실시간 관제하는 플랫폼",
+    detail: "차량의 운행 데이터(위치, 속도, 주행 습관 등)를 실시간으로 수집하고 분석합니다. AI 모델을 통해 급가속, 급제동 등 위험 운전 패턴을 탐지하여 사고를 예방하고, 운행 정보를 기반으로 탄소 배출량을 자동 산출하여 ESG 경영을 지원합니다.",
+    image: "/images/mobility-2.jpg",
+    isMainFeatured: true,
+    specs: [
+      { icon: "FaMapMarkedAlt", label: "관제", highlight: "LBS", text: "실시간 위치/상태 추적" },
+      { icon: "FaCarCrash", label: "분석", highlight: "AI 탐지", text: "위험 운전 사고 예측" }
+    ],
+    features: [
+      { title: "실시간 운행 관제", desc: "위험물 운송 차량 통합 모니터링 시스템" },
+      { title: "ESG 데이터 관리", desc: "정밀한 탄소 배출량 산정 및 리포트 제공" }
+    ]
   },
   {
     id: 4,
-    title: "산업용 AI 카메라",
     category: "Smart Factory",
-    image: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=800",
-    description: "공장 및 시설물의 안전 상태를 실시간으로 감지하고 분석하는 지능형 카메라",
-    detail: "작업자의 보호구 착용 여부, 금지 구역 진입, 설비 이상 발열 등을 AI가 실시간으로 감시합니다. 사고 발생 시 즉각적인 경보 시스템과 연동됩니다.",
-    isMainFeatured: false
+    title: "AI 공정 최적화 및 납기 예측",
+    description: "제조 현장의 데이터를 융합하여 공정 스케줄을 최적화하고 정확한 납기일(ETA)을 예측하는 DX 솔루션",
+    detail: "강화학습(Reinforcement Learning) 기술을 적용하여 복잡한 생산 공정의 스케줄을 자동 최적화합니다. 제조 현장을 디지털 트윈으로 구현하여 병목 현상을 진단하고, 실시간 변수를 반영한 정확한 납기 예측으로 생산 효율성을 혁신합니다.",
+    image: "/images/factory-1.jpg",
+    isMainFeatured: true,
+    specs: [
+      { icon: "FaCogs", label: "최적화", highlight: "RL 기술", text: "강화학습 스케줄링" },
+      { icon: "FaClock", label: "예측", highlight: "ETA", text: "납기 완료 시점 정밀 예측" }
+    ],
+    features: [
+      { title: "디지털 트윈 최적화", desc: "생산 공정 시뮬레이션 및 병목 구간 진단" },
+      { title: "지능형 스케줄링", desc: "강화학습 기반 최적 생산 순서 자동 생성" }
+    ]
+  },
+  {
+    id: 5,
+    category: "Smart Farm",
+    title: "V-AGREE 과수 병해충 예측",
+    description: "IoT 센서와 다중분광 영상 분석을 결합하여 과수의 병해충 발생을 조기에 예측하는 플랫폼",
+    detail: "과수원의 환경 데이터와 다중분광 영상을 융합 분석하여 병해충 발생 가능성을 조기에 탐지합니다. 딥러닝(CNN) 알고리즘을 통해 병해충의 확산을 예측하고, 정밀한 농업 빅데이터를 기반으로 최적의 방제 시점을 제시하여 농가의 생산성을 높입니다.",
+    image: "/images/solution-vagree.jpg",
+    isMainFeatured: true,
+    specs: [
+      { icon: "FaBug", label: "진단", highlight: "AI 탐지", text: "CNN 기반 병해충 예찰" },
+      { icon: "FaWifi", label: "IoT", highlight: "LoRa/UHF", text: "다양한 무선 환경 지원" }
+    ],
+    features: [
+      { title: "정밀 병해충 예찰", desc: "다중분광 영상 기반의 조기 진단 시스템" },
+      { title: "스마트 방제 전략", desc: "빅데이터 기반 최적 방제 시기 및 방법 추천" }
+    ]
+  },
+
+  // --- 신규 추가 제품 (Portfolio) ---
+  {
+    id: 6,
+    category: "Smart Factory",
+    title: "배전급 온라인 진단시스템 (PDPS)",
+    description: "전력설비의 기능과 성능을 상시 감시하여 고장 및 사고를 예방하는 온라인 진단 시스템",
+    detail: "PDPS(Power Equipment Diagnosis & Preventive System)는 주요 전력설비의 상태를 실시간으로 감시하여 고장 및 사고를 미연에 방지합니다. 각 기기별 이력을 DB로 통합 관리하여 효율적인 전력 설비 유지보수를 지원합니다.",
+    image: "/images/prod-pdps.jpg",
+    isMainFeatured: false,
+    specs: [
+      { icon: "FaBolt", label: "감시", highlight: "24h", text: "상시 전력 감시" },
+      { icon: "FaDatabase", label: "관리", highlight: "DB", text: "기기 이력 관리" }
+    ],
+    features: [
+      { title: "고장 예방", desc: "실시간 모니터링을 통한 전력 설비 사고 방지" },
+      { title: "이력 통합 관리", desc: "설비별 생애 주기 데이터베이스 구축" }
+    ]
   },
   {
     id: 7,
-    title: "산업용 스마트 태그",
-    category: "Smart Factory",
-    image: "https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&q=80&w=800",
-    description: "공장 내 자재 및 제품의 위치를 추적하는 초소형 무선 인식 태그",
-    detail: "UWB/BLE 기술을 활용하여 실내에서도 오차 범위 수 센티미터 이내로 정밀한 위치 추적이 가능합니다. 재고 관리 및 공정 흐름 분석의 핵심 장비입니다.",
-    isMainFeatured: false
-  },
-  {
-    id: 10,
-    title: "스마트 팩토리 MES",
-    category: "Smart Factory",
-    image: "https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?auto=format&fit=crop&q=80&w=800",
-    description: "생산 계획부터 공정 관리까지 제조 현장을 효율적으로 운영하는 실행 시스템",
-    detail: "생산 현장의 데이터를 실시간으로 수집하여 투명한 공정 관리를 실현합니다. 설비 가동률 분석, 품질 관리(SPC), 추적 관리 등을 통합 제공합니다.",
-    isMainFeatured: false
-  },
-  {
-    id: 15,
-    title: "AI 공정 최적화",
-    category: "Smart Factory",
-    image: "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?auto=format&fit=crop&q=80&w=800",
-    description: "빅데이터 분석을 통해 생산 스케줄을 최적화하고 납기를 준수하는 AI 솔루션",
-    detail: "강화학습 기술을 사용하여 복잡한 공정 순서를 최적화합니다. 예기치 못한 설비 고장이나 원자재 지연 시 즉각적인 재스케줄링을 통해 생산 손실을 최소화합니다.",
-    isMainFeatured: false
-  },
-  {
-    id: 17,
-    title: "디지털 트윈 관제",
-    category: "Smart Factory",
-    image: "https://images.unsplash.com/photo-1526628953301-3e589a6a8b74?auto=format&fit=crop&q=80&w=800",
-    description: "현실 공간을 3D로 시각화하여 원격 제어 및 모니터링을 지원하는 플랫폼",
-    detail: "실제 공장 환경을 3D 모델링하여 데이터와 동기화합니다. 현장에 가지 않고도 공정 상태를 직관적으로 파악하고, 시뮬레이션을 통해 공정 변경의 효과를 미리 확인합니다.",
-    isMainFeatured: false
-  },
-  {
-    id: 12,
-    title: "통합 안전 관제 S/W",
-    category: "Smart Factory",
-    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=800",
-    description: "다양한 시설물의 상태 데이터를 수집하여 통합 모니터링하는 웹 대시보드",
-    detail: "산재된 수많은 센서 데이터를 하나의 대시보드에서 관리합니다. 이상 징후 발생 시 등급별 알림 시스템을 통해 골든타임 내 대응이 가능하도록 돕습니다.",
-    isMainFeatured: false
-  },
-
-  // --- Smart Farm ---
-  {
-    id: 2,
-    title: "IoT 토양 센서",
     category: "Smart Farm",
-    image: "https://images.unsplash.com/photo-1530836369250-ef72a3f5cda8?auto=format&fit=crop&q=80&w=800",
-    description: "스마트팜 환경에서 토양 온습도 및 영양분을 정밀 측정하는 센서 모듈",
-    detail: "토양의 전기전도도(EC), 수소이온농도(pH), 수분 함량 등을 정밀 측정합니다. 방수/방진 설계로 열악한 환경에서도 장기간 안정적인 데이터 수집이 가능합니다.",
-    isMainFeatured: false
+    title: "K-herb Network (한약기원사전 가시화)",
+    description: "한약재의 정보, 효능, 처방을 노드 형태로 시각화하여 제공하는 분석 도구",
+    detail: "각 한약재의 정보를 네트워크 노드로 표현하여, 한약재 간의 관계와 효능, 처방의 쓰임, 주치를 한눈에 파악할 수 있도록 돕는 직관적인 가시화 시스템입니다.",
+    image: "/images/prod-herb.jpg",
+    isMainFeatured: false,
+    specs: [
+      { icon: "FaProjectDiagram", label: "분석", highlight: "Graph", text: "네트워크 가시화" },
+      { icon: "FaLeaf", label: "데이터", highlight: "Herb", text: "한약재 정보 통합" }
+    ],
+    features: [
+      { title: "데이터 시각화", desc: "복잡한 한약 정보를 직관적인 노드 그래프로 표현" },
+      { title: "상관관계 분석", desc: "약재와 처방 간의 연관성 및 효능 매핑" }
+    ]
   },
   {
-    id: 6,
-    title: "대기 환경 관측 스테이션",
-    category: "Smart Farm",
-    image: "https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?auto=format&fit=crop&q=80&w=800",
-    description: "대기 온도, 습도, 미세먼지 등 환경 데이터를 실시간 수집하는 실외 장비",
-    detail: "복합 환경 센서를 탑재하여 일사량, 풍향, 풍속, 강우량 등 농업에 필요한 모든 기상 데이터를 수집합니다. 태양광 패널을 통한 독립 전원 공급이 가능합니다.",
-    isMainFeatured: false
-  },
-  {
-    id: 11,
-    title: "병해충 예찰 앱",
-    category: "Smart Farm",
-    image: "https://images.unsplash.com/photo-1536147116438-62679a5e01f2?auto=format&fit=crop&q=80&w=800",
-    description: "농작물의 병해충 발생 위험 시기를 예측하여 알림을 제공하는 농업 플랫폼",
-    detail: "기상 데이터와 과거 병해충 발생 이력을 AI로 분석하여 방제 적기를 알려줍니다. 약제 처방 가이드와 연동되어 과도한 농약 사용을 방지하고 작물 품질을 높입니다.",
-    isMainFeatured: false
-  },
-  {
-    id: 18,
-    title: "스마트팜 생육 관리",
-    category: "Smart Farm",
-    image: "https://images.unsplash.com/photo-1558449028-b53a39d100fc?auto=format&fit=crop&q=80&w=800",
-    description: "데이터 기반으로 작물의 최적 생육 환경을 자동으로 제어하는 토탈 솔루션",
-    detail: "환경 제어기(환풍기, 양액기, 보일러 등)를 데이터에 기반하여 자동 제어합니다. 작물별 최적 성장 모델을 적용하여 수확량을 극대화하고 노동력을 절감합니다.",
-    isMainFeatured: false
-  },
-
-  // --- Smart Building ---
-  {
-    id: 5,
-    title: "승강기 진단 센서",
-    category: "Smart Building",
-    image: "https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?auto=format&fit=crop&q=80&w=800",
-    description: "승강기 플랫벨트의 미세한 흔들림과 파손을 감지하는 고성능 뎁스 카메라",
-    detail: "승강기의 핵심 안전 부품인 플랫벨트를 24시간 감시합니다. 비접촉식 광학 분석 기술을 사용하여 벨트의 아주 작은 실금이나 마모 상태도 정확히 식별합니다.",
-    isMainFeatured: false
+    id: 8,
+    category: "Smart Building", 
+    title: "SMART AFTERCARE (내시경 데이터 분석)",
+    description: "내시경 판독 데이터를 가시화하여 환자의 상태를 체계적으로 관리하는 헬스케어 솔루션",
+    detail: "내시경 검사 이후 환자의 몸 속 상태를 진료카드로 저장하고, 병변 정보나 청결 상태 등 각종 의료 데이터를 시각화하여 환자 관리의 효율성을 높입니다.",
+    image: "/images/prod-medical.jpg",
+    isMainFeatured: false,
+    specs: [
+      { icon: "FaHeartbeat", label: "분야", highlight: "Medical", text: "스마트 헬스케어" },
+      { icon: "FaChartBar", label: "기능", highlight: "Viz", text: "데이터 가시화" }
+    ],
+    features: [
+      { title: "진료 기록 디지털화", desc: "내시경 영상 및 판독 데이터의 체계적 저장" },
+      { title: "환자 상태 리포트", desc: "병변 및 청결 상태에 대한 시각적 분석 리포트 제공" }
+    ]
   },
   {
     id: 9,
-    title: "ZEB 에너지 모니터링",
     category: "Smart Building",
-    image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=800",
-    description: "제로에너지빌딩의 에너지 생산/소비 현황을 실시간으로 관리하는 시스템",
-    detail: "태양광, 지열 등 신재생 에너지 생산량과 건물 내 에너지 소비량을 통합 분석합니다. 에너지 자립률 목표 달성을 위한 최적 운영 시나리오를 제시합니다.",
-    isMainFeatured: false
+    title: "DPMS (재해예방계측 관리시스템)",
+    description: "전국 댐 누수 및 지진 발생을 실시간으로 관측하여 재해를 예방하는 계측 시스템",
+    detail: "Disaster Prevention Measuring System은 댐의 누수나 지진 파형을 실시간으로 계측하고 분석합니다. 재난 발생 시 즉각적인 알림을 통해 골든타임을 확보하고 시설물 안전을 지킵니다.",
+    image: "/images/prod-dpms.jpg",
+    isMainFeatured: false,
+    specs: [
+      { icon: "FaShieldAlt", label: "목적", highlight: "Safety", text: "재해 예방" },
+      { icon: "FaWater", label: "대상", highlight: "Dam/Earth", text: "댐 누수/지진" }
+    ],
+    features: [
+      { title: "실시간 계측", desc: "정밀 센서를 이용한 24시간 시설물 상태 감시" },
+      { title: "재난 조기 경보", desc: "이상 징후 발생 시 관리자에게 즉시 알림 전송" }
+    ]
   },
   {
-    id: 19,
-    title: "승강기 예지 보전",
+    id: 10,
     category: "Smart Building",
-    image: "https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?auto=format&fit=crop&q=80&w=800",
-    description: "부품 고장을 사전에 예측하여 사고를 예방하는 지능형 유지보수 시스템",
-    detail: "진동 및 소음 데이터를 분석하여 고장이 발생하기 전 이상 징후를 감지합니다. 계획되지 않은 다운타임을 줄이고 관리 비용을 최적화합니다.",
-    isMainFeatured: false
+    title: "STORM (실시간 원격검침 시스템)",
+    description: "에너지 공급량에 따른 요금 부과 및 징수를 위한 원격 자동 검침 자동화 시스템",
+    detail: "Smart Total Remote Monitoring system은 에너지 사용량을 원격에서 자동으로 검침하여 요금을 정확하게 산정합니다. 검침원의 방문 없이도 효율적인 에너지 관리와 요금 징수가 가능합니다.",
+    image: "/images/prod-storm.jpg",
+    isMainFeatured: false,
+    specs: [
+      { icon: "FaWifi", label: "방식", highlight: "Remote", text: "원격 자동 검침" },
+      { icon: "FaFileInvoiceDollar", label: "기능", highlight: "Billing", text: "요금 자동 산정" }
+    ],
+    features: [
+      { title: "검침 자동화", desc: "인력 방문 없는 100% 원격 데이터 수집" },
+      { title: "요금 체계 연동", desc: "사용량 기반의 정확하고 투명한 요금 부과" }
+    ]
   },
   {
-    id: 21,
-    title: "에너지 자립 최적화",
-    category: "Smart Building",
-    image: "https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?auto=format&fit=crop&q=80&w=800",
-    description: "빌딩의 에너지 생산과 소비를 분석하여 에너지 자립률을 최적화하는 AI 엔진",
-    detail: "날씨 예보와 과거 소비 패턴을 결합하여 에너지 소비량을 선제적으로 조절합니다. 피크 시간대 전력 사용을 분산시켜 전기 요금 절감과 에너지 효율 극대화를 달성합니다.",
-    isMainFeatured: false
+    id: 11,
+    category: "Smart Farm",
+    title: "산림용 스마트 양묘장 관제",
+    description: "전국 양묘장 데이터를 표준화하고 AI로 분석하여 설비를 자동 제어하는 클라우드 관제 시스템",
+    detail: "전국 양묘장의 데이터를 클라우드로 통합 수집하고, AI 분석을 통해 최적의 생육 환경을 조성합니다. 온도, 습도 등에 따라 설비를 자동으로 제어하여 묘목의 생산성을 극대화합니다.",
+    image: "/images/prod-nursery.jpg",
+    isMainFeatured: false,
+    specs: [
+      { icon: "FaTree", label: "대상", highlight: "Forest", text: "국유 양묘장" },
+      { icon: "FaCloud", label: "기술", highlight: "Cloud", text: "통합 관제" }
+    ],
+    features: [
+      { title: "데이터 표준화", desc: "전국 분산된 양묘장 데이터의 통합 관리 체계 구축" },
+      { title: "설비 자동 제어", desc: "AI 분석 기반의 스마트한 환경 제어 시스템" }
+    ]
+  },
+  {
+    id: 12,
+    category: "Smart Farm",
+    title: "감귤 생육환경 모니터링 및 당도 예측",
+    description: "감귤 농장의 환경 데이터와 기상 정보를 AI로 분석하여 당도를 예측하고 품질을 높이는 솔루션",
+    detail: "농장 내 센서 데이터(온습도, 토양산도)와 기상청 날씨 데이터를 결합하여 미래의 감귤 당도를 예측합니다. 최적의 수확 시기와 관리 방법을 농장주에게 제공하여 고품질 감귤 생산을 지원합니다.",
+    image: "/images/prod-citrus.jpg",
+    isMainFeatured: false,
+    specs: [
+      { icon: "FaLemon", label: "품목", highlight: "Citrus", text: "제주 감귤" },
+      { icon: "FaChartLine", label: "예측", highlight: "Brix", text: "미래 당도 예측" }
+    ],
+    features: [
+      { title: "당도 정밀 예측", desc: "환경 데이터 기반의 AI 당도 예측 모델 적용" },
+      { title: "생육 환경 최적화", desc: "데이터 기반의 농장 제어로 최상품 감귤 생산" }
+    ]
   }
 ];
+
+export default products;

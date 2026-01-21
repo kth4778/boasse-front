@@ -1,6 +1,73 @@
-#kakao-map {
+.map-wrapper {
+  position: relative;
   width: 100%;
   height: 500px;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(0,0,0,0.05);
+}
+
+#kakao-map {
+  width: 100%;
+  height: 100%;
+}
+
+.map-controls {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%); /* 중앙 정렬로 변경하여 왼쪽 정보 카드와 겹침 방지 */
+  z-index: 10;
+  display: flex;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.95);
+  padding: 6px;
+  border-radius: 50px; /* 더 둥근 알약 모양으로 변경 */
+  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+  backdrop-filter: blur(10px);
+}
+
+.map-control-btn {
+  border: none;
+  background: transparent;
+  padding: 8px 20px;
+  border-radius: 40px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #555;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  white-space: nowrap;
+}
+
+.map-control-btn:hover {
+  background-color: rgba(140, 198, 63, 0.1);
+  color: #1e2f23;
+}
+
+.map-control-btn.active {
+  background-color: #8CC63F;
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(140, 198, 63, 0.3);
+}
+
+/* 반응형 */
+@media (max-width: 992px) {
+  .map-controls {
+    top: auto;
+    bottom: 20px; /* 모바일에서는 하단에 배치하는 것이 조작에 용이 */
+    width: auto;
+    max-width: 90%;
+  }
+}
+
+@media (max-width: 768px) {
+  .map-wrapper {
+    height: 400px;
+  }
+  .map-control-btn {
+    font-size: 0.8rem;
+    padding: 6px 14px;
+  }
 }

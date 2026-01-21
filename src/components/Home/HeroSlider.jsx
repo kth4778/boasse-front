@@ -7,7 +7,6 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
 
 import 'swiper/css';
-/* import 'swiper/css/pagination'; 제거 - 커스텀 구현 */
 
 import './HeroSlider.css';
 
@@ -37,30 +36,32 @@ const HeroSlider = () => {
     );
   };
 
-  // ... (slides 데이터는 동일) ...
   const slides = [
     {
       id: 1,
-      image: 'https://images.unsplash.com/photo-1558449028-b53a39d100fc?auto=format&fit=crop&w=1920&q=80',
+      // Smart Farm: 깨끗한 스마트 온실 내부 (신뢰감, 청정 이미지, 인물 없음)
+      image: '/images/HeroSlider-smartFarm.jpg',
       subtitle: 'BOAS-SE SMART FARM SOLUTION',
       title: '데이터로 완성하는\n미래 농업의 기준',
-      highlight: '최적의 생육 환경 제어',
+      highlight: 'AI 기반 정밀 생육 제어 시스템',
       link: '/business'
     },
     {
       id: 2,
-      image: 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=1920&q=80',
-      subtitle: 'ZERO CARBON TECHNOLOGY',
-      title: '탄소 배출 0%,\n지구와 상생하는 기술',
-      highlight: '친환경 에너지 관리 시스템',
-      link: '/about'
+      // Smart Factory: 자동화 로봇 팔 (전문성, 기술력, 인물 없음)
+      image: '/images/HeroSlider-smartFactory.jpg',
+      subtitle: 'SMART FACTORY INNOVATION',
+      title: '제조 현장의 혁신,\n지능형 자동화 솔루션',
+      highlight: '실시간 설비 예지 보전과 품질 관리',
+      link: '/product'
     },
     {
       id: 3,
-      image: 'https://images.unsplash.com/photo-1523348837708-15d4a09cfac2?auto=format&fit=crop&w=1920&q=80',
-      subtitle: 'IoT CONTROL SYSTEM',
-      title: '언제 어디서나\n손끝으로 만드는 수확',
-      highlight: '초정밀 원격 제어 솔루션',
+      // Smart Mobility: 현대적인 물류 창고 (규모감, 효율성, 인물 없음)
+      image: '/images/HeroSlider-smartLogitics.jpg',
+      subtitle: 'AUTONOMOUS LOGISTICS',
+      title: '공간을 연결하는\n자율주행의 시작',
+      highlight: '스마트 물류 로봇과 통합 관제',
       link: '/product'
     }
   ];

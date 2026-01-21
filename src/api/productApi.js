@@ -3,7 +3,7 @@ import axios from 'axios';
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL || '/api/v1',
   headers: {
-    // 기본은 JSON, 파일 업로드 시에는 multipart/form-data가 자동 설정됨 (브라우저 동작)
+    // 기본은 JSON, 파일 업로드 시에는 multipart/form-data가 자동 설정됨
   },
 });
 
@@ -18,19 +18,17 @@ export const productApi = {
     return api.get(`/products/${id}`);
   },
 
-  // 제품 등록 (Admin)
+  // 제품 등록
   createProduct: async (formData) => {
-    // 명세에 따라 specs, features가 객체 상태라면 JSON.stringify 처리가 필요할 수 있음
-    // (보통 FormData 생성 시점에서 처리해서 넘겨주거나 여기서 처리)
     return api.post('/products', formData);
   },
 
-  // 제품 수정 (Admin)
+  // 제품 수정
   updateProduct: async (id, formData) => {
     return api.put(`/products/${id}`, formData);
   },
 
-  // 제품 삭제 (Admin)
+  // 제품 삭제
   deleteProduct: async (id) => {
     return api.delete(`/products/${id}`);
   }

@@ -2,10 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Mousewheel, Pagination, EffectFade } from 'swiper/modules';
+
+// React Icons (핵심 아이콘 위주로 정리하여 안정성 확보)
 import { 
-  FaSave, FaTimes, FaImage, FaList, FaArrowLeft, FaPaperPlane, FaCheckCircle,
-  FaChartLine, FaBrain, FaShieldAlt, FaLeaf, FaBolt, FaMobileAlt, FaCog, FaDatabase, FaServer, FaCloud
+  FaSave, FaTimes, FaImage, FaArrowLeft, FaCheckCircle, FaPlus,
+  FaChartLine, FaBrain, FaShieldAlt, FaLeaf, FaBolt, FaMobileAlt, 
+  FaCog, FaDatabase, FaServer, FaCloud, FaRobot, FaWifi, FaGlobe,
+  FaLock, FaBell, FaCamera, FaBatteryFull, FaSolarPanel, FaWind, 
+  FaMapMarkedAlt, FaTruck, FaBuilding, FaIndustry, FaDesktop, FaTools
 } from 'react-icons/fa';
+
 import productApi from '../../../api/productApi';
 
 // 스타일 시트 임포트
@@ -16,7 +22,7 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/effect-fade';
 
-// --- 아이콘 매핑 & 선택기 ---
+// --- 아이콘 매핑 (안전한 아이콘 30종) ---
 const ICON_MAP = {
   'FaChartLine': <FaChartLine />,
   'FaBrain': <FaBrain />,
@@ -28,45 +34,64 @@ const ICON_MAP = {
   'FaCog': <FaCog />,
   'FaDatabase': <FaDatabase />,
   'FaServer': <FaServer />,
-  'FaCloud': <FaCloud />
+  'FaCloud': <FaCloud />,
+  'FaRobot': <FaRobot />,
+  'FaWifi': <FaWifi />,
+  'FaGlobe': <FaGlobe />,
+  'FaLock': <FaLock />,
+  'FaBell': <FaBell />,
+  'FaCamera': <FaCamera />,
+  'FaBatteryFull': <FaBatteryFull />,
+  'FaSolarPanel': <FaSolarPanel />,
+  'FaWind': <FaWind />,
+  'FaMapMarkedAlt': <FaMapMarkedAlt />,
+  'FaTruck': <FaTruck />,
+  'FaBuilding': <FaBuilding />,
+  'FaIndustry': <FaIndustry />,
+  'FaDesktop': <FaDesktop />,
+  'FaTools': <FaTools />
 };
 
 const IconPicker = ({ currentIconName, onSelect, onClose }) => {
   return (
     <div className="icon-picker-modal">
-      <div className="icon-picker-content">
-        <h4>아이콘 선택</h4>
-        <div className="icon-grid">
+      <div className="icon-picker-content" style={{ maxHeight: '80vh', overflowY: 'auto' }}>
+        <div style={{ position: 'sticky', top: '0', background: '#1a1a1a', padding: '15px 0 10px 0', zIndex: 10, borderBottom: '1px solid #333' }}>
+          <h4 style={{ margin: 0, color: '#fff', textAlign: 'center' }}>아이콘 선택</h4>
+        </div>
+        <div className="icon-grid" style={{ padding: '20px 0' }}>
           {Object.keys(ICON_MAP).map(iconName => (
             <div 
               key={iconName} 
               className={`icon-item ${currentIconName === iconName ? 'active' : ''}`}
               onClick={() => onSelect(iconName)}
+              title={iconName}
             >
               {ICON_MAP[iconName]}
             </div>
           ))}
         </div>
-        <button className="close-btn" onClick={onClose}>닫기</button>
+        <div style={{ position: 'sticky', bottom: '0', background: '#1a1a1a', padding: '10px 0', zIndex: 10, borderTop: '1px solid #333' }}>
+          <button className="close-btn" onClick={onClose}>닫기</button>
+        </div>
       </div>
     </div>
   );
 };
 
-// 초기값 상수 분리
+// 초기값 상수
 const INITIAL_SPECS = [
-  { icon: 'FaChartLine', label: 'Label', highlight: 'Highlight', text: '설명을 입력하세요' },
-  { icon: 'FaBrain', label: 'Label', highlight: 'Highlight', text: '설명을 입력하세요' },
-  { icon: 'FaShieldAlt', label: 'Label', highlight: 'Highlight', text: '설명을 입력하세요' },
-  { icon: 'FaMobileAlt', label: 'Label', highlight: 'Highlight', text: '설명을 입력하세요' }
+  { icon: 'FaCheckCircle', label: '', highlight: '', text: '' },
+  { icon: 'FaCheckCircle', label: '', highlight: '', text: '' }
 ];
 
 const INITIAL_FEATURES = [
-  { title: '기능 제목 1', desc: '상세한 기능 설명을 입력해주세요.' },
-  { title: '기능 제목 2', desc: '상세한 기능 설명을 입력해주세요.' },
-  { title: '기능 제목 3', desc: '상세한 기능 설명을 입력해주세요.' },
-  { title: '기능 제목 4', desc: '상세한 기능 설명을 입력해주세요.' }
+  { title: '', desc: '' },
+  { title: '', desc: '' }
 ];
+
+const NEW_SPEC_ITEM = { icon: 'FaCheckCircle', label: '', highlight: '', text: '' };
+const NEW_FEATURE_ITEM = { title: '', desc: '' };
 
 const AdminProductForm = () => {
   const { id } = useParams();
@@ -78,7 +103,7 @@ const AdminProductForm = () => {
   const [formData, setFormData] = useState({
     title: '',
     category: 'Smart Farm',
-    image: 'https://images.unsplash.com/photo-1597733336794-12d05021d510?auto=format&fit=crop&q=80&w=800',
+    image: '/images/prod-farm.jpg', // 기본 이미지 경로 안전하게 설정
     description: '',
     detail: '',
     isMainFeatured: false,
@@ -104,10 +129,10 @@ const AdminProductForm = () => {
       const response = await productApi.getProductDetail(id);
       if (response.data.success) {
         const data = response.data.data;
-        // 데이터 병합 시 specs/features가 없으면 초기값 사용
         setFormData(prev => ({
           ...prev,
           ...data,
+          category: data.category || prev.category || 'Smart Farm',
           specs: data.specs && Array.isArray(data.specs) && data.specs.length > 0 ? data.specs : INITIAL_SPECS,
           features: data.features && Array.isArray(data.features) && data.features.length > 0 ? data.features : INITIAL_FEATURES
         }));
@@ -126,21 +151,64 @@ const AdminProductForm = () => {
     }));
   };
 
-  // Specs 변경 핸들러
+  // --- 동적 아이템 추가/삭제 핸들러 ---
+
+  const addSpec = () => {
+    if (formData.specs.length >= 4) {
+      alert("최대 4개까지만 등록 가능합니다.");
+      return;
+    }
+    setFormData(prev => ({
+      ...prev,
+      specs: [...prev.specs, { ...NEW_SPEC_ITEM }]
+    }));
+  };
+
+  const removeSpec = (index) => {
+    if (formData.specs.length <= 1) {
+      alert("최소 1개는 있어야 합니다.");
+      return;
+    }
+    setFormData(prev => ({
+      ...prev,
+      specs: prev.specs.filter((_, i) => i !== index)
+    }));
+  };
+
+  const addFeature = () => {
+    if (formData.features.length >= 4) {
+      alert("최대 4개까지만 등록 가능합니다.");
+      return;
+    }
+    setFormData(prev => ({
+      ...prev,
+      features: [...prev.features, { ...NEW_FEATURE_ITEM }]
+    }));
+  };
+
+  const removeFeature = (index) => {
+    if (formData.features.length <= 1) {
+      alert("최소 1개는 있어야 합니다.");
+      return;
+    }
+    setFormData(prev => ({
+      ...prev,
+      features: prev.features.filter((_, i) => i !== index)
+    }));
+  };
+
   const handleSpecChange = (index, field, value) => {
-    const newSpecs = [...(formData.specs || INITIAL_SPECS)];
+    const newSpecs = [...formData.specs];
     newSpecs[index] = { ...newSpecs[index], [field]: value };
     setFormData(prev => ({ ...prev, specs: newSpecs }));
   };
 
-  // Features 변경 핸들러
   const handleFeatureChange = (index, field, value) => {
-    const newFeatures = [...(formData.features || INITIAL_FEATURES)];
+    const newFeatures = [...formData.features];
     newFeatures[index] = { ...newFeatures[index], [field]: value };
     setFormData(prev => ({ ...prev, features: newFeatures }));
   };
 
-  // 아이콘 선택 핸들러
   const openIconPicker = (index) => {
     setIconPickerState({ show: true, targetIndex: index });
   };
@@ -152,7 +220,6 @@ const AdminProductForm = () => {
     setIconPickerState({ show: false, targetIndex: null });
   };
 
-  // 파일 선택 핸들러
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -167,42 +234,42 @@ const AdminProductForm = () => {
       alert('제품명은 필수입니다.');
       return;
     }
+    
+    if (!formData.category) {
+      alert('카테고리를 선택해주세요!');
+      return;
+    }
+
     setLoading(true);
     try {
-      let dataToSend;
-      const isMultipart = !!imageFile;
-
-      if (isMultipart) {
-        const form = new FormData();
-        form.append('category', formData.category);
-        form.append('title', formData.title);
-        form.append('description', formData.description);
-        form.append('detail', formData.detail);
-        form.append('isMainFeatured', formData.isMainFeatured);
-        form.append('specs', JSON.stringify(formData.specs));
-        form.append('features', JSON.stringify(formData.features));
-        
-        if (imageFile) form.append('image', imageFile);
-        dataToSend = form;
-      } else {
-        // JSON으로 보낼 때도 specs와 features는 문자열이어야 함
-        dataToSend = { 
-          ...formData,
-          specs: JSON.stringify(formData.specs),
-          features: JSON.stringify(formData.features)
-        };
+      const form = new FormData();
+      form.append('category', formData.category);
+      form.append('title', formData.title);
+      form.append('description', formData.description || '');
+      form.append('detail', formData.detail || '');
+      form.append('isMainFeatured', formData.isMainFeatured);
+      
+      form.append('specs', JSON.stringify(formData.specs));
+      form.append('features', JSON.stringify(formData.features));
+      
+      if (imageFile) {
+        form.append('image', imageFile);
+      } else if (formData.image && !formData.image.startsWith('blob:')) {
+        form.append('imageUrl', formData.image);
       }
 
       if (isEdit) {
-        await productApi.updateProduct(id, dataToSend);
+        await productApi.updateProduct(id, form);
       } else {
-        await productApi.createProduct(dataToSend);
+        await productApi.createProduct(form);
       }
+      
       alert('저장되었습니다.');
       navigate('/admin/product');
     } catch (error) {
-      console.error(error);
-      alert('저장 중 오류가 발생했습니다.');
+      console.error("저장 실패 상세 오류:", error.response?.data || error.message);
+      const serverMessage = error.response?.data?.error?.message || error.response?.data?.message || '알 수 없는 오류';
+      alert(`저장 중 오류가 발생했습니다: ${serverMessage}`);
     } finally {
       setLoading(false);
     }
@@ -327,13 +394,52 @@ const AdminProductForm = () => {
           </div>
         </SwiperSlide>
 
-        {/* Slide 2: Key Performance (Editable) */}
+        {/* Slide 2: Key Performance (Editable - Dynamic) */}
         <SwiperSlide className="pd-slide">
           <div className="pd-content">
-            <h2 className="pd-section-title">Key Performance</h2>
+            <div className="d-flex align-items-center mb-4 gap-3">
+              <h2 className="pd-section-title mb-0">Key Performance</h2>
+              {formData.specs.length < 4 && (
+                <button 
+                  className="toolbar-btn" 
+                  onClick={addSpec}
+                  style={{ 
+                    padding: '5px 12px', 
+                    fontSize: '0.8rem', 
+                    background: '#fff', 
+                    color: '#000', 
+                    fontWeight: 'bold',
+                    border: 'none',
+                    borderRadius: '4px'
+                  }}
+                >
+                  <FaPlus /> 추가
+                </button>
+              )}
+            </div>
+            
             <div className="pd-bento-grid">
-              {(formData.specs || INITIAL_SPECS).map((spec, idx) => (
-                <div key={idx} className={`pd-bento-card editable-card ${idx === 1 || idx === 2 ? '' : ''}`}>
+              {formData.specs.map((spec, idx) => (
+                <div key={idx} className="pd-bento-card editable-card" style={{ position: 'relative' }}>
+                  {formData.specs.length > 1 && (
+                    <button 
+                      onClick={() => removeSpec(idx)}
+                      style={{
+                        position: 'absolute',
+                        top: '5px',
+                        right: '5px',
+                        background: 'transparent',
+                        border: 'none',
+                        color: '#666',
+                        cursor: 'pointer',
+                        fontSize: '1.2rem',
+                        zIndex: 10
+                      }}
+                      title="삭제"
+                    >
+                      <FaTimes />
+                    </button>
+                  )}
                   <div className="card-icon" onClick={() => openIconPicker(idx)} title="아이콘 변경">
                     {ICON_MAP[spec.icon] || <FaCheckCircle />}
                   </div>
@@ -361,15 +467,35 @@ const AdminProductForm = () => {
           </div>
         </SwiperSlide>
 
-        {/* Slide 3: Detailed Features (Editable) */}
+        {/* Slide 3: Detailed Features (Editable - Dynamic) */}
         <SwiperSlide className="pd-slide">
           <div className="pd-content">
-            <h2 className="pd-section-title">Detail Features</h2>
+            <div className="d-flex align-items-center mb-4 gap-3">
+              <h2 className="pd-section-title mb-0">Detail Features</h2>
+              {formData.features.length < 4 && (
+                <button 
+                  className="toolbar-btn" 
+                  onClick={addFeature}
+                  style={{ 
+                    padding: '5px 12px', 
+                    fontSize: '0.8rem', 
+                    background: '#fff', 
+                    color: '#000', 
+                    fontWeight: 'bold',
+                    border: 'none',
+                    borderRadius: '4px'
+                  }}
+                >
+                  <FaPlus /> 추가
+                </button>
+              )}
+            </div>
+
             <div className="pd-feature-grid">
-              {(formData.features || INITIAL_FEATURES).map((f, idx) => (
-                <div key={idx} className="pd-feature-item editable-feature">
-                  <FaCheckCircle className="pd-feature-icon" />
-                  <div className="pd-feature-content" style={{ width: '100%' }}>
+              {formData.features.map((f, idx) => (
+                <div key={idx} className="pd-feature-item editable-feature" style={{ position: 'relative', display: 'flex', alignItems: 'flex-start' }}>
+                  <FaCheckCircle className="pd-feature-icon" style={{ marginTop: '5px' }} />
+                  <div className="pd-feature-content" style={{ width: '100%', paddingRight: '25px' }}>
                     <input 
                       className="feature-input title"
                       value={f.title}
@@ -384,6 +510,24 @@ const AdminProductForm = () => {
                       rows={2}
                     />
                   </div>
+                  {formData.features.length > 1 && (
+                    <button 
+                      onClick={() => removeFeature(idx)}
+                      style={{
+                        position: 'absolute',
+                        top: '0',
+                        right: '0',
+                        background: 'transparent',
+                        border: 'none',
+                        color: '#666',
+                        cursor: 'pointer',
+                        fontSize: '1rem',
+                      }}
+                      title="삭제"
+                    >
+                      <FaTimes />
+                    </button>
+                  )}
                 </div>
               ))}
             </div>
@@ -408,7 +552,12 @@ const AdminProductForm = () => {
       {/* 아이콘 선택 모달 */}
       {iconPickerState.show && (
         <IconPicker 
-          currentIconName={(formData.specs || INITIAL_SPECS)[iconPickerState.targetIndex].icon}
+          currentIconName={
+            // 안전장치: specs가 없거나 인덱스가 벗어날 경우 대비
+            (formData.specs && formData.specs[iconPickerState.targetIndex]) 
+              ? formData.specs[iconPickerState.targetIndex].icon 
+              : 'FaCheckCircle'
+          }
           onSelect={handleIconSelect}
           onClose={() => setIconPickerState({ show: false, targetIndex: null })}
         />

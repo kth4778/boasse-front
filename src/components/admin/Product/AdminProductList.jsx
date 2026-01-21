@@ -3,7 +3,6 @@ import { Button, Table, Badge, Modal } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { FaPlus, FaEdit, FaTrash, FaStar, FaRegStar } from 'react-icons/fa';
 import productApi from '../../../api/productApi';
-import { products as dummyProducts } from '../../../api/productData'; // 더미 데이터 임포트
 
 const AdminProductList = () => {
   const [products, setProducts] = useState([]);
@@ -13,9 +12,6 @@ const AdminProductList = () => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
 
-  // 더미 데이터 사용 여부 제어 (나중에 API 연동 완료 시 false로 변경하거나 삭제)
-  const USE_DUMMY_DATA = true;
-
   useEffect(() => {
     fetchProducts();
   }, []);
@@ -24,17 +20,15 @@ const AdminProductList = () => {
     setLoading(true);
     try {
       const response = await productApi.getProducts();
-      if (response.data.success && response.data.data.length > 0) {
+      if (response.data.success) {
         setProducts(response.data.data);
-      } else if (USE_DUMMY_DATA) {
-        // API 결과가 없거나 실패했을 때 더미 데이터 사용
-        setProducts(dummyProducts);
+        if (response.data.data.length > 0) {
+          console.log("첫 번째 제품 데이터 확인:", response.data.data[0]);
+        }
       }
     } catch (error) {
       console.error('제품 목록을 불러오는 중 오류 발생:', error);
-      if (USE_DUMMY_DATA) {
-        setProducts(dummyProducts);
-      }
+      alert('제품 목록을 불러오는 데 실패했습니다.');
     } finally {
       setLoading(false);
     }
@@ -42,28 +36,35 @@ const AdminProductList = () => {
 
   const handleToggleMainFeatured = async (product) => {
     try {
-      // 백엔드에서 specs와 features를 JSON 문자열로 처리하므로, 객체인 경우 변환하여 전송
+      // 필드명 호환성 처리 (isMainFeatured 또는 mainFeatured)
+      const currentStatus = product.isMainFeatured !== undefined ? product.isMainFeatured : product.mainFeatured;
+      
+      const form = new FormData();
+      form.append('category', product.category);
+      form.append('title', product.title);
+      form.append('description', product.description || '');
+      form.append('detail', product.detail || '');
+      form.append('isMainFeatured', !currentStatus); // 상태 반전
+
+      // 객체 데이터는 문자열로 변환하여 전송
       const specsData = typeof product.specs === 'object' ? JSON.stringify(product.specs) : product.specs;
       const featuresData = typeof product.features === 'object' ? JSON.stringify(product.features) : product.features;
+      
+      form.append('specs', specsData);
+      form.append('features', featuresData);
 
-      // API 호출하여 상태 업데이트
-      const response = await productApi.updateProduct(product.id, {
-        ...product,
-        specs: specsData,
-        features: featuresData,
-        isMainFeatured: !product.isMainFeatured
-      });
+      const response = await productApi.updateProduct(product.id, form);
 
       if (response.data.success) {
-        // 성공 시 목록 재조회하여 데이터 동기화
         await fetchProducts();
       } else {
         alert('상태 변경에 실패했습니다.');
       }
     } catch (error) {
       console.error('상태 변경 실패:', error);
-      alert('변경 중 오류가 발생했습니다.');
-      fetchProducts(); // 에러 시 목록 새로고침하여 UI 복구
+      const msg = error.response?.data?.message || '변경 중 오류가 발생했습니다.';
+      alert(msg);
+      fetchProducts(); 
     }
   };
 
@@ -112,34 +113,49 @@ const AdminProductList = () => {
         <tbody>
           {loading ? (
             <tr><td colSpan="6" className="text-center py-5">로딩 중...</td></tr>
-          ) : products.map((product) => (
-            <tr key={product.id}>
-              <td className="text-center">
-                <Button 
-                  variant="link" 
-                  className="p-0 text-warning"
-                  onClick={() => handleToggleMainFeatured(product)}
-                  title={product.isMainFeatured ? "메인 노출 해제" : "메인 노출 설정"}
-                >
-                  {product.isMainFeatured ? <FaStar size={20} /> : <FaRegStar size={20} style={{ color: '#ccc' }} />}
-                </Button>
-              </td>
-              <td>{product.id}</td>
-              <td>
-                <img src={product.image} alt={product.title} style={{ width: '50px', height: '50px', objectFit: 'cover', borderRadius: '5px' }} />
-              </td>
-              <td className="fw-bold">{product.title}</td>
-              <td><Badge bg="success" style={{ backgroundColor: '#8CC63F', fontWeight: '500' }}>{product.category}</Badge></td>
-              <td className="text-center">
-                <Button variant="outline-primary" size="sm" className="me-2" onClick={() => navigate(`/admin/product/edit/${product.id}`)}>
-                  <FaEdit />
-                </Button>
-                <Button variant="outline-danger" size="sm" onClick={() => handleDeleteClick(product.id)}>
-                  <FaTrash />
-                </Button>
-              </td>
-            </tr>
-          ))}
+          ) : (
+            products.map((product) => {
+              const isFeatured = product.isMainFeatured !== undefined ? product.isMainFeatured : product.mainFeatured;
+              return (
+                <tr key={product.id}>
+                  <td className="text-center">
+                    <Button 
+                      variant="link" 
+                      className="p-0 text-warning"
+                      onClick={() => handleToggleMainFeatured(product)}
+                      title={isFeatured ? "메인 노출 해제" : "메인 노출 설정"}
+                    >
+                      {isFeatured ? <FaStar size={20} /> : <FaRegStar size={20} style={{ color: '#ccc' }} />}
+                    </Button>
+                  </td>
+                  <td>{product.id}</td>
+                  <td>
+                    {product.image ? (
+                      <img 
+                        src={product.image} 
+                        alt={product.title} 
+                        style={{ width: '50px', height: '50px', objectFit: 'cover', borderRadius: '5px' }} 
+                      />
+                    ) : (
+                      <div style={{ width: '50px', height: '50px', backgroundColor: '#eee', borderRadius: '5px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '10px', color: '#999' }}>
+                        No Image
+                      </div>
+                    )}
+                  </td>
+                  <td className="fw-bold">{product.title}</td>
+                  <td><Badge bg="success" style={{ backgroundColor: '#8CC63F', fontWeight: '500' }}>{product.category}</Badge></td>
+                  <td className="text-center">
+                    <Button variant="outline-primary" size="sm" className="me-2" onClick={() => navigate(`/admin/product/edit/${product.id}`)}>
+                      <FaEdit />
+                    </Button>
+                    <Button variant="outline-danger" size="sm" onClick={() => handleDeleteClick(product.id)}>
+                      <FaTrash />
+                    </Button>
+                  </td>
+                </tr>
+              );
+            })
+          )}
         </tbody>
       </Table>
 
