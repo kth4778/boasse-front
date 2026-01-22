@@ -3,6 +3,7 @@ import { Button, Table, Badge, Modal } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { FaPlus, FaEdit, FaTrash, FaStar, FaRegStar } from 'react-icons/fa';
 import productApi from '../../../api/productApi';
+import { getImageUrl } from '../../../utils/imageUtils';
 
 const AdminProductList = () => {
   const [products, setProducts] = useState([]);
@@ -132,7 +133,7 @@ const AdminProductList = () => {
                   <td>
                     {product.image ? (
                       <img 
-                        src={product.image} 
+                        src={getImageUrl(product.image)} 
                         alt={product.title} 
                         style={{ width: '50px', height: '50px', objectFit: 'cover', borderRadius: '5px' }} 
                       />
