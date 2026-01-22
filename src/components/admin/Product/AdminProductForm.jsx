@@ -4,18 +4,18 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Mousewheel, Pagination, EffectFade } from 'swiper/modules';
 
 // React Icons (핵심 아이콘 위주로 정리하여 안정성 확보)
-import { 
+import {
   FaSave, FaTimes, FaImage, FaArrowLeft, FaCheckCircle, FaPlus,
-  FaChartLine, FaBrain, FaShieldAlt, FaLeaf, FaBolt, FaMobileAlt, 
+  FaChartLine, FaBrain, FaShieldAlt, FaLeaf, FaBolt, FaMobileAlt,
   FaCog, FaDatabase, FaServer, FaCloud, FaRobot, FaWifi, FaGlobe,
-  FaLock, FaBell, FaCamera, FaBatteryFull, FaSolarPanel, FaWind, 
+  FaLock, FaBell, FaCamera, FaBatteryFull, FaSolarPanel, FaWind,
   FaMapMarkedAlt, FaTruck, FaBuilding, FaIndustry, FaDesktop, FaTools
 } from 'react-icons/fa';
 
 import productApi from '../../../api/productApi';
+import { getImageUrl } from '../../../utils/imageUtils';
 
-// 스타일 시트 임포트
-import '../../product/ProductDetail.css';
+// 스타일 시트 임포트import '../../product/ProductDetail.css';
 import './AdminProductEditor.css';
 
 import 'swiper/css';
@@ -275,7 +275,7 @@ const AdminProductForm = () => {
     }
   };
 
-  const bgStyle = { backgroundImage: `url(${formData.image})` };
+  const bgStyle = { backgroundImage: `url(${getImageUrl(formData.image)})` };
 
   return (
     <div className="admin-editor-wrapper pd-container">

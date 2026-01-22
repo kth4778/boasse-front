@@ -4,6 +4,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
 import productApi from '../../api/productApi';
+import { getImageUrl } from '../../utils/imageUtils';
 import { FaArrowRight } from 'react-icons/fa';
 import './ProductCards.css';
 
@@ -151,7 +152,7 @@ const ProductCards = () => {
                     const heightClass = ['tall', 'medium', 'short'][index % 3];
                     return (
                       <Link to={`/product/${product.id}`} key={product.id} className={`masonry-item ${heightClass}`}>
-                        <div className="masonry-bg" style={{ backgroundImage: `url(${product.image})` }}></div>
+                        <div className="masonry-bg" style={{ backgroundImage: `url(${getImageUrl(product.image)})` }}></div>
                         <div className="masonry-overlay">
                           <span className="masonry-date">{product.category}</span>
                           <h3 className="masonry-title">{product.title}</h3>

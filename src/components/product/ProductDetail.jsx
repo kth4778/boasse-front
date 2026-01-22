@@ -3,6 +3,7 @@ import { useParams, useNavigate, Link } from 'react-router-dom';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Mousewheel, Pagination, EffectFade } from 'swiper/modules';
 import productApi from '../../api/productApi';
+import { getImageUrl } from '../../utils/imageUtils';
 import { 
   FaBrain, FaChartLine, FaShieldAlt, FaLeaf, FaBolt, FaMobileAlt, FaCheckCircle, FaArrowLeft, FaPaperPlane,
   FaCog, FaDatabase, FaServer, FaCloud
@@ -169,7 +170,7 @@ const ProductDetail = () => {
     : getDetailFeatures(product.category);
 
   // 배경 이미지 처리
-  const bgStyle = { backgroundImage: `url(${product.image})` };
+  const bgStyle = { backgroundImage: `url(${getImageUrl(product.image)})` };
 
   return (
     <div className="pd-container">

@@ -5,6 +5,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
 import productApi from '../../api/productApi';
+import { getImageUrl } from '../../utils/imageUtils';
 import './Product.css';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -121,7 +122,7 @@ const Product = () => {
           ) : filteredProducts.length > 0 ? (
             filteredProducts.map((product) => (
               <Link to={`/product/${product.id}`} key={product.id} className="product-card">
-                <img src={product.image} alt={product.title} className="product-card-image" />
+                <img src={getImageUrl(product.image)} alt={product.title} className="product-card-image" />
                 <div className="product-card-content">
                   <div className="product-card-tags">
                     <span className="product-tag">{product.category}</span>
