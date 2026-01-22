@@ -125,7 +125,7 @@ const About = () => {
       });
 
       // Spores (유지)
-      gsap.utils.toArray('.history-spore').forEach((spore, i) => {
+      gsap.utils.toArray('.history-spore').forEach((spore) => {
         gsap.set(spore, { x: gsap.utils.random(-20, 20), opacity: gsap.utils.random(0.3, 0.7), scale: gsap.utils.random(0.5, 1.5) });
         gsap.to(spore, {
           y: -400, x: `+=${gsap.utils.random(-50, 50)}`, rotation: gsap.utils.random(-180, 180),
@@ -211,6 +211,16 @@ const About = () => {
   }, { scope: containerRef });
 
 
+  const [sporePositions, setSporePositions] = React.useState([]);
+
+  React.useEffect(() => {
+    setSporePositions([...Array(15)].map((_, i) => ({
+      key: i,
+      left: Math.random() * 100,
+      bottom: -(Math.random() * 20)
+    })));
+  }, []);
+
   return (
     <div className="about-page" ref={containerRef}>
       
@@ -293,7 +303,13 @@ const About = () => {
         <div className="bg-layer history-bg-layer-1"></div>
         <div className="bg-layer history-bg-layer-2"></div>
         <div className="history-living-bg">
-          {[...Array(15)].map((_, i) => <div key={i} className="history-spore" style={{left: `${Math.random() * 100}%`, bottom: `-${Math.random() * 20}%`}}></div>)}
+          {sporePositions.map((pos) => (
+            <div 
+              key={pos.key} 
+              className="history-spore" 
+              style={{left: `${pos.left}%`, bottom: `${pos.bottom}%`}}
+            ></div>
+          ))}
         </div>
         
         <div className="history-footprints-container">

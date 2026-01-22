@@ -159,7 +159,7 @@ const InfoSection = () => {
     const theta = 50;   
     
     // 가장 긴 애니메이션 시간을 추적하여 잠금 해제
-    let maxDuration = 0.8; 
+    // let maxDuration = 0.8; 
 
     cards.forEach((card, i) => {
       const offset = i - currentIdx;
@@ -267,9 +267,9 @@ const InfoSection = () => {
           </div>
 
           <div className="info-image-area">
-            {solutions.map((sol, idx) => (
+            {solutions.map((sol) => (
               <div 
-                key={sol.id} 
+                key={sol.id}  
                 className="image-card"
                 style={{ cursor: 'grab' }} 
               >

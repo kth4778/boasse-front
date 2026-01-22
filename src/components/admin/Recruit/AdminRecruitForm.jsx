@@ -21,37 +21,37 @@ const AdminRecruitForm = () => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    const fetchDetail = async () => {
+      try {
+        const response = await recruitApi.getRecruitDetail(id);
+        if (response.data.success) {
+          const data = response.data.data;
+          setFormData({
+            ...data,
+            applyLink: data.applyLink || data.apply_link || '',
+            duties: Array.isArray(data.recruit_duties) 
+              ? data.recruit_duties 
+              : (data.duties ? data.duties : ['']),
+            requirements: Array.isArray(data.recruit_requirements) 
+              ? data.recruit_requirements 
+              : (data.requirements ? data.requirements : [''])
+          });
+        }
+      } catch (error) {
+        console.error('상세 정보 불러오기 실패:', error);
+        if (error.code === 'ERR_NETWORK') {
+          alert('서버와 연결할 수 없습니다. 관리자에게 문의하세요.');
+        } else {
+          alert('데이터를 불러오는 중 오류가 발생했습니다.');
+        }
+        navigate('/admin/recruit');
+      }
+    };
+
     if (isEdit) {
       fetchDetail();
     }
-  }, [id, isEdit]);
-
-  const fetchDetail = async () => {
-    try {
-      const response = await recruitApi.getRecruitDetail(id);
-      if (response.data.success) {
-        const data = response.data.data;
-        setFormData({
-          ...data,
-          applyLink: data.applyLink || data.apply_link || '',
-          duties: Array.isArray(data.recruit_duties) 
-            ? data.recruit_duties 
-            : (data.duties ? data.duties : ['']),
-          requirements: Array.isArray(data.recruit_requirements) 
-            ? data.recruit_requirements 
-            : (data.requirements ? data.requirements : [''])
-        });
-      }
-    } catch (error) {
-      console.error('상세 정보 불러오기 실패:', error);
-      if (error.code === 'ERR_NETWORK') {
-        alert('서버와 연결할 수 없습니다. 관리자에게 문의하세요.');
-      } else {
-        alert('데이터를 불러오는 중 오류가 발생했습니다.');
-      }
-      navigate('/admin/recruit');
-    }
-  };
+  }, [id, isEdit, navigate]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
