@@ -169,6 +169,27 @@ const About = () => {
       gsap.to(li, { y: 0, opacity: 1, duration: 0.8, delay: i * 0.1, scrollTrigger: { trigger: li, start: "top 90%" } });
     });
 
+    // History Timeline Rows Animation (Apple-style: Clean, Crisp, Subtle Blur)
+    const historyRows = gsap.utils.toArray('.timeline-row');
+    historyRows.forEach((row) => {
+      // 초기 상태: 투명, 약간 아래, 약간 축소, 흐릿함
+      gsap.set(row, { opacity: 0, y: 30, scale: 0.98, filter: "blur(10px)" }); 
+
+      gsap.to(row, {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        filter: "blur(0px)", // 선명해지는 효과
+        duration: 0.8, 
+        ease: "expo.out", // 깔끔하고 빠르게 자리를 잡는 이징
+        scrollTrigger: {
+          trigger: row,
+          start: "top 85%", 
+          once: true // 단 한 번만 실행되도록 설정
+        }
+      });
+    });
+
     const timer = setTimeout(() => {
       const iconCells = gsap.utils.toArray('.t-icon-cell'); 
       if (iconCells.length > 0) {
