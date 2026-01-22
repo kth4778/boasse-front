@@ -127,7 +127,17 @@ const Product = () => {
                   <div className="product-card-tags">
                     <span className="product-tag">{product.category}</span>
                   </div>
-                  <h3 className="product-card-title">{product.title}</h3>
+                  <h3 className="product-card-title">
+                    {product.title.includes('(') ? (
+                      <>
+                        {product.title.split('(')[0]}
+                        <br />
+                        <span className="title-sub">({product.title.split('(')[1]}</span>
+                      </>
+                    ) : (
+                      product.title
+                    )}
+                  </h3>
                   <p className="product-card-desc">{product.description}</p>
                 </div>
               </Link>

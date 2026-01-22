@@ -22,6 +22,10 @@ const NoticeList = () => {
     try {
       const response = await noticeApi.getNotices(page, 10);
       if (response.data.success && Array.isArray(response.data.data?.notices)) {
+        // [디버깅] 데이터 구조 확인: content 필드가 있는지 체크
+        if (response.data.data.notices.length > 0) {
+          console.log("첫 번째 공지사항 데이터:", response.data.data.notices[0]);
+        }
         setNotices(response.data.data.notices);
         setPagination(response.data.data.pagination);
       } else {
@@ -37,13 +41,27 @@ const NoticeList = () => {
     }
   };
 
+  // HTML 태그 제거 헬퍼 함수
+  const stripHtml = (html) => {
+    if (!html) return "";
+    return html.replace(/<[^>]*>?/gm, '');
+  };
+
   // 임시 필터링 로직 (프론트엔드 내에서 처리)
   const filteredNotices = notices.filter((notice) => {
     if (!searchKeyword) return true;
     const keyword = searchKeyword.toLowerCase();
-    if (searchType === 'title') return notice.title.toLowerCase().includes(keyword);
-    if (searchType === 'author') return notice.author.toLowerCase().includes(keyword);
-    return notice.title.toLowerCase().includes(keyword) || notice.author.toLowerCase().includes(keyword);
+    const title = (notice.title || '').toLowerCase();
+    // content에서 HTML 태그 제거 후 검색
+    const content = stripHtml(notice.content || '').toLowerCase();
+    const author = (notice.author || '관리자').toLowerCase();
+
+    if (searchType === 'title') return title.includes(keyword);
+    if (searchType === 'content') return content.includes(keyword);
+    if (searchType === 'author') return author.includes(keyword);
+    
+    // 전체 검색 (제목 + 내용 + 작성자)
+    return title.includes(keyword) || content.includes(keyword) || author.includes(keyword);
   });
 
   const handlePageChange = (pageNumber) => {
@@ -71,7 +89,7 @@ const NoticeList = () => {
           <div className="d-flex flex-wrap justify-content-between align-items-center mb-5 gap-3">
             <p className="mb-0 text-muted">총 <strong>{pagination?.totalCount || notices.length || 0}</strong>건의 게시물이 있습니다.</p>
             
-            {/* 검색창 영역 */}
+            {/* 검색창 영역 복구 */}
             <div className="d-flex gap-2 notice-search-bar">
               <select 
                 className="form-select" 
@@ -80,6 +98,7 @@ const NoticeList = () => {
                 onChange={(e) => setSearchType(e.target.value)}
               >
                 <option value="title">제목</option>
+                <option value="content">내용</option>
                 <option value="author">작성자</option>
                 <option value="all">전체</option>
               </select>
