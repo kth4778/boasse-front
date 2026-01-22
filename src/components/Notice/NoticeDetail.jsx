@@ -11,10 +11,6 @@ const NoticeDetail = () => {
   const [notice, setNotice] = useState(null);
   const [loading, setLoading] = useState(true);
   
-  // 삭제 모달 상태
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [deleting, setDeleting] = useState(false);
-
   useEffect(() => {
     const fetchNoticeDetail = async () => {
       try {
@@ -32,23 +28,6 @@ const NoticeDetail = () => {
 
     fetchNoticeDetail();
   }, [id]);
-
-  const handleDelete = async () => {
-    setDeleting(true);
-    try {
-      const response = await noticeApi.deleteNotice(id);
-      if (response.data.success) {
-        alert('삭제되었습니다.');
-        navigate('/notice');
-      }
-    } catch (error) {
-      console.error('Failed to delete notice:', error);
-      alert('오류가 발생했습니다.');
-    } finally {
-      setDeleting(false);
-      setShowDeleteModal(false);
-    }
-  };
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);

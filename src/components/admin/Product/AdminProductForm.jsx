@@ -119,29 +119,29 @@ const AdminProductForm = () => {
   const [iconPickerState, setIconPickerState] = useState({ show: false, targetIndex: null });
 
   useEffect(() => {
+    const fetchDetail = async () => {
+      try {
+        const response = await productApi.getProductDetail(id);
+        if (response.data.success) {
+          const data = response.data.data;
+          setFormData(prev => ({
+            ...prev,
+            ...data,
+            category: data.category || prev.category || 'Smart Farm',
+            specs: data.specs && Array.isArray(data.specs) && data.specs.length > 0 ? data.specs : INITIAL_SPECS,
+            features: data.features && Array.isArray(data.features) && data.features.length > 0 ? data.features : INITIAL_FEATURES
+          }));
+        }
+      } catch (error) {
+        console.error('불러오기 실패:', error);
+        navigate('/admin/product');
+      }
+    };
+
     if (isEdit) {
       fetchDetail();
     }
-  }, [id, isEdit]);
-
-  const fetchDetail = async () => {
-    try {
-      const response = await productApi.getProductDetail(id);
-      if (response.data.success) {
-        const data = response.data.data;
-        setFormData(prev => ({
-          ...prev,
-          ...data,
-          category: data.category || prev.category || 'Smart Farm',
-          specs: data.specs && Array.isArray(data.specs) && data.specs.length > 0 ? data.specs : INITIAL_SPECS,
-          features: data.features && Array.isArray(data.features) && data.features.length > 0 ? data.features : INITIAL_FEATURES
-        }));
-      }
-    } catch (error) {
-      console.error('불러오기 실패:', error);
-      navigate('/admin/product');
-    }
-  };
+  }, [id, isEdit, navigate]);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;

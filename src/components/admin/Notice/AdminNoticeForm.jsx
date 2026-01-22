@@ -20,31 +20,31 @@ const AdminNoticeForm = () => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    const fetchNoticeDetail = async () => {
+      try {
+        const response = await noticeApi.getNoticeDetail(id);
+        if (response.data.success) {
+          const { title, content, author, attachments } = response.data.data;
+          setFormData(prev => ({ ...prev, title, content, author }));
+          if (attachments) {
+            setExistingFiles(attachments);
+          }
+        }
+      } catch (error) {
+        console.error('공지사항 상세 정보 불러오기 실패:', error);
+        if (error.code === 'ERR_NETWORK') {
+          alert('서버와 연결할 수 없습니다. 관리자에게 문의하세요.');
+        } else {
+          alert('데이터를 불러오는 중 오류가 발생했습니다.');
+        }
+        navigate('/admin/notice');
+      }
+    };
+
     if (isEdit) {
       fetchNoticeDetail();
     }
-  }, [id, isEdit]);
-
-  const fetchNoticeDetail = async () => {
-    try {
-      const response = await noticeApi.getNoticeDetail(id);
-      if (response.data.success) {
-        const { title, content, author, attachments } = response.data.data;
-        setFormData(prev => ({ ...prev, title, content, author }));
-        if (attachments) {
-          setExistingFiles(attachments);
-        }
-      }
-    } catch (error) {
-      console.error('공지사항 상세 정보 불러오기 실패:', error);
-      if (error.code === 'ERR_NETWORK') {
-        alert('서버와 연결할 수 없습니다. 관리자에게 문의하세요.');
-      } else {
-        alert('데이터를 불러오는 중 오류가 발생했습니다.');
-      }
-      navigate('/admin/notice');
-    }
-  };
+  }, [id, isEdit, navigate]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
