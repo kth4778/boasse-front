@@ -73,6 +73,16 @@ const NoticeList = () => {
     return `${date.getFullYear()}.${String(date.getMonth() + 1).padStart(2, '0')}.${String(date.getDate()).padStart(2, '0')}`;
   };
 
+  if (loading) {
+    return (
+      <div className="notice-page">
+        <section className="notice-hero">
+           <Container><h1 className="text-white">Loading...</h1></Container>
+        </section>
+      </div>
+    );
+  }
+
   return (
     <div className="notice-page">
       <section className="notice-hero">

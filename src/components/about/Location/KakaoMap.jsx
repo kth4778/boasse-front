@@ -75,7 +75,8 @@ const KakaoMap = () => {
           validCoords.forEach(coord => {
             const position = new kakao.maps.LatLng(coord.lat, coord.lng);
             
-            const marker = new kakao.maps.Marker({
+            // Marker 생성 (변수 할당 불필요)
+            new kakao.maps.Marker({
               map: map,
               position: position,
             });

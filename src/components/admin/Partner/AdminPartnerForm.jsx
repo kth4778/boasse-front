@@ -17,41 +17,41 @@ const AdminPartnerForm = () => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    const fetchDetail = async () => {
+      try {
+        const response = await partnerApi.getPartnerDetail(id);
+        const res = response.data;
+        console.log('Partner Detail Full Response:', res);
+
+        // 1. 데이터 추출 (res.data 또는 res 자체가 데이터일 경우 대응)
+        const partnerData = res.success ? res.data : res;
+        
+        if (partnerData) {
+          // 필드 채우기
+          const { name, logo, link } = partnerData;
+          setName(name || '');
+          setLink(link || ''); 
+          
+          // 이미지 미리보기 설정
+          if (logo) {
+            const fullLogoUrl = partnerApi.getImageUrl(logo);
+            setLogoPreview(fullLogoUrl);
+            console.log('Set Logo Preview to:', fullLogoUrl);
+          }
+        } else {
+          console.warn('파트너 데이터를 찾을 수 없습니다.');
+        }
+      } catch (error) {
+        console.error('상세 정보 불러오기 실패:', error);
+        alert('데이터를 불러오는 중 오류가 발생했습니다.');
+        navigate('/admin/partner');
+      }
+    };
+
     if (isEdit) {
       fetchDetail();
     }
-  }, [id, isEdit]);
-
-  const fetchDetail = async () => {
-    try {
-      const response = await partnerApi.getPartnerDetail(id);
-      const res = response.data;
-      console.log('Partner Detail Full Response:', res);
-
-      // 1. 데이터 추출 (res.data 또는 res 자체가 데이터일 경우 대응)
-      const partnerData = res.success ? res.data : res;
-      
-      if (partnerData) {
-        // 필드 채우기
-        const { name, logo, link } = partnerData;
-        setName(name || '');
-        setLink(link || ''); 
-        
-        // 이미지 미리보기 설정
-        if (logo) {
-          const fullLogoUrl = partnerApi.getImageUrl(logo);
-          setLogoPreview(fullLogoUrl);
-          console.log('Set Logo Preview to:', fullLogoUrl);
-        }
-      } else {
-        console.warn('파트너 데이터를 찾을 수 없습니다.');
-      }
-    } catch (error) {
-      console.error('상세 정보 불러오기 실패:', error);
-      alert('데이터를 불러오는 중 오류가 발생했습니다.');
-      navigate('/admin/partner');
-    }
-  };
+  }, [id, isEdit, navigate]);
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];

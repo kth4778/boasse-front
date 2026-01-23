@@ -220,13 +220,13 @@ const About = () => {
           <div className="forest-layer forest-layer-1"></div>
           <div className="forest-layer forest-layer-2"></div>
           <div className="forest-light-rays"></div>
-          {[...Array(6)].map((_, i) => <div key={i} className={`leaf-particle leaf-${i + 1}`} style={{top: `${10+i*12}%`, left: `${(i%3)*30+10}%`}}></div>)}
+          {[...Array(10)].map((_, i) => <div key={i} className={`leaf-particle leaf-${i + 1}`} style={{top: `${10+i*8}%`, left: `${(i%3)*30+5}%`}}></div>)}
         </div>
 
         <section className="about-section intro-section">
           <div className="section-content">
             <div className="intro-title-wrapper">
-              <h1 style={{ willChange: 'transform, opacity' }}>Belong to <br /><span className="highlight">BOAS-SE</span></h1>
+              <h1>Belong to <br /><span className="highlight">BOAS-SE</span></h1>
             </div>
             <p className="intro-desc">
               BOAS-SE는 끊임없는 혁신과 기술 융합을 통해<br />
@@ -252,7 +252,7 @@ const About = () => {
         <div className="bg-layer mission-bg-layer-1"></div>
         <div className="bg-layer mission-bg-layer-2"></div>
         <div className="section-deco-container">
-          {[...Array(5)].map((_, i) => <div key={i} className={`local-firefly lf-${i}`}></div>)}
+          {[...Array(8)].map((_, i) => <div key={i} className={`local-firefly lf-${i}`}></div>)}
         </div>
         <div className="section-content">
           <div className="mission-grid">
@@ -270,7 +270,7 @@ const About = () => {
         <div className="bg-layer portfolio-bg-layer-1"></div>
         <div className="bg-layer portfolio-bg-layer-2"></div>
         <div className="portfolio-leaves-container">
-          {[...Array(4)].map((_, i) => (
+          {[...Array(6)].map((_, i) => (
             <div key={i} className={`side-leaf side-leaf-${i} ${i % 2 === 0 ? 'left-leaf' : 'right-leaf'}`}></div>
           ))}
         </div>
@@ -293,16 +293,16 @@ const About = () => {
         <div className="bg-layer history-bg-layer-1"></div>
         <div className="bg-layer history-bg-layer-2"></div>
         <div className="history-living-bg">
-          {[...Array(8)].map((_, i) => <div key={i} className="history-spore" style={{left: `${Math.random() * 100}%`, bottom: `-${Math.random() * 20}%`}}></div>)}
+          {[...Array(15)].map((_, i) => <div key={i} className="history-spore" style={{left: `${Math.random() * 100}%`, bottom: `-${Math.random() * 20}%`}}></div>)}
         </div>
         
         <div className="history-footprints-container">
-          {[...Array(6)].map((_, i) => (
+          {[...Array(10)].map((_, i) => (
             <FaShoePrints 
               key={i} 
               className="footprint-icon" 
               style={{
-                top: `${10 + i * 15}%`, 
+                top: `${8 + i * 10}%`, 
                 left: i % 2 === 0 ? '60px' : '140px', 
                 transform: `rotate(${i % 2 === 0 ? -25 : 25}deg)`
               }} 

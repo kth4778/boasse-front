@@ -112,10 +112,10 @@ const ProductDetail = () => {
           // specs와 features가 JSON 문자열로 올 경우 파싱 처리
           // (axios나 백엔드 설정에 따라 이미 객체일 수도 있음)
           if (typeof data.specs === 'string') {
-            try { data.specs = JSON.parse(data.specs); } catch (e) {}
+            try { data.specs = JSON.parse(data.specs); } catch { /* ignore parse error */ }
           }
           if (typeof data.features === 'string') {
-            try { data.features = JSON.parse(data.features); } catch (e) {}
+            try { data.features = JSON.parse(data.features); } catch { /* ignore parse error */ }
           }
           setProduct(data);
         }

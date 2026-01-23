@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Nav, Container, Card, Form, Button } from 'react-bootstrap';
 import { Link, Outlet, useLocation } from 'react-router-dom';
 import { FaTachometerAlt, FaBullhorn, FaUserTie, FaBoxOpen, FaHome, FaEnvelope, FaHandshake } from 'react-icons/fa';
@@ -6,16 +6,10 @@ import './AdminLayout.css';
 
 const AdminLayout = () => {
   const location = useLocation();
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(() => sessionStorage.getItem('admin_auth') === 'true');
   const [password, setPassword] = useState('');
 
-  // 컴포넌트 마운트 시 세션 확인
-  useEffect(() => {
-    const auth = sessionStorage.getItem('admin_auth');
-    if (auth === 'true') {
-      setIsAuthenticated(true);
-    }
-  }, []);
+  // 컴포넌트 마운트 시 세션 확인 (useEffect 제거됨)
 
   const handleLogin = (e) => {
     e.preventDefault();
