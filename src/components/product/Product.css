@@ -309,13 +309,22 @@
 }
 
 .product-card-title {
-  font-size: var(--font-size-lg); /* 2.5rem -> lg */
+  font-size: 1.5rem;
   font-weight: 800;
   margin-bottom: 1rem;
-  line-height: 1.2;
+  line-height: 1.3;
+  padding: 0 15px;
+  word-break: keep-all;
   transform: translateY(20px);
   opacity: 0;
   transition: transform 0.4s ease 0.2s, opacity 0.4s ease 0.2s;
+}
+
+.title-sub {
+  font-size: 1.1rem;
+  font-weight: 600;
+  display: block; /* 괄호 부분이 확실히 한 줄을 다 차지하도록 */
+  margin-top: 5px;
 }
 
 .product-card-desc {

@@ -41,7 +41,7 @@
   left: 0; width: 100%; height: 120%; 
   pointer-events: none;
   background-size: cover;
-  will-change: transform;
+  will-change: transform; /* 성능 최적화 */
   z-index: 0;
 }
 
@@ -66,6 +66,7 @@
   left: 0; width: 100%; height: 100%;
   background-size: cover; 
   transition: transform 0.1s linear;
+  will-change: transform; /* 성능 최적화 */
 }
 
 .forest-layer-1 {
@@ -108,37 +109,40 @@
 .value-item {
   position: absolute; width: 360px; height: 360px;
   display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;
-  backdrop-filter: blur(15px);
-  box-shadow: 0 20px 50px rgba(30, 47, 35, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  /* Hover 시 부드러운 전환을 위한 transition */
-  transition: z-index 0s, filter 0.3s ease, transform 0.3s ease; 
+  /* backdrop-filter 제거 유지 (성능 개선) */
+  background-color: rgba(255, 255, 255, 0.85); 
+  box-shadow: 0 10px 30px rgba(30, 47, 35, 0.08); 
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  /* border-radius는 애니메이션에 의해 덮어씌워짐 */
+  transition: z-index 0s, transform 0.3s ease, box-shadow 0.3s ease;
+  will-change: transform, border-radius; /* border-radius 추가 */
 }
 
-/* Hover Effect: 최상단으로 올리기 */
+/* Hover Effect */
 .value-item:hover {
   z-index: 100 !important;
-  animation-play-state: paused; /* 애니메이션 일시 정지하여 위치 고정 */
-  filter: brightness(1.05) drop-shadow(0 15px 30px rgba(0,0,0,0.15));
+  animation-play-state: paused;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.15); 
   cursor: pointer;
 }
 
 .value-item:nth-child(1) { 
   left: 50%; transform: translateX(-130%); z-index: 2; 
-  background-color: rgba(197, 225, 165, 0.5); 
+  background-color: rgba(197, 225, 165, 0.8); 
   animation: morphAndFloat1 8s ease-in-out infinite; 
 }
 .value-item:nth-child(2) { 
   left: 50%; transform: translateX(-50%); z-index: 3; margin-top: -40px; 
-  background-color: rgba(140, 198, 63, 0.45); 
+  background-color: rgba(140, 198, 63, 0.8); 
   animation: morphAndFloat2 10s ease-in-out infinite 0.5s; 
 }
 .value-item:nth-child(3) { 
   left: 50%; transform: translateX(30%); z-index: 1; 
-  background-color: rgba(76, 175, 80, 0.35); 
+  background-color: rgba(76, 175, 80, 0.6); 
   animation: morphAndFloat3 9s ease-in-out infinite 1s; 
 }
 
+/* 물방울 애니메이션 복구 */
 @keyframes morphAndFloat1 { 
   0%, 100% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; transform: translateX(-130%) translateY(0); } 
   50% { border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%; transform: translateX(-130%) translateY(-25px); } 
@@ -152,12 +156,12 @@
   50% { border-radius: 70% 30% 60% 40% / 40% 40% 70% 60%; transform: translateX(30%) translateY(-20px); } 
 }
 
-.value-icon { font-size: 3.5rem; color: #1e2f23; margin-bottom: 1rem; filter: drop-shadow(0 2px 4px rgba(255,255,255,0.3)); }
+.value-icon { font-size: 3.5rem; color: #1e2f23; margin-bottom: 1rem; }
 .value-text { font-size: 1.8rem; font-weight: 800; color: #1e2f23; }
 .value-sub { font-size: 1rem; color: #2e4a36; font-weight: 700; margin-top: 0.5rem; }
 
 
-/* --- 3. Mission Section (Deep Forest Parallax) --- */
+/* --- 3. Mission Section --- */
 .mission-section-static {
   background: radial-gradient(circle at 50% 30%, #2e4a36 0%, #1a2920 100%);
   color: #fff;
@@ -165,7 +169,7 @@
   position: relative;
   margin-top: -80px;
   z-index: 5;
-  filter: drop-shadow(0 -20px 30px rgba(0,0,0,0.3));
+  /* filter: drop-shadow 제거 -> clip-path 때문에 box-shadow 사용 불가하지만 성능 위해 제거 */
   clip-path: polygon(0 80px, 100% 0, 100% 100%, 0 100%);
 }
 
@@ -190,9 +194,10 @@
   position: absolute; width: 6px; height: 6px; 
   background-color: #ccff66;
   border-radius: 50%;
-  box-shadow: 0 0 15px 4px rgba(204, 255, 102, 0.8); 
+  box-shadow: 0 0 10px 2px rgba(204, 255, 102, 0.6); /* 그림자 범위 축소 */
   opacity: 0;
   animation: fireflyBlink 4s ease-in-out infinite alternate;
+  will-change: opacity, transform;
 }
 @keyframes fireflyBlink { 0% { opacity: 0.2; transform: scale(0.8); } 100% { opacity: 1; transform: scale(1.2); } }
 
@@ -213,7 +218,7 @@
 .mission-sub-text { font-size: 1.15rem; color: rgba(255, 255, 255, 0.7); max-width: 800px; }
 
 
-/* --- 4. Portfolio Section (Fresh Forest Parallax) --- */
+/* --- 4. Portfolio Section --- */
 .portfolio-section {
   background-color: #dcedc8;
   background-image: linear-gradient(135deg, #dcedc8 0%, #e8f5e9 100%);
@@ -222,7 +227,7 @@
   margin-top: -100px; 
   padding-top: 180px; 
   padding-bottom: 10rem;
-  filter: drop-shadow(0 -20px 40px rgba(0,0,0,0.15));
+  /* filter: drop-shadow 제거 */
   clip-path: polygon(0 0, 100% 100px, 100% 90%, 0 100%);
 }
 
@@ -248,7 +253,8 @@
   background: #8BC34A;
   border-radius: 5% 50% 5% 50%;
   opacity: 0.9; 
-  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  /* box-shadow 단순화 */
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 .side-leaf-0 { top: 15%; left: 2%; width: 60px; height: 60px; background: #689F38; }
 .side-leaf-1 { top: 25%; right: 2%; width: 40px; height: 40px; background: #9CCC65; }
@@ -261,11 +267,14 @@
 .portfolio-container { max-width: 1200px; margin: 0 auto; position: relative; z-index: 10; }
 .portfolio-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; list-style: none; padding: 0; }
 .portfolio-card {
-  background-color: rgba(255, 255, 255, 0.7); backdrop-filter: blur(5px);
+  /* backdrop-filter 제거 및 배경 불투명도 증가 */
+  background-color: rgba(255, 255, 255, 0.9); 
   padding: 2.5rem 2rem; border-radius: 20px;
-  box-shadow: 0 10px 25px rgba(46, 74, 54, 0.05); border: 1px solid rgba(255,255,255,0.6);
+  box-shadow: 0 5px 15px rgba(46, 74, 54, 0.05); /* box-shadow 최적화 */
+  border: 1px solid rgba(255,255,255,0.6);
   display: flex; flex-direction: column; align-items: center; text-align: center;
   transition: transform 0.3s ease;
+  will-change: transform;
 }
 .portfolio-card:hover { transform: translateY(-10px); background-color: #fff; }
 .portfolio-icon-wrapper {
@@ -275,15 +284,15 @@
 }
 
 
-/* --- 5. History Section (Enhanced Earth Concept) --- */
+/* --- 5. History Section --- */
 .history-section { 
-  background-color: #d7ccc8; /* 차분한 미디엄 베이지 */
+  background-color: #d7ccc8;
   position: relative;
   z-index: 4; 
   margin-top: -150px; 
   padding-top: 300px; 
   padding-bottom: 6rem;
-  filter: drop-shadow(0 -10px 30px rgba(0,0,0,0.08));
+  /* filter: drop-shadow 제거 */
   clip-path: polygon(0 150px, 100% 0, 100% 100%, 0 100%); 
   overflow: hidden; 
 }
@@ -297,7 +306,7 @@
   opacity: 0.4; 
   pointer-events: none; 
   z-index: 0;
-  animation: soilPan 60s linear infinite alternate;
+  /* 애니메이션 유지하되 will-change 추가 필요 (CSS animation은 브라우저가 알아서 최적화하기도 함) */
 }
 
 .history-section::after {
@@ -324,6 +333,7 @@
   background-color: #8d6e63;
   border-radius: 50%;
   opacity: 0; 
+  will-change: transform, opacity;
 }
 
 /* 3D Stomp Footprints */
@@ -336,7 +346,9 @@
   font-size: 8rem; 
   color: rgba(141, 110, 99, 0.35); 
   transform-origin: center;
-  filter: drop-shadow(1px 1px 1px rgba(255,255,255,0.5)) drop-shadow(-1px -1px 2px rgba(0,0,0,0.2)); 
+  /* filter 중 drop-shadow는 무겁지만, 여기서는 디자인 핵심이라 유지하되 blur radius를 줄이거나 제거 고려 */
+  filter: drop-shadow(1px 1px 1px rgba(255,255,255,0.5)); 
+  will-change: transform, opacity;
 }
 
 .history-bg-layer-1 {
@@ -365,7 +377,7 @@
 .history-timeline-column { flex: 1; min-width: 0; }
 .history-timeline { position: relative; padding: 2rem 0; width: 100%; }
 .history-track-bg { position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 2px; height: 100%; background-color: rgba(141, 110, 99, 0.15); }
-.history-track-fill { position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 2px; background-color: #8d6e63; height: 0; }
+.history-track-fill { position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 2px; background-color: #8d6e63; height: 0; will-change: height; }
 
 .timeline-row { display: flex; align-items: center; width: 100%; margin-bottom: 5rem; position: relative; z-index: 2; }
 .t-year-col, .t-content-col { flex: 1; min-width: 0; position: relative; }
@@ -410,7 +422,8 @@
 }
 .location-info-card {
   position: absolute; top: 40px; left: 40px; 
-  background: rgba(255,255,255,0.95); backdrop-filter: blur(10px);
+  /* backdrop-filter 제거 및 배경 불투명화 */
+  background: #fff; 
   padding: 2.5rem; border-radius: 20px; z-index: 10; 
   box-shadow: 0 15px 40px rgba(0,0,0,0.1); max-width: 350px;
 }

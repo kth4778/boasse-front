@@ -135,7 +135,18 @@ const Product = () => {
                   <div className="product-card-tags">
                     <span className="product-tag">{product.category}</span>
                   </div>
-                  <h3 className="product-card-title">{product.title}</h3>
+                  <h3 className="product-card-title">
+                    {product.title.split('(').map((text, i) => (
+                      <React.Fragment key={i}>
+                        {i > 0 && <br />}
+                        {i > 0 ? (
+                          <span className="title-sub">({text}</span>
+                        ) : (
+                          text
+                        )}
+                      </React.Fragment>
+                    ))}
+                  </h3>
                   <p className="product-card-desc">{product.description}</p>
                 </div>
               </Link>

@@ -1,10 +1,4 @@
-import axios from 'axios';
-
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '/api/v1';
-
-const api = axios.create({
-  baseURL: API_BASE_URL,
-});
+import api from './axiosConfig';
 
 export const partnerApi = {
   // 실제 이미지 URL을 생성하는 헬퍼 함수

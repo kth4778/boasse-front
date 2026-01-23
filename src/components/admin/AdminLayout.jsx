@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
-import { Nav, Container, Card, Form, Button } from 'react-bootstrap';
-import { Link, Outlet, useLocation } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Nav } from 'react-bootstrap';
+import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { FaTachometerAlt, FaBullhorn, FaUserTie, FaBoxOpen, FaHome, FaEnvelope, FaHandshake } from 'react-icons/fa';
+import authApi from '../../api/authApi';
 import './AdminLayout.css';
 
 /*
@@ -13,8 +14,8 @@ import './AdminLayout.css';
  */
 const AdminLayout = () => {
   const location = useLocation();
-  const [isAuthenticated, setIsAuthenticated] = useState(() => sessionStorage.getItem('admin_auth') === 'true');
-  const [password, setPassword] = useState('');
+  const navigate = useNavigate();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   // 관리자 로그인 처리
   const handleLogin = (e) => {
@@ -41,41 +42,7 @@ const AdminLayout = () => {
 
   // 인증되지 않은 경우 로그인 화면 표시
   if (!isAuthenticated) {
-    return (
-      <Container fluid className="d-flex align-items-center justify-content-center" style={{ minHeight: '100vh', backgroundColor: '#f0f2f5' }}>
-        <Card style={{ width: '100%', maxWidth: '400px', border: 'none', borderRadius: '16px', boxShadow: '0 10px 40px rgba(0,0,0,0.08)' }}>
-          <Card.Body className="p-5 text-center">
-            <h3 className="fw-bold mb-2" style={{ color: '#1e2f23' }}>BOAS-SE</h3>
-            <p className="text-muted mb-4 small">관리자 페이지 접근 권한 확인</p>
-            <Form onSubmit={handleLogin}>
-              <Form.Group className="mb-3">
-                <Form.Control 
-                  type="password" 
-                  placeholder="비밀번호를 입력하세요" 
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  style={{ padding: '12px 15px', borderRadius: '8px', backgroundColor: '#f8f9fa', border: '1px solid #e9ecef' }}
-                  autoFocus
-                />
-              </Form.Group>
-              <Button 
-                type="submit" 
-                variant="success" 
-                className="w-100 py-2 fw-bold" 
-                style={{ borderRadius: '8px', backgroundColor: '#1e2f23', border: 'none' }}
-              >
-                접속하기
-              </Button>
-            </Form>
-            <div className="mt-4 border-top pt-3">
-              <Link to="/" className="text-decoration-none text-secondary small fw-medium">
-                <FaHome className="me-1" /> 홈페이지로 돌아가기
-              </Link>
-            </div>
-          </Card.Body>
-        </Card>
-      </Container>
-    );
+    return null; 
   }
 
   return (
@@ -100,7 +67,7 @@ const AdminLayout = () => {
           <div className="sidebar-divider"></div>
           <Nav.Link as={Link} to="/" className="sidebar-item exit-link" onClick={() => sessionStorage.removeItem('admin_auth')}>
             <span className="sidebar-icon"><FaHome /></span>
-            <span className="sidebar-label">사용자 페이지로 (로그아웃)</span>
+            <span className="sidebar-label">로그아웃 (홈으로)</span>
           </Nav.Link>
         </Nav>
       </aside>

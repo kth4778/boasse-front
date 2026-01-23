@@ -1,11 +1,4 @@
-import axios from 'axios';
-
-const api = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL || '/api/v1',
-  headers: {
-    // 기본은 JSON, 파일 업로드 시에는 multipart/form-data가 자동 설정됨
-  },
-});
+import api from './axiosConfig';
 
 export const productApi = {
   // 제품 목록 조회

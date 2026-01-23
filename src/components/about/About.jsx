@@ -329,13 +329,7 @@ const About = () => {
         <div className="bg-layer history-bg-layer-1"></div>
         <div className="bg-layer history-bg-layer-2"></div>
         <div className="history-living-bg">
-          {sporePositions.map((pos) => (
-            <div 
-              key={pos.key} 
-              className="history-spore" 
-              style={{left: `${pos.left}%`, bottom: `${pos.bottom}%`}}
-            ></div>
-          ))}
+          {[...Array(15)].map((_, i) => <div key={i} className="history-spore" style={{left: `${Math.random() * 100}%`, bottom: `-${Math.random() * 20}%`}}></div>)}
         </div>
         
         <div className="history-footprints-container">
