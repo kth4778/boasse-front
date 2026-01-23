@@ -12,21 +12,27 @@ import './HeroSlider.css';
 
 gsap.registerPlugin(ScrollTrigger);
 
+/*
+ * [히어로 슬라이더 컴포넌트]
+ * 메인 페이지 최상단에 위치하여 회사의 핵심 가치와 비전을 시각적으로 전달하는 슬라이더입니다.
+ * Swiper 라이브러리를 사용하여 슬라이드 기능을 구현하고, GSAP를 사용하여 텍스트 등장 및 스크롤 연동 애니메이션 효과를 제공합니다.
+ */
 const HeroSlider = () => {
   const sectionRef = useRef(null);
   const swiperRef = useRef(null);
   const [activeIndex, setActiveIndex] = useState(0);
 
-  // 컨텐츠 애니메이션 함수
+  // 슬라이드 변경 시 실행되는 텍스트 애니메이션
   const animateContent = (swiper) => {
     setActiveIndex(swiper.realIndex); // 실제 인덱스 업데이트 (Loop 모드 대응)
 
-    // ... 기존 애니메이션 로직 ...
+    // 현재 활성화된 슬라이드의 DOM 요소 가져오기
     const activeSlide = swiper.slides[swiper.activeIndex];
     const content = activeSlide.querySelector('.hero-content');
     
     if (!content) return;
 
+    // 초기 상태 설정 후 애니메이션 실행
     gsap.set(content, { autoAlpha: 1 });
     const elements = content.querySelectorAll('.hero-subtitle, .hero-title, .hero-highlight, .btn-wrapper');
     
@@ -36,10 +42,14 @@ const HeroSlider = () => {
     );
   };
 
+  /*
+   * [슬라이드 데이터]
+   * 각 슬라이드의 ID, 이미지 경로, 소제목, 대제목, 강조 문구, 링크 정보를 정의합니다.
+   * 이미지 선택 기준: 신뢰감, 전문성, 규모감, 효율성을 강조하는 인물 없는 이미지 사용
+   */
   const slides = [
     {
       id: 1,
-      // Smart Farm: 깨끗한 스마트 온실 내부 (신뢰감, 청정 이미지, 인물 없음)
       image: '/images/HeroSlider-smartFarm.jpg',
       subtitle: 'BOAS-SE SMART FARM SOLUTION',
       title: '데이터로 완성하는\n미래 농업의 기준',
@@ -48,7 +58,6 @@ const HeroSlider = () => {
     },
     {
       id: 2,
-      // Smart Factory: 자동화 로봇 팔 (전문성, 기술력, 인물 없음)
       image: '/images/HeroSlider-smartFactory.jpg',
       subtitle: 'SMART FACTORY INNOVATION',
       title: '제조 현장의 혁신,\n지능형 자동화 솔루션',
@@ -57,7 +66,6 @@ const HeroSlider = () => {
     },
     {
       id: 3,
-      // Smart Mobility: 현대적인 물류 창고 (규모감, 효율성, 인물 없음)
       image: '/images/HeroSlider-smartLogitics.jpg',
       subtitle: 'AUTONOMOUS LOGISTICS',
       title: '공간을 연결하는\n자율주행의 시작',
@@ -66,6 +74,7 @@ const HeroSlider = () => {
     }
   ];
 
+  // 스크롤에 따른 배경 장식 요소(원형 데코) 이동 애니메이션
   useGSAP(() => {
     gsap.to('.hero-circle-deco', {
       y: 100,
@@ -126,16 +135,16 @@ const HeroSlider = () => {
         ))}
       </Swiper>
 
-      {/* 커스텀 페이지네이션 (슬라이딩 바) */}
+      {/* 커스텀 페이지네이션 (슬라이딩 바 UI) */}
       <div className="custom-pagination-container">
         <div className="pagination-track">
-          {/* 이동하는 녹색 바 */}
+          {/* 이동하는 활성 표시 바 (Active Indicator) */}
           <div 
             className="active-indicator" 
             style={{ transform: `translateX(${activeIndex * 50}px)` }} // 40px(width) + 10px(gap)
           ></div>
           
-          {/* 고정된 회색 불렛들 */}
+          {/* 고정된 위치 표시 점들 */}
           {slides.map((_, idx) => (
             <div 
               key={idx} 

@@ -8,6 +8,11 @@ import './Contact.css';
 
 gsap.registerPlugin(ScrollTrigger);
 
+/*
+ * [문의하기 페이지]
+ * 고객이 회사에 문의를 남길 수 있는 폼과 회사의 연락처 정보(주소, 전화번호, 팩스)를 제공하는 페이지입니다.
+ * 배경 애니메이션과 폼 등장 효과를 사용하여 시각적 완성도를 높였습니다.
+ */
 const Contact = () => {
   const wrapperRef = useRef(null);
   const [submitting, setSubmitting] = useState(false);
@@ -18,20 +23,23 @@ const Contact = () => {
     isAgreed: false
   });
 
+  // 페이지 스크롤 애니메이션 설정
   useGSAP(() => {
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: '.contact-dark-section',
-        start: 'top 98%',
+        start: 'top 98%', // 화면 하단에 닿으면 시작
         toggleActions: 'play none none reverse'
       }
     });
 
+    // 배경이 아래에서 위로 올라오는 효과
     tl.from('.contact-dark-section', {
       clipPath: 'inset(100% 0% 0% 0%)',
       duration: 0.6,
       ease: 'power2.out'
     })
+    // 폼과 텍스트가 순차적으로 등장하는 효과
     .from('.contact-content-animate', {
       y: 40,
       opacity: 0,
@@ -50,9 +58,11 @@ const Contact = () => {
     }));
   };
 
+  // 문의 폼 전송
   const handleSubmit = async (e) => {
     e.preventDefault();
     
+    // 유효성 검사
     if (!formData.name || !formData.message || !formData.isAgreed) {
       alert('이름, 내용, 개인정보 동의는 필수입니다.');
       return;
@@ -93,7 +103,7 @@ const Contact = () => {
         <div className="contact-bg-pattern"></div>
         <Container style={{ position: 'relative', zIndex: 2 }}>
           <Row className="gy-5 contact-content-animate">
-            {/* 좌측: 문의 폼 */}
+            {/* 왼쪽 영역: 문의 작성 폼 */}
             <Col lg={6}>
               <h3 className="dark-section-title">문의</h3>
               <form onSubmit={handleSubmit}>
@@ -103,7 +113,7 @@ const Contact = () => {
                     type="text" 
                     name="name"
                     className="custom-input" 
-                    placeholder="이름을 입력해 주세요." 
+                    placeholder="이름을 입력해 주세요."
                     value={formData.name}
                     onChange={handleChange}
                   />
@@ -114,7 +124,7 @@ const Contact = () => {
                     type="email" 
                     name="email"
                     className="custom-input" 
-                    placeholder="E-mail을 입력해 주세요." 
+                    placeholder="E-mail을 입력해 주세요."
                     value={formData.email}
                     onChange={handleChange}
                   />
@@ -150,7 +160,7 @@ const Contact = () => {
               </form>
             </Col>
 
-            {/* 우측: 유선상담 정보 */}
+            {/* 오른쪽 영역: 고객센터 및 위치 정보 */}
             <Col lg={6} className="ps-lg-5 contact-content-animate">
               <div className="info-group mb-5">
                 <span className="info-label">Customer Center</span>

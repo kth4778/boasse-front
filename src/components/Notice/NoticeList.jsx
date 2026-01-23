@@ -1,9 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Table, Pagination, Button } from 'react-bootstrap';
-import { Link, useNavigate } from 'react-router-dom';
+import { Container, Table, Pagination } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 import noticeApi from '../../api/noticeApi';
 import './Notice.css';
 
+/*
+ * [공지사항 목록 페이지]
+ * 게시판 형태로 공지사항 목록을 보여주는 컴포넌트입니다.
+ * 페이징(Pagination), 검색(Search), 목록 조회 기능을 포함합니다.
+ */
 const NoticeList = () => {
   const [notices, setNotices] = useState([]);
   const [pagination, setPagination] = useState({});
@@ -13,10 +18,12 @@ const NoticeList = () => {
   const [searchType, setSearchType] = useState('title');
   const navigate = useNavigate();
 
+  // 페이지 변경 시 데이터 다시 불러오기
   useEffect(() => {
     fetchNotices(currentPage);
   }, [currentPage]);
 
+  // 공지사항 목록 데이터 API 요청
   const fetchNotices = async (page) => {
     setLoading(true);
     try {
@@ -41,13 +48,12 @@ const NoticeList = () => {
     }
   };
 
-  // HTML 태그 제거 헬퍼 함수
-  const stripHtml = (html) => {
-    if (!html) return "";
-    return html.replace(/<[^>]*>?/gm, '');
-  };
-
-  // 임시 필터링 로직 (프론트엔드 내에서 처리)
+  /*
+   * [클라이언트 측 검색 필터링]
+   * API에서 검색 기능을 지원하지 않을 경우를 대비해, 
+   * 현재 로드된 페이지 내의 데이터를 기준으로 검색어를 필터링합니다.
+   * (실제 운영 환경에서는 API 검색 파라미터를 사용하는 것이 좋습니다.)
+   */
   const filteredNotices = notices.filter((notice) => {
     if (!searchKeyword) return true;
     const keyword = searchKeyword.toLowerCase();
@@ -85,6 +91,7 @@ const NoticeList = () => {
 
   return (
     <div className="notice-page">
+      {/* 상단 히어로 섹션 */}
       <section className="notice-hero">
         <Container>
           <div className="hero-content text-center">
@@ -96,10 +103,10 @@ const NoticeList = () => {
 
       <Container className="notice-content py-5">
         <div className="notice-list-container">
+          {/* 상단 툴바: 게시물 수 및 검색창 */}
           <div className="d-flex flex-wrap justify-content-between align-items-center mb-5 gap-3">
             <p className="mb-0 text-muted">총 <strong>{pagination?.totalCount || notices.length || 0}</strong>건의 게시물이 있습니다.</p>
             
-            {/* 검색창 영역 복구 */}
             <div className="d-flex gap-2 notice-search-bar">
               <select 
                 className="form-select" 
@@ -123,6 +130,7 @@ const NoticeList = () => {
             </div>
           </div>
 
+          {/* 게시물 목록 테이블 */}
           <Table hover responsive className="notice-table">
             <thead>
               <tr>
@@ -135,7 +143,8 @@ const NoticeList = () => {
             </thead>
             <tbody>
               {filteredNotices.map((notice, index) => {
-                // 가상 번호 계산 (전체 개수 - ((현재페이지-1)*10) - 인덱스)
+                // 게시글 번호 계산 (역순)
+                // (전체 개수 - ((현재페이지-1)*10) - 현재인덱스)
                 const totalCount = pagination?.totalCount || notices.length;
                 const virtualNum = totalCount - ((currentPage - 1) * 10) - index;
                 
@@ -163,6 +172,7 @@ const NoticeList = () => {
           </Table>
         </div>
 
+        {/* 페이지네이션 (Pagination) */}
         {pagination?.totalPages > 1 && (
           <div className="d-flex justify-content-center mt-5">
             <Pagination className="custom-pagination">

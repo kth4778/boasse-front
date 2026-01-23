@@ -8,6 +8,12 @@ import './BoardInquiry.css';
 
 gsap.registerPlugin(ScrollTrigger);
 
+/*
+ * [문의하기 섹션 컴포넌트]
+ * 사용자가 이름, 이메일, 메시지를 입력하여 문의를 보낼 수 있는 폼(Form)과
+ * 고객센터, 주소 등 연락처 정보를 제공하는 영역입니다.
+ * 어두운 배경 스타일과 등장 애니메이션을 포함합니다.
+ */
 const BoardInquiry = () => {
   const wrapperRef = useRef(null);
   const [submitting, setSubmitting] = useState(false);
@@ -18,31 +24,34 @@ const BoardInquiry = () => {
     isAgreed: false
   });
 
+  // 섹션 등장 시 애니메이션 효과
   useGSAP(() => {
-    // 문의하기 섹션 애니메이션 (등장은 빠르게, 텍스트는 우아하게)
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: '.contact-dark-section',
-        start: 'top 98%', // 화면 하단에 살짝만 닿아도 즉시 시작
+        start: 'top 98%', // 화면 하단에 닿으면 시작
         toggleActions: 'play none none reverse'
       }
     });
 
+    // 배경이 아래에서 위로 차오르는 효과
     tl.from('.contact-dark-section', {
       clipPath: 'inset(100% 0% 0% 0%)',
       duration: 0.6,
       ease: 'power2.out'
     })
+    // 컨텐츠가 순차적으로 떠오르는 효과
     .from('.contact-content-animate', {
       y: 40,
       opacity: 0,
-      duration: 0.8, // 속도를 0.3 -> 0.8로 늦춰 우아하게
-      stagger: 0.15, // 간격을 0.05 -> 0.15로 늘려 순차적으로 올라오는 느낌 강조
+      duration: 0.8, 
+      stagger: 0.15, 
       ease: 'power3.out'
     }, '-=0.3');
 
   }, { scope: wrapperRef });
 
+  // 폼 입력값 변경 처리
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setFormData(prev => ({
@@ -51,9 +60,11 @@ const BoardInquiry = () => {
     }));
   };
 
+  // 폼 제출 처리
   const handleSubmit = async (e) => {
     e.preventDefault();
     
+    // 필수값 검증
     if (!formData.name || !formData.message || !formData.isAgreed) {
       alert('이름, 내용, 개인정보 동의는 필수입니다.');
       return;
@@ -64,7 +75,7 @@ const BoardInquiry = () => {
     try {
       const response = await inquiryApi.createInquiry(formData);
 
-      // 백엔드 응답 구조에 따라 성공 여부 판단 (status code 200/201 또는 data.success)
+      // 성공 여부 확인
       if (response.status === 200 || response.status === 201 || response.data?.success) {
         alert('문의가 성공적으로 접수되었습니다.\n담당자가 확인 후 연락드리겠습니다.');
         setFormData({
@@ -74,13 +85,11 @@ const BoardInquiry = () => {
           isAgreed: false
         });
       } else {
-        // 성공 코드가 아닌 경우
         console.warn('Unexpected response status:', response.status);
         alert('문의 접수에 실패했습니다. 관리자에게 문의해주세요.');
       }
     } catch (error) {
       console.error('문의 접수 실패 (Detailed):', error);
-      // 서버 응답이 있는 에러인 경우 메시지 표시
       if (error.response) {
         alert(`문의 접수 오류: ${error.response.status} ${error.response.statusText}`);
       } else {
@@ -97,7 +106,7 @@ const BoardInquiry = () => {
         <div className="contact-bg-pattern"></div>
         <Container style={{ position: 'relative', zIndex: 2 }}>
           <Row className="gy-5 contact-content-animate">
-            {/* 좌측: 문의 폼 */}
+            {/* 좌측: 문의 입력 폼 */}
             <Col lg={6}>
               <h3 className="dark-section-title">문의</h3>
               <form onSubmit={handleSubmit}>
@@ -107,7 +116,7 @@ const BoardInquiry = () => {
                     type="text" 
                     name="name"
                     className="custom-input" 
-                    placeholder="이름을 입력해 주세요." 
+                    placeholder="이름을 입력해 주세요."
                     value={formData.name}
                     onChange={handleChange}
                   />
@@ -118,7 +127,7 @@ const BoardInquiry = () => {
                     type="email" 
                     name="email"
                     className="custom-input" 
-                    placeholder="E-mail을 입력해 주세요." 
+                    placeholder="E-mail을 입력해 주세요."
                     value={formData.email}
                     onChange={handleChange}
                   />
@@ -154,7 +163,7 @@ const BoardInquiry = () => {
               </form>
             </Col>
 
-            {/* 우측: 유선상담 정보 */}
+            {/* 우측: 회사 연락처 정보 */}
             <Col lg={6} className="ps-lg-5 contact-content-animate">
               <div className="info-group mb-5">
                 <span className="info-label">Customer Center</span>

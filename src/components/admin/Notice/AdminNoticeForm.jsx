@@ -1,9 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Button, Row, Col, Card } from 'react-bootstrap';
+import { Form, Button, Row, Col } from 'react-bootstrap';
 import { useNavigate, useParams } from 'react-router-dom';
 import { FaSave, FaTimes, FaTrash } from 'react-icons/fa';
 import noticeApi from '../../../api/noticeApi';
 
+/*
+ * [관리자 공지사항 작성/수정 컴포넌트]
+ * 공지사항의 제목, 내용, 작성자를 입력하고 첨부파일을 관리합니다.
+ * 사용자 페이지의 NoticeWrite와 유사하나 관리자 레이아웃에 맞춰져 있습니다.
+ */
 const AdminNoticeForm = () => {
   const { id } = useParams();
   const navigate = useNavigate();

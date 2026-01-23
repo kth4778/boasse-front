@@ -5,36 +5,30 @@ import { FaTachometerAlt, FaBullhorn, FaUserTie, FaBoxOpen, FaHome, FaEnvelope, 
 import authApi from '../../api/authApi';
 import './AdminLayout.css';
 
+/*
+ * [관리자 레이아웃 컴포넌트]
+ * 관리자 페이지의 공통 레이아웃을 정의합니다.
+ * - 로그인 인증 처리 (SessionStorage 기반 간단한 인증)
+ * - 사이드바 네비게이션
+ * - 메인 콘텐츠 영역 (Outlet)
+ */
 const AdminLayout = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  useEffect(() => {
-    const checkAuth = async () => {
-      const token = localStorage.getItem('accessToken');
-      if (!token) {
-        navigate('/admin/login', { replace: true });
-        return;
-      }
-      
-      // 토큰이 있으면 일단 인증된 것으로 간주하고 렌더링 (유효성 검사는 API 호출 시 401로 처리됨)
-      // 선택 사항: 페이지 진입 시마다 토큰 유효성 검사 API 호출
-      try {
-        // await authApi.verifyToken(); // 필요 시 주석 해제하여 엄격한 검증 활성화
-        setIsAuthenticated(true);
-      } catch (error) {
-        // 토큰이 만료되었거나 유효하지 않음
-        localStorage.removeItem('accessToken');
-        navigate('/admin/login', { replace: true });
-      }
-    };
-
-    checkAuth();
-  }, [navigate]);
-
-  const handleLogout = () => {
-    localStorage.removeItem('accessToken');
+  // 관리자 로그인 처리
+  const handleLogin = (e) => {
+    e.preventDefault();
+    const adminPassword = import.meta.env.VITE_ADMIN_PASSWORD;
+    
+    if (password === adminPassword) {
+      sessionStorage.setItem('admin_auth', 'true');
+      setIsAuthenticated(true);
+    } else {
+      alert('비밀번호가 올바르지 않습니다.');
+      setPassword('');
+    }
   };
 
   const menuItems = [
@@ -46,14 +40,14 @@ const AdminLayout = () => {
     { path: '/admin/inquiry', icon: <FaEnvelope />, label: '1:1 문의 관리' },
   ];
 
-  // 인증 체크 전에는 아무것도 렌더링하지 않음 (깜빡임 방지)
+  // 인증되지 않은 경우 로그인 화면 표시
   if (!isAuthenticated) {
     return null; 
   }
 
   return (
     <div className="admin-wrapper">
-      {/* Sidebar */}
+      {/* 사이드바 영역 */}
       <aside className="admin-sidebar">
         <div className="sidebar-header">
           <h3>BOAS-SE Admin</h3>
@@ -71,14 +65,14 @@ const AdminLayout = () => {
             </Nav.Link>
           ))}
           <div className="sidebar-divider"></div>
-          <Nav.Link as={Link} to="/" className="sidebar-item exit-link" onClick={handleLogout}>
+          <Nav.Link as={Link} to="/" className="sidebar-item exit-link" onClick={() => sessionStorage.removeItem('admin_auth')}>
             <span className="sidebar-icon"><FaHome /></span>
             <span className="sidebar-label">로그아웃 (홈으로)</span>
           </Nav.Link>
         </Nav>
       </aside>
 
-      {/* Main Content Area */}
+      {/* 메인 콘텐츠 영역 */}
       <main className="admin-main">
         <header className="admin-top-header">
           <h2 className="page-title">

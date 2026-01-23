@@ -14,6 +14,11 @@ import { useNavigate } from 'react-router-dom';
 
 gsap.registerPlugin(ScrollTrigger);
 
+/* 
+ * [데이터] 기업 연혁 정보 목록
+ * 연도별(year) 주요 사업 성과, 납품 실적, 기술 개발 및 인증 현황(content)을 
+ * 역순으로 배열에 정의하여 History 섹션의 타임라인을 구성하는 데 사용합니다.
+ */
 const HISTORY_DATA = [
   { year: "2025", content: ["지에스티산업 AI 기반 생산공정 스케줄 최적화 및 납기예측을 위한 DX 서비스 개발", "LS Electric 설비진단 고도화를 위한 센서 4종 및 엔지니어링 연계 개발"] },
   { year: "2024", content: ["과수 병해충 예측 및 방제 빅데이터 통합 플랫폼 구축", "LS Electric 진단 솔루션 고도화 및 서버 이중화 시스템 개발"] },
@@ -41,7 +46,7 @@ const About = () => {
   const navigate = useNavigate();
 
   useGSAP(() => {
-    // 1. Hero Parallax
+    // 1. 히어로 영역 패럴랙스 효과
     if (aboutTopWrapperRef.current) {
       gsap.to('.forest-layer-1', {
         yPercent: 30, ease: 'none',
@@ -59,7 +64,7 @@ const About = () => {
       });
     }
 
-    // 2. Mission Parallax
+    // 2. 미션 섹션 패럴랙스 효과
     if (missionSectionRef.current) {
       gsap.to('.mission-bg-layer-1', {
         yPercent: 20, ease: 'none',
@@ -71,7 +76,7 @@ const About = () => {
       });
     }
 
-    // 3. Portfolio Parallax
+    // 3. 포트폴리오 섹션 패럴랙스 효과
     if (portfolioSectionRef.current) {
       gsap.to('.portfolio-bg-layer-1', {
         yPercent: 15, ease: 'none',
@@ -89,7 +94,7 @@ const About = () => {
       });
     }
 
-    // 4. History Parallax & 3D Footprint Stomp (EQUAL PACING FIXED)
+    // 4. 연혁 패럴랙스 및 3D 발자국 효과 (균등 간격 적용)
     if (historyRef.current) {
       gsap.to('.history-bg-layer-1', {
         yPercent: 15, ease: 'none',
@@ -100,7 +105,7 @@ const About = () => {
         scrollTrigger: { trigger: historyRef.current, start: 'top bottom', end: 'bottom top', scrub: true }
       });
 
-      // 발자국 애니메이션: 타임라인으로 균등 배분 (Staggered Timeline)
+      // 발자국 애니메이션: 타임라인으로 균등 배분
       // 초기 상태 설정
       const footprints = gsap.utils.toArray('.footprint-icon');
       gsap.set(footprints, { opacity: 0, scale: 3, filter: "blur(12px)" });
@@ -110,22 +115,22 @@ const About = () => {
           trigger: historyRef.current,
           start: "top 60%", // 섹션 상단이 화면 중간보다 조금 아래에 오면 시작
           end: "bottom 90%", // 섹션이 거의 다 올라갈 때까지
-          scrub: 1, // 스크롤 속도에 맞춰 부드럽게 재생 (1초 지연으로 부드러움 극대화)
+          scrub: 1, // 스크롤 속도에 맞춰 부드럽게 재생
         }
       });
 
-      // 순차적으로 쿵쿵 찍히도록 설정
+      // 순차적으로 발자국이 찍히도록 설정
       fpTimeline.to(footprints, {
         opacity: 0.6,
         scale: 1,
         filter: "blur(0px)",
-        stagger: 0.8, // 발자국 간의 간격 (스크롤 길이에 따라 자동 배분됨)
+        stagger: 0.8, // 발자국 간의 간격
         duration: 1,  // 각 발자국이 찍히는 시간
-        ease: "power4.in" // 쿵! 하는 타격감 유지
+        ease: "power4.in" // 쿵 하는 타격감 유지
       });
 
-      // Spores (유지)
-      gsap.utils.toArray('.history-spore').forEach((spore, i) => {
+      // 미세 입자(Spores) 애니메이션 유지
+      gsap.utils.toArray('.history-spore').forEach((spore) => {
         gsap.set(spore, { x: gsap.utils.random(-20, 20), opacity: gsap.utils.random(0.3, 0.7), scale: gsap.utils.random(0.5, 1.5) });
         gsap.to(spore, {
           y: -400, x: `+=${gsap.utils.random(-50, 50)}`, rotation: gsap.utils.random(-180, 180),
@@ -134,7 +139,7 @@ const About = () => {
       });
     }
 
-    // Atmosphere Animation
+    // 섹션별 배경색 전환 애니메이션 (Atmosphere)
     ScrollTrigger.create({
       trigger: missionSectionRef.current, start: "top 60%", end: "bottom 60%",
       onEnter: () => gsap.to('.about-page', { backgroundColor: '#1a2920', duration: 0.8 }),
@@ -151,45 +156,49 @@ const About = () => {
       onLeaveBack: () => gsap.to('.about-page', { backgroundColor: '#dcedc8', duration: 0.8 })
     });
 
+    // 텍스트 등장 애니메이션
     gsap.set('.intro-section h1', { y: 50, opacity: 0 });
     gsap.to('.intro-section h1', { y: 0, opacity: 1, duration: 1, ease: "power3.out", stagger: 0.2 });
     gsap.set('.intro-desc', { y: 30, opacity: 0 });
     gsap.to('.intro-desc', { y: 0, opacity: 1, duration: 1, ease: "power3.out", delay: 0.5 });
     
+    // 핵심 가치 아이템 등장 애니메이션
     gsap.set('.value-item', { scale: 0.8, opacity: 0 });
     gsap.to('.value-item', { scale: 1, opacity: 1, duration: 1, stagger: 0.2, scrollTrigger: { trigger: '.values-section', start: "top 80%" } });
 
+    // 미션 텍스트 등장 애니메이션
     if (missionSectionRef.current) {
       gsap.set('.mission-main-text', { y: 50, opacity: 0 });
       gsap.to('.mission-main-text', { y: 0, opacity: 1, duration: 1, scrollTrigger: { trigger: missionSectionRef.current, start: "top 70%" } });
     }
 
+    // 포트폴리오 리스트 등장 애니메이션
     gsap.utils.toArray('.portfolio-list li').forEach((li, i) => {
       gsap.set(li, { y: 50, opacity: 0 });
       gsap.to(li, { y: 0, opacity: 1, duration: 0.8, delay: i * 0.1, scrollTrigger: { trigger: li, start: "top 90%" } });
     });
 
-    // History Timeline Rows Animation (Apple-style: Clean, Crisp, Subtle Blur)
+    // 연혁 타임라인 행 등장 애니메이션 (Apple 스타일: 깔끔하고 미세한 블러 효과)
     const historyRows = gsap.utils.toArray('.timeline-row');
     historyRows.forEach((row) => {
-      // 초기 상태: 투명, 약간 아래, 약간 축소, 흐릿함
       gsap.set(row, { opacity: 0, y: 30, scale: 0.98, filter: "blur(10px)" }); 
 
       gsap.to(row, {
         opacity: 1,
         y: 0,
         scale: 1,
-        filter: "blur(0px)", // 선명해지는 효과
+        filter: "blur(0px)", 
         duration: 0.8, 
-        ease: "expo.out", // 깔끔하고 빠르게 자리를 잡는 이징
+        ease: "expo.out", 
         scrollTrigger: {
           trigger: row,
           start: "top 85%", 
-          once: true // 단 한 번만 실행되도록 설정
+          once: true 
         }
       });
     });
 
+    // 타임라인 트랙 채우기 애니메이션
     const timer = setTimeout(() => {
       const iconCells = gsap.utils.toArray('.t-icon-cell'); 
       if (iconCells.length > 0) {
@@ -211,10 +220,25 @@ const About = () => {
   }, { scope: containerRef });
 
 
+  // 미세 입자(Spores) 위치 초기화
+  const [sporePositions, setSporePositions] = React.useState([]);
+
+  React.useEffect(() => {
+    setSporePositions([...Array(15)].map((_, i) => ({
+      key: i,
+      left: Math.random() * 100,
+      bottom: -(Math.random() * 20)
+    })));
+  }, []);
+
   return (
     <div className="about-page" ref={containerRef}>
       
-      {/* 1. Hero & Values */}
+      {/* 
+        [섹션] Hero 및 핵심 가치(Values) 영역
+        페이지 상단에 위치하여 숲 배경의 패럴랙스 효과와 함께 회사의 비전(BOAS-SE)을 소개하고,
+        Respect, Balance, Synergy라는 3대 핵심 가치를 아이콘과 함께 강조하여 보여줍니다.
+      */}
       <div ref={aboutTopWrapperRef} className="about-top-wrapper">
         <div className="forest-bg">
           <div className="forest-layer forest-layer-1"></div>
@@ -247,7 +271,11 @@ const About = () => {
         </section>
       </div>
 
-      {/* 2. Mission */}
+      {/*
+        [섹션] 미션(Mission) 소개 영역
+        하드웨어와 소프트웨어의 융합이라는 회사의 미션을 텍스트와 하이라이트로 전달하며,
+        배경의 반딧불이 애니메이션 효과를 통해 감성적인 분위기를 연출합니다.
+      */}
       <section className="about-section mission-section-static" ref={missionSectionRef}>
         <div className="bg-layer mission-bg-layer-1"></div>
         <div className="bg-layer mission-bg-layer-2"></div>
@@ -265,7 +293,11 @@ const About = () => {
         </div>
       </section>
 
-      {/* 3. Portfolio */}
+      {/*
+        [섹션] 포트폴리오(Portfolio) 영역
+        AI 예측, 스마트 팩토리, 모빌리티 등 회사의 5대 주요 사업 영역을 카드 형태로 나열하여
+        각 분야의 전문성과 솔루션 개요를 아이콘과 함께 시각적으로 제공합니다.
+      */}
       <section className="about-section portfolio-section" ref={portfolioSectionRef}>
         <div className="bg-layer portfolio-bg-layer-1"></div>
         <div className="bg-layer portfolio-bg-layer-2"></div>
@@ -288,7 +320,11 @@ const About = () => {
         </div>
       </section>
 
-      {/* 4. History */}
+      {/*
+        [섹션] 연혁(History) 타임라인 영역
+        HISTORY_DATA 데이터를 기반으로 회사가 걸어온 길을 연도별로 나열하며,
+        스크롤에 따라 발자국이 찍히는 애니메이션과 타임라인이 채워지는 인터랙션을 제공합니다.
+      */}
       <section className="about-section history-section" ref={historyRef}>
         <div className="bg-layer history-bg-layer-1"></div>
         <div className="bg-layer history-bg-layer-2"></div>
@@ -327,7 +363,11 @@ const About = () => {
         </div>
       </section>
 
-      {/* 5. Location & CTA */}
+      {/*
+        [섹션] 위치 안내(Location) 및 문의 유도(CTA) 영역
+        카카오맵 API를 연동한 지도와 본사/공장 주소, 연락처 정보를 제공하며,
+        하단에는 문의 페이지로 이동할 수 있는 버튼을 배치하여 사용자 행동을 유도합니다.
+      */}
       <section className="about-section location-section">
         <div className="section-content">
           <div className="location-wrapper">

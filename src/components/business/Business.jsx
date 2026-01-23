@@ -8,10 +8,16 @@ import 'swiper/css/pagination';
 
 import './Business.css';
 
+/*
+ * [비즈니스 소개 페이지]
+ * 회사의 주요 사업 분야(Vision, SI/SM, Mobile/Platform, AI/Big Data)를 
+ * 세로 스크롤 형태의 풀페이지 슬라이더로 소개하는 컴포넌트입니다.
+ * 배경 이미지가 슬라이드 전환에 맞춰 부드럽게 변경되며, 각 섹션의 핵심 메시지를 전달합니다.
+ */
 const Business = () => {
   const [activeIndex, setActiveIndex] = useState(0);
 
-  // 통일감 있는 추상적인 다크 테마 이미지 URL 리스트
+  // 배경 이미지 목록 (다크 테마에 어울리는 추상적이고 고화질의 이미지 사용)
   const backgroundImages = [
     'https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop', // Vision (Global Network)
     'https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=2070&auto=format&fit=crop', // SI (Circuit/Chip)
@@ -22,7 +28,11 @@ const Business = () => {
 
   return (
     <div className="business-container">
-      {/* 배경 레이어 (Cross-fade 효과를 위해 Swiper 밖으로 분리) */}
+      {/* 
+        [배경 이미지 레이어]
+        Swiper 내부에 넣지 않고 별도로 분리하여 Cross-fade 효과를 자연스럽게 구현했습니다.
+        활성화된 슬라이드 인덱스(activeIndex)에 해당하는 이미지만 투명도를 1로 설정합니다.
+      */}
       <div className="background-container">
         {backgroundImages.map((img, index) => (
           <div
@@ -31,23 +41,23 @@ const Business = () => {
             style={{ backgroundImage: `url(${img})` }}
           />
         ))}
-        <div className="bg-overlay"></div> {/* 전체 오버레이 */}
+        <div className="bg-overlay"></div> {/* 텍스트 가독성을 위한 어두운 오버레이 */}
       </div>
 
       <Swiper
-        direction={'vertical'}
-        slidesPerView={1}
+        direction={'vertical'}      // 세로 방향 스크롤
+        slidesPerView={1}           // 한 번에 하나의 슬라이드만 표시
         spaceBetween={0}
-        mousewheel={true}
-        speed={1000}
+        mousewheel={true}           // 마우스 휠로 제어 가능
+        speed={1000}                // 전환 속도 (1초)
         pagination={{
-          clickable: true,
+          clickable: true,          // 페이지네이션 클릭 가능
         }}
         modules={[Mousewheel, Pagination]}
-        onSlideChange={(swiper) => setActiveIndex(swiper.activeIndex)}
+        onSlideChange={(swiper) => setActiveIndex(swiper.activeIndex)} // 현재 슬라이드 변경 시 상태 업데이트
         className="business-swiper"
       >
-        {/* Slide 1: Intro */}
+        {/* 슬라이드 1: 회사 비전 소개 */}
         <SwiperSlide className="business-slide">
           <div className="slide-content">
             <div className="slide-eyebrow">BOAS-SE Vision</div>
@@ -59,7 +69,7 @@ const Business = () => {
           </div>
         </SwiperSlide>
 
-        {/* Slide 2: SI/SM */}
+        {/* 슬라이드 2: SI/SM 사업 영역 */}
         <SwiperSlide className="business-slide">
           <div className="slide-content">
             <div className="slide-eyebrow">System Integration & Management</div>
@@ -71,7 +81,7 @@ const Business = () => {
           </div>
         </SwiperSlide>
 
-        {/* Slide 3: Mobile & Platform */}
+        {/* 슬라이드 3: 모바일 및 플랫폼 사업 영역 */}
         <SwiperSlide className="business-slide">
           <div className="slide-content">
             <div className="slide-eyebrow">Mobile & Platform</div>
@@ -83,7 +93,7 @@ const Business = () => {
           </div>
         </SwiperSlide>
 
-        {/* Slide 4: AI & Big Data */}
+        {/* 슬라이드 4: AI 및 빅데이터 사업 영역 */}
         <SwiperSlide className="business-slide">
           <div className="slide-content">
             <div className="slide-eyebrow">AI & Big Data</div>
@@ -95,7 +105,7 @@ const Business = () => {
           </div>
         </SwiperSlide>
 
-        {/* Slide 5: Contact */}
+        {/* 슬라이드 5: 문의하기 (CTA) */}
         <SwiperSlide className="business-slide">
           <div className="slide-content">
             <div className="slide-eyebrow">Contact Us</div>

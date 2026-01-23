@@ -5,6 +5,11 @@ import { FaPlus, FaEdit, FaTrash, FaStar, FaRegStar } from 'react-icons/fa';
 import productApi from '../../../api/productApi';
 import { getImageUrl } from '../../../utils/imageUtils';
 
+/*
+ * [관리자 제품 관리 컴포넌트]
+ * 등록된 제품 목록을 조회하고, 메인 페이지 노출 여부(Main Featured)를 토글하거나
+ * 수정/삭제할 수 있는 기능을 제공합니다.
+ */
 const AdminProductList = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -23,9 +28,6 @@ const AdminProductList = () => {
       const response = await productApi.getProducts();
       if (response.data.success) {
         setProducts(response.data.data);
-        if (response.data.data.length > 0) {
-          console.log("첫 번째 제품 데이터 확인:", response.data.data[0]);
-        }
       }
     } catch (error) {
       console.error('제품 목록을 불러오는 중 오류 발생:', error);
@@ -35,9 +37,10 @@ const AdminProductList = () => {
     }
   };
 
+  // 메인 노출 여부 토글 핸들러
   const handleToggleMainFeatured = async (product) => {
     try {
-      // 필드명 호환성 처리 (isMainFeatured 또는 mainFeatured)
+      // API 응답 필드명 호환성 처리 (isMainFeatured / mainFeatured)
       const currentStatus = product.isMainFeatured !== undefined ? product.isMainFeatured : product.mainFeatured;
       
       const form = new FormData();

@@ -1,9 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Form, Button, Row, Col } from 'react-bootstrap';
+import { Form, Button } from 'react-bootstrap';
 import { useNavigate, useParams } from 'react-router-dom';
 import { FaSave, FaTimes, FaImage } from 'react-icons/fa';
 import partnerApi from '../../../api/partnerApi';
 
+/*
+ * [관리자 파트너 등록/수정 컴포넌트]
+ * 파트너 이름, 링크, 로고 이미지를 입력받아 저장합니다.
+ * 이미지 미리보기 및 파일 업로드 기능을 제공합니다.
+ */
 const AdminPartnerForm = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -11,7 +16,7 @@ const AdminPartnerForm = () => {
   const fileInputRef = useRef(null);
 
   const [name, setName] = useState('');
-  const [link, setLink] = useState(''); // 링크 상태 추가
+  const [link, setLink] = useState(''); 
   const [logoPreview, setLogoPreview] = useState(null);
   const [logoFile, setLogoFile] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -21,7 +26,6 @@ const AdminPartnerForm = () => {
       try {
         const response = await partnerApi.getPartnerDetail(id);
         const res = response.data;
-        console.log('Partner Detail Full Response:', res);
 
         // 1. 데이터 추출 (res.data 또는 res 자체가 데이터일 경우 대응)
         const partnerData = res.success ? res.data : res;
@@ -36,10 +40,7 @@ const AdminPartnerForm = () => {
           if (logo) {
             const fullLogoUrl = partnerApi.getImageUrl(logo);
             setLogoPreview(fullLogoUrl);
-            console.log('Set Logo Preview to:', fullLogoUrl);
           }
-        } else {
-          console.warn('파트너 데이터를 찾을 수 없습니다.');
         }
       } catch (error) {
         console.error('상세 정보 불러오기 실패:', error);
@@ -76,7 +77,7 @@ const AdminPartnerForm = () => {
     try {
       const formData = new FormData();
       formData.append('name', name);
-      formData.append('link', link); // 링크 전송
+      formData.append('link', link);
       if (logoFile) {
         formData.append('logo', logoFile);
       }

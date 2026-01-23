@@ -9,11 +9,17 @@ import './Recruit.css';
 
 gsap.registerPlugin(ScrollTrigger);
 
+/*
+ * [인재 채용 페이지]
+ * 회사의 채용 절차(Process), 복리후생(Benefits), 그리고 현재 진행 중인 채용 공고(Job Openings)를 소개하는 페이지입니다.
+ * 채용 공고 데이터는 API를 통해 불러오며, 각 섹션별로 스크롤 애니메이션이 적용되어 있습니다.
+ */
 const Recruit = () => {
   const containerRef = useRef(null);
   const [recruits, setRecruits] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  // 채용 공고 데이터 로드
   useEffect(() => {
     const fetchRecruits = async () => {
       try {
@@ -29,11 +35,12 @@ const Recruit = () => {
     fetchRecruits();
   }, []);
 
+  // 섹션별 등장 애니메이션 설정
   useGSAP(() => {
-    // 모든 애니메이션 대상 요소를 즉시 선명하게 강제 설정
+    // 1. 초기 상태 설정 (깜빡임 방지)
     gsap.set('.animate-up', { opacity: 1, y: 0 });
 
-    // 2. 나머지 섹션들 (스크롤 감지 후 실행)
+    // 2. 각 섹션 요소들이 스크롤 될 때 아래에서 위로 부드럽게 나타나도록 설정
     const sections = gsap.utils.toArray('.recruit-section');
     sections.forEach((section) => {
       const elements = section.querySelectorAll('.animate-up');
@@ -48,7 +55,7 @@ const Recruit = () => {
             ease: 'power2.out',
             scrollTrigger: {
               trigger: section,
-              start: 'top 92%', // 훨씬 더 일찍 나타나도록 조정
+              start: 'top 92%', 
               toggleActions: 'play none none none',
               once: true
             }
@@ -60,6 +67,7 @@ const Recruit = () => {
     ScrollTrigger.refresh();
   }, { scope: containerRef, dependencies: [loading, recruits] });
 
+  // [데이터] 채용 절차 아이콘 및 설명
   const processes = [
     { icon: <FaFileAlt />, title: '입사지원', desc: '온라인 및 이메일 지원' },
     { icon: <FaUserPlus />, title: '서류전형', desc: '자격요건 및 역량 검토' },
@@ -67,6 +75,7 @@ const Recruit = () => {
     { icon: <FaCheckCircle />, title: '최종합격', desc: '최종 처우 협의 및 입사' },
   ];
 
+  // [데이터] 복리후생 아이콘 및 설명
   const welfares = [
     { icon: <FaChartLine />, title: '성과 보상', desc: '우수사원 표창 및 포상제도 운영' },
     { icon: <FaIdCard />, title: '장기근속 포상', desc: '장기근속자 유급휴가 및 포상' },
@@ -74,6 +83,7 @@ const Recruit = () => {
     { icon: <FaHandsHelping />, title: '안정된 생활', desc: '퇴직연금 및 4대보험 가입' },
   ];
 
+  // 유연한 데이터 접근을 위한 헬퍼 함수 (API 응답 필드명이 다를 경우 대응)
   const getFieldData = (job, keys) => {
     for (const key of keys) {
       if (job[key]) return job[key];
@@ -81,6 +91,7 @@ const Recruit = () => {
     return null;
   };
 
+  // 줄바꿈 문자나 쉼표로 구분된 텍스트를 리스트 아이템으로 변환하여 렌더링
   const renderListItems = (data) => {
     if (!data) return null;
     let items = [];
@@ -94,6 +105,7 @@ const Recruit = () => {
     return filtered.map((item, i) => <li key={i}>{item}</li>);
   };
 
+  // 지원하기 버튼 클릭 핸들러
   const handleApplyClick = (e, job) => {
     const link = getFieldData(job, ['applyLink', 'apply_link', 'applyUrl', 'link']);
     if (!link) {
@@ -107,6 +119,7 @@ const Recruit = () => {
 
   return (
     <div className="recruit-page" ref={containerRef}>
+      {/* 1. 히어로 섹션 */}
       <section className="recruit-hero">
         <Container>
           <div className="hero-content text-center">
@@ -118,6 +131,7 @@ const Recruit = () => {
         </Container>
       </section>
 
+      {/* 2. 채용 절차 섹션 */}
       <section className="recruit-section process-section py-5">
         <Container>
           <div className="section-header text-center mb-5">
@@ -140,6 +154,7 @@ const Recruit = () => {
         </Container>
       </section>
 
+      {/* 3. 복리후생 섹션 */}
       <section className="recruit-section welfare-section py-5 bg-light">
         <Container>
           <div className="section-header text-center mb-5">
@@ -161,6 +176,7 @@ const Recruit = () => {
         </Container>
       </section>
 
+      {/* 4. 진행 중인 채용 공고 섹션 */}
       <section className="recruit-section jobs-section py-5">
         <Container>
           <div className="section-header text-center mb-5">
