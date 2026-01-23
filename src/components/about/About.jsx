@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useMemo } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
@@ -221,7 +221,7 @@ const About = () => {
 
 
   // 미세 입자(Spores) 위치 초기화 (메모이제이션)
-  const sporePositions = React.useMemo(() => {
+  const sporePositions = useMemo(() => {
     return [...Array(15)].map((_, i) => ({
       key: i,
       left: Math.random() * 100,

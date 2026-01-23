@@ -10,12 +10,17 @@ import './AdminLayout.css';
 const AdminLayout = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  // 초기값을 함수로 전달하여 렌더링 시점에 동기적으로 확인 (Lazy Initialization)
+  
+  // 인증 여부를 초기 렌더링 시점에 한 번만 결정 (Lazy Initialization)
   const [isAuthenticated, setIsAuthenticated] = useState(() => {
-    return !!localStorage.getItem('accessToken');
+    try {
+      return !!localStorage.getItem('accessToken');
+    } catch (e) {
+      return false;
+    }
   });
 
-  // 인증 실패 시 리다이렉트만 처리
+  // 인증 실패 시 리다이렉트
   useEffect(() => {
     if (!isAuthenticated) {
       navigate('/admin/login', { replace: true });
