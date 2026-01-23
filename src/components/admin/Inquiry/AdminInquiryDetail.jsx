@@ -3,6 +3,10 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { Button, Card, Spinner } from 'react-bootstrap';
 import inquiryApi from '../../../api/inquiryApi';
 
+/*
+ * [관리자 1:1 문의 상세 컴포넌트]
+ * 특정 문의의 전체 내용을 확인하고 삭제할 수 있는 상세 페이지입니다.
+ */
 const AdminInquiryDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -14,9 +18,7 @@ const AdminInquiryDetail = () => {
       try {
         const response = await inquiryApi.getInquiryDetail(id);
         
-        // HTTP 상태 코드가 200이면 성공으로 간주
         if (response.status === 200 && response.data) {
-          // response.data.data(래핑된 경우) 또는 response.data(직접 반환) 사용
           const inquiryData = response.data.data || response.data;
           setInquiry(inquiryData);
         } else {

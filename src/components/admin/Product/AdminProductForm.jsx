@@ -15,7 +15,7 @@ import {
 import productApi from '../../../api/productApi';
 import { getImageUrl } from '../../../utils/imageUtils';
 
-// 스타일 시트 임포트import '../../product/ProductDetail.css';
+import '../../product/ProductDetail.css';
 import './AdminProductEditor.css';
 
 import 'swiper/css';
@@ -52,6 +52,10 @@ const ICON_MAP = {
   'FaTools': <FaTools />
 };
 
+/* 
+ * [아이콘 선택 모달 컴포넌트]
+ * 제품 스펙(Spec)에 사용할 아이콘을 시각적으로 선택할 수 있는 팝업 창입니다.
+ */
 const IconPicker = ({ currentIconName, onSelect, onClose }) => {
   return (
     <div className="icon-picker-modal">
@@ -93,6 +97,15 @@ const INITIAL_FEATURES = [
 const NEW_SPEC_ITEM = { icon: 'FaCheckCircle', label: '', highlight: '', text: '' };
 const NEW_FEATURE_ITEM = { title: '', desc: '' };
 
+/*
+ * [관리자 제품 등록/수정 에디터]
+ * 실제 제품 상세 페이지(ProductDetail)와 유사한 UI(Swiper)를 사용하여
+ * WYSIWYG(What You See Is What You Get) 방식으로 제품 정보를 편집할 수 있습니다.
+ * - 스펙 및 기능 추가/삭제/수정
+ * - 아이콘 변경
+ * - 이미지 업로드
+ * - 메인 노출 설정
+ */
 const AdminProductForm = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -103,7 +116,7 @@ const AdminProductForm = () => {
   const [formData, setFormData] = useState({
     title: '',
     category: 'Smart Farm',
-    image: '/images/prod-farm.jpg', // 기본 이미지 경로 안전하게 설정
+    image: '/images/prod-farm.jpg',
     description: '',
     detail: '',
     isMainFeatured: false,
@@ -118,6 +131,7 @@ const AdminProductForm = () => {
   // 아이콘 선택기 상태
   const [iconPickerState, setIconPickerState] = useState({ show: false, targetIndex: null });
 
+  // 수정 모드 시 데이터 로드
   useEffect(() => {
     const fetchDetail = async () => {
       try {
@@ -343,7 +357,7 @@ const AdminProductForm = () => {
         </div>
       </div>
 
-      {/* --- 배경 레이어 --- */}
+      {/* --- 배경 레이어 (미리보기) --- */}
       <div className="pd-bg-container">
         <div className={`pd-bg-image ${activeIndex === 0 ? 'active' : ''}`} style={bgStyle}>
           <div className="pd-bg-overlay"></div>
@@ -372,7 +386,7 @@ const AdminProductForm = () => {
         onSlideChange={(swiper) => setActiveIndex(swiper.activeIndex)}
         className="pd-swiper"
       >
-        {/* Slide 1: Hero (Editable) */}
+        {/* 슬라이드 1: 제품 기본 정보 편집 */}
         <SwiperSlide className="pd-slide">
           <div className="pd-content editable">
             <span className="pd-category">{formData.category}</span>
@@ -394,7 +408,7 @@ const AdminProductForm = () => {
           </div>
         </SwiperSlide>
 
-        {/* Slide 2: Key Performance (Editable - Dynamic) */}
+        {/* 슬라이드 2: 핵심 스펙(Spec) 편집 */}
         <SwiperSlide className="pd-slide">
           <div className="pd-content">
             <div className="d-flex align-items-center mb-4 gap-3">
@@ -467,7 +481,7 @@ const AdminProductForm = () => {
           </div>
         </SwiperSlide>
 
-        {/* Slide 3: Detailed Features (Editable - Dynamic) */}
+        {/* 슬라이드 3: 상세 기능(Features) 편집 */}
         <SwiperSlide className="pd-slide">
           <div className="pd-content">
             <div className="d-flex align-items-center mb-4 gap-3">
@@ -534,7 +548,7 @@ const AdminProductForm = () => {
           </div>
         </SwiperSlide>
 
-        {/* Slide 4: CTA Preview */}
+        {/* 슬라이드 4: CTA 미리보기 (편집 불가) */}
         <SwiperSlide className="pd-slide">
           <div className="pd-content">
             <h2 className="pd-title" style={{ fontSize: '3.5rem' }}>Ready to Innovate?</h2>
@@ -553,7 +567,6 @@ const AdminProductForm = () => {
       {iconPickerState.show && (
         <IconPicker 
           currentIconName={
-            // 안전장치: specs가 없거나 인덱스가 벗어날 경우 대비
             (formData.specs && formData.specs[iconPickerState.targetIndex]) 
               ? formData.specs[iconPickerState.targetIndex].icon 
               : 'FaCheckCircle'

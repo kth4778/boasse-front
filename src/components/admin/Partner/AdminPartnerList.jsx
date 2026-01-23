@@ -4,6 +4,11 @@ import { useNavigate } from 'react-router-dom';
 import { FaPlus, FaEdit, FaTrash, FaLink } from 'react-icons/fa';
 import partnerApi from '../../../api/partnerApi';
 
+/*
+ * [관리자 파트너 관리 컴포넌트]
+ * 협력사(파트너) 목록을 조회하고, 추가/수정/삭제 기능을 제공합니다.
+ * 파트너 로고와 링크 정보 등을 관리합니다.
+ */
 const AdminPartnerList = () => {
   const [partners, setPartners] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -21,10 +26,10 @@ const AdminPartnerList = () => {
     try {
       const response = await partnerApi.getPartners();
       const res = response.data;
-      console.log('Final Partner Data Check:', res); // 로그 메시지 변경으로 반영 확인
 
       let partnerList = [];
       if (res.success && res.data) {
+        // API 응답 구조 다양성 처리
         if (Array.isArray(res.data.items)) {
           partnerList = res.data.items;
         } else if (Array.isArray(res.data)) {

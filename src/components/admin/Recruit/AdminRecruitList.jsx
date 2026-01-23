@@ -4,12 +4,15 @@ import { useNavigate } from 'react-router-dom';
 import { FaPlus, FaEdit, FaTrash } from 'react-icons/fa';
 import recruitApi from '../../../api/recruitApi';
 
+/*
+ * [관리자 채용 공고 관리 컴포넌트]
+ * 현재 진행 중인 채용 공고 목록을 확인하고 관리(수정, 삭제)합니다.
+ */
 const AdminRecruitList = () => {
   const [recruits, setRecruits] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
-  // 삭제 확인 모달 상태
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
 

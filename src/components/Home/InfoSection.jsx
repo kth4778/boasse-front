@@ -5,19 +5,27 @@ import { useGSAP } from '@gsap/react';
 
 import './InfoSection.css';
 
+/*
+ * [핵심 솔루션 소개 섹션]
+ * 회사의 4대 핵심 비즈니스(스마트 팜, 팩토리, 모빌리티, 빌딩)를 소개하는 탭/캐러셀 형태의 섹션입니다.
+ * 3D 카드 회전 애니메이션과 텍스트 전환 효과를 사용하여 인터랙티브하게 정보를 전달합니다.
+ */
 const InfoSection = () => {
   const sectionRef = useRef(null);
   const [activeIndex, setActiveIndex] = useState(0);
   const previousIndex = useRef(0);
-  const isAnimating = useRef(false); // 애니메이션 진행 상태 추적
+  const isAnimating = useRef(false); // 애니메이션 중복 실행 방지를 위한 플래그
 
+  /*
+   * [솔루션 데이터]
+   * 각 비즈니스 영역의 카테고리, 제목, 설명, 이미지 경로, 링크 정보를 정의합니다.
+   */
   const solutions = [
     {
       id: 1,
       category: 'Smart Farm',
       title: '스마트 팜 솔루션',
       desc: '빅데이터와 AI 기반의 정밀 제어 시스템으로 최적의 생육 환경을 제공합니다. 생산성을 극대화하고 노동력을 절감하는 미래형 농업 기술입니다.',
-      // 수직 농장(Vertical Farm) 이미지로 첨단 기술 느낌 강조 (인물 없음)
       image: '/images/smartFarm.jpg',
       link: '/business'
     },
@@ -26,7 +34,6 @@ const InfoSection = () => {
       category: 'Smart Factory',
       title: '스마트 팩토리',
       desc: '제조 현장의 데이터를 실시간으로 수집하고 분석하여 공정을 최적화합니다. 예지 보전과 품질 관리 자동화로 생산 효율을 혁신합니다.',
-      // 자동화 로봇 팔 이미지 (전문성, 기술력)
       image: '/images/smartFactory.jpg',
       link: '/business'
     },
@@ -35,7 +42,6 @@ const InfoSection = () => {
       category: 'Smart Mobility',
       title: '스마트 모빌리티',
       desc: '자율주행 물류 로봇과 통합 관제 시스템으로 물류의 흐름을 혁신합니다. 안전하고 효율적인 이동을 위한 최첨단 모빌리티 솔루션입니다.',
-      // 자율주행 AGV 로봇 이미지
       image: '/images/smartMobility.jpg',
       link: '/business'
     },
@@ -44,14 +50,13 @@ const InfoSection = () => {
       category: 'Smart Building',
       title: '스마트 빌딩 에너지',
       desc: '건물의 에너지 사용 패턴을 AI가 학습하여 최적의 제어를 수행합니다. 에너지 비용을 획기적으로 절감하고 쾌적한 공간 환경을 조성합니다.',
-      // 현대식 빌딩 복도 이미지
       image: '/images/smartBuilding.jpg',
       link: '/business'
     }
   ];
 
+  // 배경 파티클 애니메이션 설정
   useGSAP(() => {
-    // 배경 파티클 애니메이션 (계속 움직임)
     gsap.to('.leaf-particle', {
       y: 'random(-50, 50)',
       x: 'random(-30, 30)',
@@ -67,31 +72,33 @@ const InfoSection = () => {
     });
   }, { scope: sectionRef });
 
-  // 스와이프/드래그 상태 관리
+  // 스와이프/드래그 동작 감지 변수
   const touchStartX = useRef(0);
   const touchEndX = useRef(0);
 
+  // 다음 슬라이드로 이동
   const handleNext = () => {
     if (isAnimating.current) return;
     isAnimating.current = true;
     if (activeIndex < solutions.length - 1) {
       setActiveIndex(activeIndex + 1);
     } else {
-      setActiveIndex(0); // Loop back to start
+      setActiveIndex(0); // 처음으로 루프
     }
   };
 
+  // 이전 슬라이드로 이동
   const handlePrev = () => {
     if (isAnimating.current) return;
     isAnimating.current = true;
     if (activeIndex > 0) {
       setActiveIndex(activeIndex - 1);
     } else {
-      setActiveIndex(solutions.length - 1); // Loop to end
+      setActiveIndex(solutions.length - 1); // 마지막으로 루프
     }
   };
 
-  // 스와이프 처리 함수
+  // 스와이프 제스처 처리
   const handleSwipe = () => {
     const threshold = 50; 
     const diff = touchStartX.current - touchEndX.current;
@@ -111,26 +118,27 @@ const InfoSection = () => {
   const onMouseUp = (e) => { touchEndX.current = e.clientX; handleSwipe(); };
 
   useEffect(() => {
-    // 탭 전환 애니메이션
+    // 탭 및 카드 전환 애니메이션
     const texts = gsap.utils.toArray('.info-text-group');
     const cards = gsap.utils.toArray('.image-card');
     
-    // 이전 애니메이션 강제 종료 (겹침 방지)
+    // 이전 애니메이션 정리 (충돌 방지)
     gsap.killTweensOf(texts);
     gsap.killTweensOf(cards);
 
     const prevIdx = previousIndex.current;
     const currentIdx = activeIndex;
 
-    // 1. 텍스트 전환
+    // 1. 텍스트 전환 애니메이션
     if (prevIdx !== currentIdx) {
-      // 숨겨져야 할 텍스트들 즉시 숨김 처리 (안전장치)
+      // 비활성 텍스트 숨김 처리
       texts.forEach((text, i) => {
         if (i !== currentIdx && i !== prevIdx) {
           gsap.set(text, { autoAlpha: 0, x: -20 });
         }
       });
 
+      // 이전 텍스트 퇴장
       gsap.to(texts[prevIdx], {
         autoAlpha: 0,
         x: -20,
@@ -139,6 +147,7 @@ const InfoSection = () => {
       });
     }
     
+    // 현재 텍스트 등장
     gsap.fromTo(texts[currentIdx],
       { autoAlpha: 0, x: 20 },
       { 
@@ -146,21 +155,14 @@ const InfoSection = () => {
         x: 0, 
         duration: 0.5, 
         delay: 0.2, 
-        ease: 'power2.out',
-        onComplete: () => {
-           // 텍스트 애니메이션이 끝나는 시점을 전체 애니메이션 종료로 간주 (가장 늦게 끝남)
-           // 혹은 이미지 애니메이션 시간과 맞춰서 넉넉하게 잡음
-        }
+        ease: 'power2.out'
       }
     );
 
-    // 2. 이미지 전환 (3D 원형 회전 Carousel)
+    // 2. 이미지 3D 회전(Carousel) 애니메이션
     const radius = 350; 
     const theta = 50;   
     
-    // 가장 긴 애니메이션 시간을 추적하여 잠금 해제
-    // let maxDuration = 0.8; 
-
     cards.forEach((card, i) => {
       const offset = i - currentIdx;
       const angle = offset * theta;
@@ -170,6 +172,7 @@ const InfoSection = () => {
       const opacity = i === currentIdx ? 1 : 0; 
       const zIndex = i === currentIdx ? 100 : 0;
 
+      // 카드 위치 및 회전 애니메이션
       gsap.to(card, {
         rotateY: angle,
         translateZ: radius - (distFactor * 50), 
@@ -182,12 +185,12 @@ const InfoSection = () => {
         transformOrigin: "50% 50% -400px",
         onComplete: () => {
           if (i === currentIdx) {
-            // 메인 카드의 애니메이션이 끝났을 때 잠금 해제
-            isAnimating.current = false;
+            isAnimating.current = false; // 애니메이션 종료 후 잠금 해제
           }
         }
       });
 
+      // 활성 카드 외 흐림 효과 적용
       if (i === currentIdx) {
         gsap.to(card, { filter: 'brightness(1) blur(0px)', duration: 0.8 });
       } else {
@@ -277,7 +280,7 @@ const InfoSection = () => {
               </div>
             ))}
             
-            {/* 네비게이션 화살표 추가 */}
+            {/* 네비게이션 버튼 (화살표) */}
             <div className="info-controls">
               <button className="nav-arrow prev-arrow" onClick={(e) => { e.stopPropagation(); handlePrev(); }}>
                 <FaArrowLeft />

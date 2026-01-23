@@ -1,16 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Button, Card, ListGroup, Modal, Form } from 'react-bootstrap';
+import { Container, Button } from 'react-bootstrap';
 import { useParams, useNavigate } from 'react-router-dom';
 import noticeApi from '../../api/noticeApi';
-import { FaDownload, FaList, FaEdit, FaTrash } from 'react-icons/fa';
+import { FaList } from 'react-icons/fa';
 import './Notice.css';
 
+/*
+ * [공지사항 상세 페이지]
+ * 선택된 공지사항의 제목, 작성자, 작성일, 조회수, 본문 내용 및 첨부파일을 보여주는 컴포넌트입니다.
+ * 첨부파일이 있을 경우 다운로드 링크를 제공합니다.
+ */
 const NoticeDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [notice, setNotice] = useState(null);
   const [loading, setLoading] = useState(true);
   
+  // 상세 정보 조회
   useEffect(() => {
     const fetchNoticeDetail = async () => {
       try {
@@ -56,7 +62,7 @@ const NoticeDetail = () => {
 
       <Container className="notice-content py-5">
         <div className="notice-detail-container">
-          {/* 상단 헤더 영역 */}
+          {/* 게시글 헤더 (제목 및 메타 정보) */}
           <div className="detail-header">
             <h3 className="detail-title">{notice.title}</h3>
             <div className="detail-info-bar">
@@ -66,7 +72,7 @@ const NoticeDetail = () => {
             </div>
           </div>
           
-          {/* 본문 내용 영역 */}
+          {/* 게시글 본문 (HTML 내용 렌더링) */}
           <div className="detail-body">
             <div 
               className="content-area"
@@ -74,7 +80,7 @@ const NoticeDetail = () => {
             />
           </div>
 
-          {/* 첨부파일 영역 */}
+          {/* 첨부파일 목록 */}
           {notice.attachments && notice.attachments.length > 0 && (
             <div className="detail-attachments">
               <h5 style={{ fontSize: '1.1rem', fontWeight: '800', color: '#1e2f23' }}>
@@ -96,7 +102,7 @@ const NoticeDetail = () => {
           )}
         </div>
 
-        {/* 하단 버튼 영역 */}
+        {/* 하단 버튼 (목록으로) */}
         <div className="d-flex justify-content-center align-items-center notice-footer-btns">
           <Button variant="outline-secondary" className="btn-list px-5" onClick={() => navigate('/notice')}>
             <FaList className="me-2" /> 목록으로

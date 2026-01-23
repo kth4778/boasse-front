@@ -2,6 +2,10 @@ import React from 'react';
 import { Container } from 'react-bootstrap';
 import './Policy.css';
 
+/*
+ * [이메일 무단 수집 거부 페이지]
+ * 웹사이트에 게시된 이메일 주소의 무단 수집 거부 의사를 명시하는 페이지입니다.
+ */
 const EmailPolicy = () => {
   return (
     <div className="policy-page">

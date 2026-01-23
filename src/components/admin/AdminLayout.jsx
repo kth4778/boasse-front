@@ -4,13 +4,19 @@ import { Link, Outlet, useLocation } from 'react-router-dom';
 import { FaTachometerAlt, FaBullhorn, FaUserTie, FaBoxOpen, FaHome, FaEnvelope, FaHandshake } from 'react-icons/fa';
 import './AdminLayout.css';
 
+/*
+ * [관리자 레이아웃 컴포넌트]
+ * 관리자 페이지의 공통 레이아웃을 정의합니다.
+ * - 로그인 인증 처리 (SessionStorage 기반 간단한 인증)
+ * - 사이드바 네비게이션
+ * - 메인 콘텐츠 영역 (Outlet)
+ */
 const AdminLayout = () => {
   const location = useLocation();
   const [isAuthenticated, setIsAuthenticated] = useState(() => sessionStorage.getItem('admin_auth') === 'true');
   const [password, setPassword] = useState('');
 
-  // 컴포넌트 마운트 시 세션 확인 (useEffect 제거됨)
-
+  // 관리자 로그인 처리
   const handleLogin = (e) => {
     e.preventDefault();
     const adminPassword = import.meta.env.VITE_ADMIN_PASSWORD;
@@ -33,6 +39,7 @@ const AdminLayout = () => {
     { path: '/admin/inquiry', icon: <FaEnvelope />, label: '1:1 문의 관리' },
   ];
 
+  // 인증되지 않은 경우 로그인 화면 표시
   if (!isAuthenticated) {
     return (
       <Container fluid className="d-flex align-items-center justify-content-center" style={{ minHeight: '100vh', backgroundColor: '#f0f2f5' }}>
@@ -73,7 +80,7 @@ const AdminLayout = () => {
 
   return (
     <div className="admin-wrapper">
-      {/* Sidebar */}
+      {/* 사이드바 영역 */}
       <aside className="admin-sidebar">
         <div className="sidebar-header">
           <h3>BOAS-SE Admin</h3>
@@ -92,14 +99,13 @@ const AdminLayout = () => {
           ))}
           <div className="sidebar-divider"></div>
           <Nav.Link as={Link} to="/" className="sidebar-item exit-link" onClick={() => sessionStorage.removeItem('admin_auth')}>
-             {/* 로그아웃 처리 위해 onClick 추가 (홈으로 가면 로그아웃 되는 효과) */}
             <span className="sidebar-icon"><FaHome /></span>
             <span className="sidebar-label">사용자 페이지로 (로그아웃)</span>
           </Nav.Link>
         </Nav>
       </aside>
 
-      {/* Main Content Area */}
+      {/* 메인 콘텐츠 영역 */}
       <main className="admin-main">
         <header className="admin-top-header">
           <h2 className="page-title">
