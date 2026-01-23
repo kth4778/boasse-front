@@ -128,15 +128,16 @@ const Product = () => {
                     <span className="product-tag">{product.category}</span>
                   </div>
                   <h3 className="product-card-title">
-                    {product.title.includes('(') ? (
-                      <>
-                        {product.title.split('(')[0]}
-                        <br />
-                        <span className="title-sub">({product.title.split('(')[1]}</span>
-                      </>
-                    ) : (
-                      product.title
-                    )}
+                    {product.title.split('(').map((text, i) => (
+                      <React.Fragment key={i}>
+                        {i > 0 && <br />}
+                        {i > 0 ? (
+                          <span className="title-sub">({text}</span>
+                        ) : (
+                          text
+                        )}
+                      </React.Fragment>
+                    ))}
                   </h3>
                   <p className="product-card-desc">{product.description}</p>
                 </div>

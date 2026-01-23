@@ -155,7 +155,14 @@ const ProductCards = () => {
                         <div className="masonry-bg" style={{ backgroundImage: `url(${getImageUrl(product.image)})` }}></div>
                         <div className="masonry-overlay">
                           <span className="masonry-date">{product.category}</span>
-                          <h3 className="masonry-title">{product.title}</h3>
+                          <h3 className="masonry-title">
+                            {product.title.split('(').map((text, i) => (
+                              <React.Fragment key={i}>
+                                {i > 0 && <br />}
+                                {i > 0 ? `(${text}` : text}
+                              </React.Fragment>
+                            ))}
+                          </h3>
                         </div>
                       </Link>
                     );
