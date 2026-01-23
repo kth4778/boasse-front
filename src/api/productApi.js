@@ -13,12 +13,20 @@ export const productApi = {
 
   // 제품 등록
   createProduct: async (formData) => {
-    return api.post('/products', formData);
+    return api.post('/products', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
   },
 
   // 제품 수정
   updateProduct: async (id, formData) => {
-    return api.put(`/products/${id}`, formData);
+    return api.put(`/products/${id}`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
   },
 
   // 제품 삭제

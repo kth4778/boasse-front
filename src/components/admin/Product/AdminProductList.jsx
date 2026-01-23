@@ -50,6 +50,12 @@ const AdminProductList = () => {
       form.append('detail', product.detail || '');
       form.append('isMainFeatured', !currentStatus); // 상태 반전
 
+      // 이미지 처리: 파일이 변경되지 않았으므로 기존 URL을 전송
+      // 백엔드가 기존 이미지를 유지하려면 imageUrl 필드나 image 필드 중 하나를 요구할 수 있음
+      if (product.image) {
+        form.append('imageUrl', product.image);
+      }
+
       // 객체 데이터는 문자열로 변환하여 전송
       const specsData = typeof product.specs === 'object' ? JSON.stringify(product.specs) : product.specs;
       const featuresData = typeof product.features === 'object' ? JSON.stringify(product.features) : product.features;
