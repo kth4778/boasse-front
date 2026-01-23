@@ -220,15 +220,13 @@ const About = () => {
   }, { scope: containerRef });
 
 
-  // 미세 입자(Spores) 위치 초기화
-  const [sporePositions, setSporePositions] = React.useState([]);
-
-  React.useEffect(() => {
-    setSporePositions([...Array(15)].map((_, i) => ({
+  // 미세 입자(Spores) 위치 초기화 (메모이제이션)
+  const sporePositions = React.useMemo(() => {
+    return [...Array(15)].map((_, i) => ({
       key: i,
       left: Math.random() * 100,
       bottom: -(Math.random() * 20)
-    })));
+    }));
   }, []);
 
   return (
@@ -329,7 +327,9 @@ const About = () => {
         <div className="bg-layer history-bg-layer-1"></div>
         <div className="bg-layer history-bg-layer-2"></div>
         <div className="history-living-bg">
-          {[...Array(15)].map((_, i) => <div key={i} className="history-spore" style={{left: `${Math.random() * 100}%`, bottom: `-${Math.random() * 20}%`}}></div>)}
+          {sporePositions.map((pos) => (
+            <div key={pos.key} className="history-spore" style={{left: `${pos.left}%`, bottom: `${pos.bottom}%`}}></div>
+          ))}
         </div>
         
         <div className="history-footprints-container">

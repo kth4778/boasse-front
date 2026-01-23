@@ -4,6 +4,12 @@ import { useNavigate } from 'react-router-dom';
 import noticeApi from '../../api/noticeApi';
 import './Notice.css';
 
+// HTML 태그 제거 유틸리티 함수
+const stripHtml = (html) => {
+  if (!html) return '';
+  return html.replace(/<[^>]*>?/gm, '');
+};
+
 /*
  * [공지사항 목록 페이지]
  * 게시판 형태로 공지사항 목록을 보여주는 컴포넌트입니다.

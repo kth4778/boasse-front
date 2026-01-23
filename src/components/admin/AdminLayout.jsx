@@ -10,18 +10,17 @@ import './AdminLayout.css';
 const AdminLayout = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  // 초기값을 함수로 전달하여 렌더링 시점에 동기적으로 확인 (Lazy Initialization)
+  const [isAuthenticated, setIsAuthenticated] = useState(() => {
+    return !!localStorage.getItem('accessToken');
+  });
 
-  // 인증 상태 체크 (localStorage의 accessToken 확인)
+  // 인증 실패 시 리다이렉트만 처리
   useEffect(() => {
-    const token = localStorage.getItem('accessToken');
-    if (token) {
-      setIsAuthenticated(true);
-    } else {
-      setIsAuthenticated(false);
+    if (!isAuthenticated) {
       navigate('/admin/login', { replace: true });
     }
-  }, [navigate]);
+  }, [isAuthenticated, navigate]);
 
   const menuGroups = [
     {
