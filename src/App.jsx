@@ -29,6 +29,7 @@ import NoticeDetail from './components/Notice/NoticeDetail';
 import NoticeWrite from './components/Notice/NoticeWrite';
 
 // Admin Components
+import AdminLogin from './components/admin/AdminLogin';
 import AdminLayout from './components/admin/AdminLayout';
 import AdminDashboard from './components/admin/AdminDashboard';
 import AdminNoticeList from './components/admin/Notice/AdminNoticeList';
@@ -91,6 +92,7 @@ function App() {
             <Route path="/notice/edit/:id" element={<NoticeWrite />} />
 
             {/* --- Admin Routes --- */}
+            <Route path="/admin/login" element={<AdminLogin />} />
             <Route path="/admin" element={<AdminLayout />}>
               <Route index element={<AdminDashboard />} />
               <Route path="notice" element={<AdminNoticeList />} />

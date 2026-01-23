@@ -1,8 +1,4 @@
-import axios from 'axios';
-
-const api = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL || '/api/v1',
-});
+import api from './axiosConfig';
 
 export const noticeApi = {
   // 공지사항 목록 조회

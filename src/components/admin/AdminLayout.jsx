@@ -1,27 +1,40 @@
-import React, { useState } from 'react';
-import { Nav, Container, Card, Form, Button } from 'react-bootstrap';
-import { Link, Outlet, useLocation } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Nav } from 'react-bootstrap';
+import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { FaTachometerAlt, FaBullhorn, FaUserTie, FaBoxOpen, FaHome, FaEnvelope, FaHandshake } from 'react-icons/fa';
+import authApi from '../../api/authApi';
 import './AdminLayout.css';
 
 const AdminLayout = () => {
   const location = useLocation();
-  const [isAuthenticated, setIsAuthenticated] = useState(() => sessionStorage.getItem('admin_auth') === 'true');
-  const [password, setPassword] = useState('');
+  const navigate = useNavigate();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  // 컴포넌트 마운트 시 세션 확인 (useEffect 제거됨)
+  useEffect(() => {
+    const checkAuth = async () => {
+      const token = localStorage.getItem('accessToken');
+      if (!token) {
+        navigate('/admin/login', { replace: true });
+        return;
+      }
+      
+      // 토큰이 있으면 일단 인증된 것으로 간주하고 렌더링 (유효성 검사는 API 호출 시 401로 처리됨)
+      // 선택 사항: 페이지 진입 시마다 토큰 유효성 검사 API 호출
+      try {
+        // await authApi.verifyToken(); // 필요 시 주석 해제하여 엄격한 검증 활성화
+        setIsAuthenticated(true);
+      } catch (error) {
+        // 토큰이 만료되었거나 유효하지 않음
+        localStorage.removeItem('accessToken');
+        navigate('/admin/login', { replace: true });
+      }
+    };
 
-  const handleLogin = (e) => {
-    e.preventDefault();
-    const adminPassword = import.meta.env.VITE_ADMIN_PASSWORD;
-    
-    if (password === adminPassword) {
-      sessionStorage.setItem('admin_auth', 'true');
-      setIsAuthenticated(true);
-    } else {
-      alert('비밀번호가 올바르지 않습니다.');
-      setPassword('');
-    }
+    checkAuth();
+  }, [navigate]);
+
+  const handleLogout = () => {
+    localStorage.removeItem('accessToken');
   };
 
   const menuItems = [
@@ -33,42 +46,9 @@ const AdminLayout = () => {
     { path: '/admin/inquiry', icon: <FaEnvelope />, label: '1:1 문의 관리' },
   ];
 
+  // 인증 체크 전에는 아무것도 렌더링하지 않음 (깜빡임 방지)
   if (!isAuthenticated) {
-    return (
-      <Container fluid className="d-flex align-items-center justify-content-center" style={{ minHeight: '100vh', backgroundColor: '#f0f2f5' }}>
-        <Card style={{ width: '100%', maxWidth: '400px', border: 'none', borderRadius: '16px', boxShadow: '0 10px 40px rgba(0,0,0,0.08)' }}>
-          <Card.Body className="p-5 text-center">
-            <h3 className="fw-bold mb-2" style={{ color: '#1e2f23' }}>BOAS-SE</h3>
-            <p className="text-muted mb-4 small">관리자 페이지 접근 권한 확인</p>
-            <Form onSubmit={handleLogin}>
-              <Form.Group className="mb-3">
-                <Form.Control 
-                  type="password" 
-                  placeholder="비밀번호를 입력하세요" 
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  style={{ padding: '12px 15px', borderRadius: '8px', backgroundColor: '#f8f9fa', border: '1px solid #e9ecef' }}
-                  autoFocus
-                />
-              </Form.Group>
-              <Button 
-                type="submit" 
-                variant="success" 
-                className="w-100 py-2 fw-bold" 
-                style={{ borderRadius: '8px', backgroundColor: '#1e2f23', border: 'none' }}
-              >
-                접속하기
-              </Button>
-            </Form>
-            <div className="mt-4 border-top pt-3">
-              <Link to="/" className="text-decoration-none text-secondary small fw-medium">
-                <FaHome className="me-1" /> 홈페이지로 돌아가기
-              </Link>
-            </div>
-          </Card.Body>
-        </Card>
-      </Container>
-    );
+    return null; 
   }
 
   return (
@@ -91,10 +71,9 @@ const AdminLayout = () => {
             </Nav.Link>
           ))}
           <div className="sidebar-divider"></div>
-          <Nav.Link as={Link} to="/" className="sidebar-item exit-link" onClick={() => sessionStorage.removeItem('admin_auth')}>
-             {/* 로그아웃 처리 위해 onClick 추가 (홈으로 가면 로그아웃 되는 효과) */}
+          <Nav.Link as={Link} to="/" className="sidebar-item exit-link" onClick={handleLogout}>
             <span className="sidebar-icon"><FaHome /></span>
-            <span className="sidebar-label">사용자 페이지로 (로그아웃)</span>
+            <span className="sidebar-label">로그아웃 (홈으로)</span>
           </Nav.Link>
         </Nav>
       </aside>
