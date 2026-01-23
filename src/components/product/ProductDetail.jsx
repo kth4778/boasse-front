@@ -14,7 +14,7 @@ import 'swiper/css/pagination';
 import 'swiper/css/effect-fade';
 import './ProductDetail.css';
 
-// 아이콘 매핑 객체 (AdminProductForm과 동일)
+// 아이콘 매핑 객체 (문자열로 저장된 아이콘 이름을 실제 컴포넌트로 변환)
 const ICON_MAP = {
   'FaChartLine': <FaChartLine />,
   'FaBrain': <FaBrain />,
@@ -29,7 +29,10 @@ const ICON_MAP = {
   'FaCloud': <FaCloud />
 };
 
-// [데이터] Bento Grid Specs (기본값)
+/* 
+ * [데이터] 카테고리별 기본 스펙 데이터 (Bento Grid용)
+ * DB에 저장된 스펙 정보가 없을 경우, 제품 카테고리에 맞춰 미리 정의된 기본 스펙을 보여줍니다.
+ */
 const getSpecs = (category) => {
   switch (category) {
     case 'Smart Mobility':
@@ -62,7 +65,10 @@ const getSpecs = (category) => {
   }
 };
 
-// [데이터] 상세 기능 (기본값)
+/* 
+ * [데이터] 카테고리별 기본 상세 기능 데이터
+ * DB에 저장된 기능 정보가 없을 경우 사용됩니다.
+ */
 const getDetailFeatures = (category) => {
   switch (category) {
     case 'Smart Mobility':
@@ -96,6 +102,11 @@ const getDetailFeatures = (category) => {
   }
 };
 
+/*
+ * [제품 상세 페이지]
+ * 선택한 제품의 상세 정보를 4단계 슬라이드(인트로, 주요 스펙, 상세 기능, 도입 문의)로 나누어 보여줍니다.
+ * 몰입감을 높이기 위해 풀페이지 스크롤(Swiper Mousewheel)과 배경 페이드 효과를 사용합니다.
+ */
 const ProductDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -103,14 +114,14 @@ const ProductDetail = () => {
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  // 제품 상세 데이터 가져오기
   useEffect(() => {
     const fetchProduct = async () => {
       try {
         const response = await productApi.getProductDetail(id);
         if (response.data.success) {
           const data = response.data.data;
-          // specs와 features가 JSON 문자열로 올 경우 파싱 처리
-          // (axios나 백엔드 설정에 따라 이미 객체일 수도 있음)
+          // specs와 features 데이터 파싱 (문자열로 저장된 경우 JSON 객체로 변환)
           if (typeof data.specs === 'string') {
             try { data.specs = JSON.parse(data.specs); } catch { /* ignore parse error */ }
           }
@@ -129,8 +140,8 @@ const ProductDetail = () => {
     fetchProduct();
   }, [id]);
 
+  // 페이지 진입 시 스크롤 위치 초기화
   useEffect(() => {
-    // 스크롤 복원 방지 및 최상단 이동
     if ('scrollRestoration' in window.history) {
       window.history.scrollRestoration = 'manual';
     }
@@ -160,7 +171,7 @@ const ProductDetail = () => {
     );
   }
 
-  // 동적 데이터(specs, features)가 있으면 사용하고, 없으면 카테고리별 기본 데이터 사용
+  // 동적 데이터(specs, features)가 존재하면 사용하고, 없으면 카테고리별 기본값을 사용
   const specs = product.specs && product.specs.length > 0 
     ? product.specs 
     : getSpecs(product.category);
@@ -169,12 +180,15 @@ const ProductDetail = () => {
     ? product.features 
     : getDetailFeatures(product.category);
 
-  // 배경 이미지 처리
   const bgStyle = { backgroundImage: `url(${getImageUrl(product.image)})` };
 
   return (
     <div className="pd-container">
-      {/* Background Layer */}
+      {/* 
+        [배경 레이어] 
+        슬라이드 인덱스에 따라 오버레이 색상이나 투명도를 조절하여 
+        단계별로 깊이감 있는 분위기를 연출합니다.
+      */}
       <div className="pd-bg-container">
         <div className={`pd-bg-image ${activeIndex === 0 ? 'active' : ''}`} style={bgStyle}>
           <div className="pd-bg-overlay"></div>
@@ -203,7 +217,7 @@ const ProductDetail = () => {
         onSlideChange={(swiper) => setActiveIndex(swiper.activeIndex)}
         className="pd-swiper"
       >
-        {/* Slide 1: Hero */}
+        {/* 슬라이드 1: 제품 인트로 (제목 및 설명) */}
         <SwiperSlide className="pd-slide">
           <div className="pd-content">
             <span className="pd-category">{product.category}</span>
@@ -212,7 +226,7 @@ const ProductDetail = () => {
           </div>
         </SwiperSlide>
 
-        {/* Slide 2: Specs (Bento Grid) */}
+        {/* 슬라이드 2: 핵심 성능 (Bento Grid 레이아웃) */}
         <SwiperSlide className="pd-slide">
           <div className="pd-content">
             <h2 className="pd-section-title">Key Performance</h2>
@@ -220,7 +234,7 @@ const ProductDetail = () => {
               {specs.map((spec, idx) => (
                 <div key={idx} className={`pd-bento-card ${spec.className || ''}`}>
                   <div className="card-icon">
-                    {/* 문자열 아이콘 이름을 컴포넌트로 변환 */}
+                    {/* 문자열 아이콘 이름을 컴포넌트로 변환하여 렌더링 */}
                     {typeof spec.icon === 'string' ? (ICON_MAP[spec.icon] || <FaCheckCircle />) : spec.icon}
                   </div>
                   <div className="card-label">{spec.label}</div>
@@ -232,7 +246,7 @@ const ProductDetail = () => {
           </div>
         </SwiperSlide>
 
-        {/* Slide 3: Detailed Features */}
+        {/* 슬라이드 3: 상세 기능 목록 */}
         <SwiperSlide className="pd-slide">
           <div className="pd-content">
             <h2 className="pd-section-title">Detail Features</h2>
@@ -250,7 +264,7 @@ const ProductDetail = () => {
           </div>
         </SwiperSlide>
 
-        {/* Slide 4: CTA */}
+        {/* 슬라이드 4: 도입 문의 및 뒤로가기 */}
         <SwiperSlide className="pd-slide">
           <div className="pd-content">
             <h2 className="pd-title" style={{ fontSize: '3.5rem' }}>Ready to Innovate?</h2>

@@ -1,16 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Table, Modal } from 'react-bootstrap';
+import { Table, Button, Modal } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { FaPlus, FaEdit, FaTrash, FaEye } from 'react-icons/fa';
 import noticeApi from '../../../api/noticeApi';
 
+/*
+ * [관리자 공지사항 관리 컴포넌트]
+ * 공지사항 목록을 확인하고, 생성(Write), 수정(Edit), 삭제(Delete) 기능을 제공합니다.
+ */
 const AdminNoticeList = () => {
   const [notices, setNotices] = useState([]);
   const [pagination, setPagination] = useState({});
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
-  // 삭제 확인 모달 상태
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedNotice, setSelectedNotice] = useState(null);
 

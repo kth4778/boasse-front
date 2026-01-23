@@ -4,6 +4,11 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { FaSave, FaTimes, FaPlus, FaTrash } from 'react-icons/fa';
 import recruitApi from '../../../api/recruitApi';
 
+/*
+ * [관리자 채용 공고 작성/수정 컴포넌트]
+ * 채용 공고의 상세 정보(제목, 상태, 근무지, 고용형태, 지원링크)와
+ * 주요 업무 및 자격 요건(리스트 형태)을 입력받습니다.
+ */
 const AdminRecruitForm = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -81,15 +86,15 @@ const AdminRecruitForm = () => {
       return;
     }
 
-    // 빈 항목 필터링 및 DB 필드명 매칭
+    // 빈 항목 필터링 및 필드명 정리
     const cleanedData = {
       ...formData,
-      applyLink: formData.applyLink, // 원복: applyLink 사용
+      applyLink: formData.applyLink,
       recruit_duties: formData.duties.filter(item => item.trim() !== ''),
       recruit_requirements: formData.requirements.filter(item => item.trim() !== '')
     };
 
-    // 불필요한 기존 필드 제거
+    // 레거시 필드 제거
     delete cleanedData.duties;
     delete cleanedData.requirements;
 
@@ -189,6 +194,7 @@ const AdminRecruitForm = () => {
         </Row>
 
         <Row className="mt-3">
+          {/* 주요 업무 리스트 입력 */}
           <Col md={6}>
             <Card className="bg-light border-0 p-3 mb-3">
               <div className="d-flex justify-content-between align-items-center mb-3">
@@ -217,6 +223,8 @@ const AdminRecruitForm = () => {
               ))}
             </Card>
           </Col>
+          
+          {/* 자격 요건 리스트 입력 */}
           <Col md={6}>
             <Card className="bg-light border-0 p-3 mb-3">
               <div className="d-flex justify-content-between align-items-center mb-3">

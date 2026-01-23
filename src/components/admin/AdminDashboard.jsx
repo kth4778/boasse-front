@@ -4,9 +4,13 @@ import { useNavigate } from 'react-router-dom';
 import { FaBullhorn, FaUserTie, FaBoxOpen } from 'react-icons/fa';
 import noticeApi from '../../api/noticeApi';
 import recruitApi from '../../api/recruitApi';
-// productApi는 곧 생성할 예정입니다.
 import productApi from '../../api/productApi';
 
+/*
+ * [관리자 대시보드 컴포넌트]
+ * 관리자 페이지의 메인 화면으로, 각 모듈(공지, 채용, 제품)의 데이터 현황을 
+ * 요약하여 카드 형태로 보여줍니다.
+ */
 const AdminDashboard = () => {
   const navigate = useNavigate();
   const [counts, setCounts] = useState({
@@ -16,6 +20,7 @@ const AdminDashboard = () => {
   });
   const [loading, setLoading] = useState(true);
 
+  // 각 데이터의 총 개수를 조회하여 통계 업데이트
   useEffect(() => {
     const fetchCounts = async () => {
       setLoading(true);

@@ -10,16 +10,21 @@ import './ProductCards.css';
 
 gsap.registerPlugin(ScrollTrigger);
 
+/*
+ * [제품 카드 섹션]
+ * 메인 페이지에 노출되는 주요 제품(Main Featured) 목록을 Masonry 그리드 형태로 보여주는 섹션입니다.
+ * 스크롤에 따라 왼쪽 설명 카드는 고정(Sticky)되고, 오른쪽 제품 그리드는 스크롤되는 인터랙션을 포함합니다.
+ */
 const ProductCards = () => {
   const sectionRef = useRef(null);
-  const wrapperRef = useRef(null); // 흰색 박스
-  const leftCardRef = useRef(null); // 검은색 카드
-  const rightGridRef = useRef(null); // 오른쪽 그리드
+  const wrapperRef = useRef(null); // 배경 흰색 박스
+  const leftCardRef = useRef(null); // 좌측 고정 설명 카드
+  const rightGridRef = useRef(null); // 우측 제품 목록 그리드
 
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // 데이터 로드
+  // 제품 데이터 로드 (API 호출)
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -28,7 +33,7 @@ const ProductCards = () => {
           setProducts(response.data.data);
         }
       } catch (error) {
-        console.error('Failed to load products:', error);
+        console.error('제품 목록을 불러오지 못했습니다:', error);
       } finally {
         setLoading(false);
       }
@@ -36,11 +41,11 @@ const ProductCards = () => {
     fetchProducts();
   }, []);
 
-  // GSAP 애니메이션 통합 관리
+  // GSAP 애니메이션 설정
   useGSAP(() => {
     if (loading || products.length === 0) return;
 
-    // 레이아웃 안정화 대기
+    // 레이아웃이 안정화될 때까지 잠시 대기 후 ScrollTrigger 갱신
     const timer = setTimeout(() => {
       ScrollTrigger.refresh();
     }, 200);
@@ -50,7 +55,7 @@ const ProductCards = () => {
     // PC 버전 (992px 이상) 애니메이션
     mm.add("(min-width: 992px)", () => {
       
-      // 0. 초기 상태 강제 설정
+      // 0. 초기 스타일 강제 설정
       gsap.set(wrapperRef.current, { 
         width: '75%', 
         paddingTop: '80px',
@@ -58,7 +63,7 @@ const ProductCards = () => {
         borderRadius: '100px'
       });
 
-      // 1. 흰색 박스 확장 및 축소 (Timeline) - 복구됨
+      // 1. 배경 박스 확장/축소 애니메이션 (스크롤 연동)
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: sectionRef.current,
@@ -86,7 +91,8 @@ const ProductCards = () => {
         ease: 'power2.inOut'
       });
 
-      // 2. 검은색 카드 고정 (Manual Sticky via Translation)
+      // 2. 좌측 설명 카드 고정 (Sticky) 효과 구현
+      // CSS sticky 대신 JS로 제어하여 더 정교한 동기화 처리
       const getDist = () => {
         const rightH = rightGridRef.current?.offsetHeight || 0;
         const leftH = leftCardRef.current?.offsetHeight || 0;
@@ -107,17 +113,18 @@ const ProductCards = () => {
         });
       }
 
-      // 3. 오른쪽 카드 순차 등장 애니메이션은 떨림 방지를 위해 제거 상태 유지
+      // 3. 우측 제품 카드 등장 애니메이션 (초기 상태 설정)
       gsap.set('.masonry-item', { opacity: 1, y: 0 });
     });
 
     return () => {
       clearTimeout(timer);
-      mm.revert(); // 미디어 쿼리 정리
+      mm.revert(); // 미디어 쿼리 설정 정리
     };
 
   }, { scope: sectionRef, dependencies: [loading, products] });
 
+  // 메인 노출 제품 필터링
   const gridProducts = products.filter(p => p.isMainFeatured || p.mainFeatured);
 
   if (loading) return null;
@@ -127,9 +134,8 @@ const ProductCards = () => {
       <div className="product-expand-wrapper" ref={wrapperRef}>
         <div className="pc-container">
           <div className="pc-grid">
-            {/* Left: Sticky Card Area */}
+            {/* 좌측: 고정되는 설명 카드 영역 */}
             <div className="pc-left"> 
-              {/* Pinning 대상 */}
               <div className="title-card" ref={leftCardRef}>
                 <h2 className="title-card-head">OUR<br />PRODUCTS</h2>
                 <p className="title-card-desc">
@@ -144,11 +150,12 @@ const ProductCards = () => {
               </div>
             </div>
 
-            {/* Right: Product Grid Area */}
+            {/* 우측: 제품 목록 그리드 영역 */}
             <div className="pc-right" ref={rightGridRef}>
               <div className="masonry-grid">
                 {gridProducts.length > 0 ? (
                   gridProducts.map((product, index) => {
+                    // 그리드 높이 패턴 생성 (tall, medium, short 반복)
                     const heightClass = ['tall', 'medium', 'short'][index % 3];
                     return (
                       <Link to={`/product/${product.id}`} key={product.id} className={`masonry-item ${heightClass}`}>

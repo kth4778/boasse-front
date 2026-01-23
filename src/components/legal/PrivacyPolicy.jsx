@@ -2,6 +2,10 @@ import React from 'react';
 import { Container } from 'react-bootstrap';
 import './Policy.css';
 
+/*
+ * [개인정보 처리방침 페이지]
+ * 회사의 개인정보 수집 및 이용, 보유 기간 등에 대한 정책을 사용자에게 안내하는 페이지입니다.
+ */
 const PrivacyPolicy = () => {
   return (
     <div className="policy-page">

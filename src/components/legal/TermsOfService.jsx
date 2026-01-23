@@ -2,6 +2,10 @@ import React from 'react';
 import { Container } from 'react-bootstrap';
 import './Policy.css';
 
+/*
+ * [이용약관 페이지]
+ * 서비스 이용에 관한 회사와 이용자 간의 권리, 의무 및 책임사항을 규정한 약관 내용을 표시합니다.
+ */
 const TermsOfService = () => {
   return (
     <div className="policy-page">
@@ -28,7 +32,7 @@ const TermsOfService = () => {
             <h3>제 3 조 (약관의 효력 및 변경)</h3>
             <p className="policy-content">
               1. 본 약관은 서비스 화면에 게시하거나 기타의 방법으로 이용자에게 공지함으로써 효력이 발생합니다.
-              2. 회사는 필요하다고 인정되는 경우 관계법령을 위반하지 않는 범위 내에서 본 약관을 개정할 수 있습니다.
+              2. 회사는 필요하다고 인정되는 경우 관계법령의 규정에 의하여 본 약관을 개정할 수 있습니다.
             </p>
           </div>
 

@@ -3,6 +3,10 @@ import { Table, Button, Pagination } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import inquiryApi from '../../../api/inquiryApi';
 
+/*
+ * [관리자 1:1 문의 목록 컴포넌트]
+ * 접수된 고객 문의 사항을 목록으로 확인하고 관리(삭제 등)하는 페이지입니다.
+ */
 const AdminInquiryList = () => {
   const navigate = useNavigate();
   const [inquiries, setInquiries] = useState([]);
@@ -70,7 +74,7 @@ const AdminInquiryList = () => {
               <tr><td colSpan="6" className="text-center py-5">로딩 중...</td></tr>
             ) : inquiries.length > 0 ? (
               inquiries.map((item, index) => {
-                // 게시글 번호 계산 (전체 개수 - (현재페이지-1)*페이지당개수 - 현재인덱스)
+                // 게시글 번호 계산 (역순)
                 const rowNumber = totalCount - ((currentPage - 1) * 10) - index;
                 
                 return (

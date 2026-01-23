@@ -5,20 +5,26 @@ import noticeApi from '../../api/noticeApi';
 import { FaSave, FaTimes, FaTrash } from 'react-icons/fa';
 import './Notice.css';
 
+/*
+ * [공지사항 작성/수정 페이지]
+ * 공지사항을 등록하거나 기존 공지사항을 수정하는 컴포넌트입니다.
+ * 제목, 본문 입력 및 다중 파일 업로드를 지원하며, 기존 파일 삭제 기능도 포함합니다.
+ */
 const NoticeWrite = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const isEdit = !!id;
+  const isEdit = !!id; // id가 있으면 수정 모드
 
   const [formData, setFormData] = useState({
     title: '',
     content: '',
   });
-  const [files, setFiles] = useState([]);
-  const [existingFiles, setExistingFiles] = useState([]);
-  const [removeFileIds, setRemoveFileIds] = useState([]);
+  const [files, setFiles] = useState([]); // 새로 추가된 파일들
+  const [existingFiles, setExistingFiles] = useState([]); // 기존 첨부파일들 (수정 시)
+  const [removeFileIds, setRemoveFileIds] = useState([]); // 삭제할 기존 파일 ID 목록
   const [loading, setLoading] = useState(false);
 
+  // 수정 모드일 경우 기존 데이터 불러오기
   useEffect(() => {
     const fetchNoticeDetail = async () => {
       try {
@@ -48,7 +54,7 @@ const NoticeWrite = () => {
   const handleFileChange = (e) => {
     const selectedFiles = Array.from(e.target.files);
     setFiles((prev) => [...prev, ...selectedFiles]);
-    e.target.value = '';
+    e.target.value = ''; // 같은 파일을 다시 선택할 수 있도록 초기화
   };
 
   const handleRemoveNewFile = (index) => {
@@ -60,6 +66,7 @@ const NoticeWrite = () => {
     setExistingFiles((prev) => prev.filter((file) => file.id !== fileId));
   };
 
+  // 폼 제출 (저장)
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!formData.title || !formData.content) {
@@ -72,6 +79,7 @@ const NoticeWrite = () => {
     data.append('content', formData.content);
     files.forEach((file) => data.append('files', file));
     
+    // 수정 시 삭제할 파일 ID 목록 전송
     if (removeFileIds.length > 0) {
       data.append('removeFileIds', removeFileIds.join(','));
     }
@@ -172,7 +180,7 @@ const NoticeWrite = () => {
                   </div>
                 )}
 
-                {/* 기존 첨부파일 목록 표시 */}
+                {/* 기존 첨부파일 목록 표시 (수정 모드일 때만) */}
                 {isEdit && existingFiles.length > 0 && (
                   <div className="mt-3">
                     <p className="fw-bold mb-2 small text-secondary">기존 첨부파일 (수정 시 삭제 가능)</p>
@@ -200,6 +208,7 @@ const NoticeWrite = () => {
             </Col>
           </Row>
 
+          {/* 하단 버튼 그룹 */}
           <div className="d-flex justify-content-center mt-5 gap-3">
             <Button 
               variant="outline-secondary" 
